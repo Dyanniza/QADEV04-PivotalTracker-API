@@ -3,7 +3,8 @@
 			"userAccount":"jhasmanye",		
 			"userPassword":"1c7hu57&7"
 	},
-	"code":"unfound_resource",
+	"codeStories":"unfound_resource",
+	"codeStory":"route_not_found",
 
 	"proxy":"http:\/\/172.20.240.5:8080",
 	"timeout":10000
