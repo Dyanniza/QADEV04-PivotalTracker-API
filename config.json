@@ -1,12 +1,12 @@
 {
 	"userCredential":{
-			"userAccount":"jhasmanye",		
+			"userAccount":"jhasmanye",
 			"userPassword":"1c7hu57&7"
 	},
 	
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
-	"token":"0a25c5acfacfb46cdf114252c93ed468",
+	"token":"42b9026db7581b17ccf357858c33514e",
 	"type":"Content-Type",
 	"json":"application/json",
 	"timeout":10000,

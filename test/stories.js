@@ -1,6 +1,6 @@
 /*
 @author Jhasmany Quiroz
-@class STORIES for Test Cases the Services of 'Stories'.
+@Class STORIES for Test Cases the Services of 'Stories'.
  */
 
 var expect =  require('chai').expect;
@@ -25,11 +25,11 @@ describe('STORY of Project', function() {
 	before('Getting the token', function(done) {
 		tokenAPI
 			.getToken(userCredential, function(res) {
-				token = res.body;				
+				token = res.body;
 				expect(token.username).to.equal(userCredential.userAccount);
 				done();
 			});
-	});	
+	});
 
 	it('GET /projects/{project_id}/stories', function(done) {
 		projectId = -1;
@@ -44,7 +44,7 @@ describe('STORY of Project', function() {
 		projectId = -1;
 		storiesApi
 			.postStories(projectId, token.api_token, function(res) {
-				expect(res.code).to.equal(config.codeStories);				
+				expect(res.code).to.equal(config.codeStories);
 				done();
 			});
 	});
