@@ -3,35 +3,31 @@
 var expect = require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
-var postProject = require('../../lib/postProjectAPI');
-var delProject = require('../../lib/deleteProjectAPI');
-var putProject = require('../../lib/putProjectAPI');
-var getProject = require('../../lib/getProjectAPI');
+var Chance = require('chance');
+var chance = new Chance();
+var project = require('../../lib/projectsAPI');
+var task = require('../../lib/deleteTaskAPI');
 var postStories = require('../../lib/postStoriesAPI');
-var postTask = require('../../lib/postTaskAPI');
-var getTask = require('../../lib/getTaskAPI');
-var putTask = require('../../lib/putTaskAPI');
-var delTask = require('../../lib/deleteTaskAPI');
 
 
 describe('Service Story Task', function() {
 
-    this.timeout(100000);
+    this.timeout(10000);
 
     it('GET /projects/{project_id}/stories/{story_id}/tasks', function(done) {
         var prjId = -1;
         var storyId = -1;
         var taskId = -1;
         var prj = {
-            name: 'Project107878500'
+            name: chance.string()
         };
         var story = {
-            name: "As a tester verify the API is implemented"
+            name: chance.string()
         };
-        var task = {
-            description: "Verify the request 200 OK"
+        var taskName = {
+            description: chance.sentence({words: 5})
         };
-        postProject
+        project
             .createProject(prj, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
@@ -40,17 +36,18 @@ describe('Service Story Task', function() {
                     .createStories(story, prjId, function(res) {
                         expect(res.status).to.equal(200);
                         storyId = res.body.id;
-                        console.log(storyId);
-
-                        postTask
-                            .createTask(task, prjId, storyId, function(res) {
+                       
+                        task
+                            .createTask(taskName, prjId, storyId, function(res) {
                                 expect(res.status).to.equal(200);
+                                taskId=res.body.id;
+                                console.log(taskId);
 
-                                getTask
+                                task
                                     .getTask(prjId, storyId, taskId, function(res) {
                                         expect(res.status).to.equal(200);
 
-                                        delProject
+                                        project
                                             .deleteProject(prjId, function(res) {
                                                 expect(res.status).to.equal(204);
                                                 done();
@@ -66,15 +63,15 @@ describe('Service Story Task', function() {
         var prjId = -1;
         var storyId = -1;
         var prj = {
-            name: 'Project95587000'
+            name: chance.string()
         };
         var story = {
-            name: "As a tester verify the API is implemented"
+            name: chance.string()
         };
-        var task = {
-            description: "Verify the request 200 OK"
+        var taskName = {
+            description: chance.string()
         };
-        postProject
+        project
             .createProject(prj, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
@@ -83,13 +80,12 @@ describe('Service Story Task', function() {
                     .createStories(story, prjId, function(res) {
                         expect(res.status).to.equal(200);
                         storyId = res.body.id;
-                        console.log(storyId);
-
-                        postTask
-                            .createTask(task, prjId, storyId, function(res) {
+                        
+                        task
+                            .createTask(taskName, prjId, storyId, function(res) {
                                 expect(res.status).to.equal(200);
 
-                                delProject
+                                project
                                     .deleteProject(prjId, function(res) {
                                         expect(res.status).to.equal(204);
                                         done();
@@ -104,15 +100,15 @@ describe('Service Story Task', function() {
         var storyId = -1;
         var taskId = -1
         var prj = {
-            name: 'Project1585234000'
+            name: chance.string()
         };
         var story = {
-            name: "As a tester verify the API is implemented"
+            name: chance.string()
         };
-        var task = {
-            description: "Verify the request 200 OK"
+        var taskName = {
+            description: chance.string()
         };
-        postProject
+        project
             .createProject(prj, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
@@ -122,12 +118,12 @@ describe('Service Story Task', function() {
                         expect(res.status).to.equal(200);
                         storyId = res.body.id;
 
-                        postTask
-                            .createTask(task, prjId, storyId, function(res) {
+                        task
+                            .createTask(taskName, prjId, storyId, function(res) {
                                 taskId = res.body.id;
                                 expect(res.status).to.equal(200);
 
-                                getTask
+                                task
                                     .getTask(prjId, storyId, taskId, function(res) {
                                         expect(res.status).to.equal(200);
 
@@ -142,23 +138,23 @@ describe('Service Story Task', function() {
             });
     });
 
-    it('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
+    it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
         var prjId = -1;
         var storyId = -1;
         var taskId = -1
         var prj = {
-            name: 'Project847485411000'
+            name: chance.string()
         };
         var story = {
-            name: "As a tester verify the API is implemented"
+            name: chance.string()
         };
-        var task = {
-            description: "Verify the request 200 OK"
+        var taskName = {
+            description: chance.string()
         };
         var taskEdited = {
-            description: "Verify the request 204 Delete Object"
+            description: chance.string()
         };
-        postProject
+        project
             .createProject(prj, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
@@ -168,16 +164,16 @@ describe('Service Story Task', function() {
                         expect(res.status).to.equal(200);
                         storyId = res.body.id;
 
-                        postTask
-                            .createTask(task, prjId, storyId, function(res) {
+                        task
+                            .createTask(taskName, prjId, storyId, function(res) {
                                 taskId = res.body.id;
                                 expect(res.status).to.equal(200);
 
-                                putTask
+                                task
                                     .editTask(taskEdited, prjId, storyId, taskId, function(res) {
                                         expect(res.status).to.equal(200);
 
-                                        delProject
+                                        project
                                             .deleteProject(prjId, function(res) {
                                                 expect(res.status).to.equal(204);
                                                 done();
@@ -189,21 +185,21 @@ describe('Service Story Task', function() {
             });
     });
 
-    it.only('DELETE /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
+    it('DELETE /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
         var prjId = -1;
         var storyId = -1;
         var taskId = -1
         var prj = {
-            name: 'Project87852358000'
+            name: chance.string()
         };
         var story = {
-            name: "As a tester verify the API is implemented"
+            name: chance.string()
         };
-        var task = {
-            description: "Verify the request 200 OK"
+        var taskName = {
+            description: chance.string()
         };
 
-        postProject
+        project
             .createProject(prj, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
@@ -213,16 +209,16 @@ describe('Service Story Task', function() {
                         expect(res.status).to.equal(200);
                         storyId = res.body.id;
 
-                        postTask
-                            .createTask(task, prjId, storyId, function(res) {
+                        task
+                            .createTask(taskName, prjId, storyId, function(res) {
                                 taskId = res.body.id;
                                 expect(res.status).to.equal(200);
 
-                                delTask
+                                task
                                     .deleteTask(prjId, storyId, taskId, function(res) {
                                         expect(res.status).to.equal(204);
 
-                                        delProject
+                                        project
                                             .deleteProject(prjId, function(res) {
                                                 expect(res.status).to.equal(204);
                                                 done();
