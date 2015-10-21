@@ -15,9 +15,7 @@ var taskEdited ={
                 description : chance.sentence({words : 5})
             };
 
-describe('Service Story Task', function() {
-
-    this.timeout(20000);
+    //this.timeout(20000);
 
     /*describe('Suit of Story Task', function () {
 
@@ -62,6 +60,7 @@ describe('Service Story Task', function() {
     });*/
 
     describe('Suit Stories Tasks ', function () {
+        this.timeout(20000);
         
         beforeEach('Creating Pre Condition.....', function (done) {
             var prj = {
@@ -91,7 +90,7 @@ describe('Service Story Task', function() {
                                 .createTask(taskName, prjId, storyId, function(res) {
                                     expect(res.status).to.equal(200);
                                     taskId=res.body.id;
-                                    setTimeout(done(), 500);
+                                    done();
                                  
                                     
                                     
@@ -132,13 +131,14 @@ describe('Service Story Task', function() {
                 });
         });
 
-        it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function() {
+        it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
             //prj sto createtask delprj
 
             task
                 .editTask(taskEdited, prjId, storyId, taskId, function(res) {
                     console.log(res.status);
                     expect(res.status).to.equal(200);
+                    done();
                     
 
 
@@ -155,4 +155,3 @@ describe('Service Story Task', function() {
                 });
         });
     });
-});
