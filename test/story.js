@@ -26,13 +26,13 @@ describe('STORY of Project', function(){
 		tokenAPI
 			.getToken(userCredential, function(res){				
 				token = res.body;
-				console.log(token);
+				console.log('BEFORE: ',token);
 				expect(token.username).to.equal(userCredential.userAccount);
 				done();
 			});
 	});	
 
-	it.only('GET /projects/{project_id}/stories/{story_id}', function (done) {
+	it('GET /projects/{project_id}/stories/{story_id}', function (done) {
 		projectId = storyId = -1;
 		storyApi
 			.getStory(projectId, storyId, token.api_token, function(res){
@@ -57,5 +57,19 @@ describe('STORY of Project', function(){
 				expect(res.code).to.equal(config.codeStory);				
 				done();
 			});
+	});
+ //
+	it.only('GET /projects/{project_id}/stories/{story_id}/owners', function (done) {
+			projectId = storyId = -1;
+			storyApi
+				.getStoryOwner(projectId, storyId, token.api_token, function(res){
+					console.log('RESPONSE: '+res);
+					expect(res).to.equal(404);
+					done();
+				});
+	});
+
+	it('POST /projects/{project_id}/stories/{story_id}/owners', function (done) {
+		
 	});
 });

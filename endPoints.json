@@ -15,6 +15,7 @@
 	},
 
 	"story": {
-		"storyEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}"
+		"storyEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}",
+		"storyOwnersEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/owners"
 	}
 }
