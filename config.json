@@ -12,5 +12,5 @@
 	"timeout":10000,
 
 	"codeStories":"unfound_resource",
-	"codeStory":"route_not_found",
+	"codeStory":"route_not_found"
 }
