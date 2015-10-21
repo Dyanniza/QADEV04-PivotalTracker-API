@@ -8,6 +8,10 @@ var chance = new Chance();
 var project = require('../../lib/projectsAPI');
 var task = require('../../lib/taskAPI');
 var postStories = require('../../lib/postStoriesAPI');
+var getToken = require('../../lib/tokenAPI');
+var config = require('..\\..\\config.json');
+var userCredential = config.userCredential;
+var token = null;
 var prjId = -1;
 var storyId = -1;
 var taskId = -1;
@@ -15,10 +19,20 @@ var taskEdited ={
                 description : chance.sentence({words : 5})
             };
 
-    //this.timeout(20000);
-
-    /*describe('Suit of Story Task', function () {
-
+describe('Suit Stories Tasks', function () {
+    this.timeout(20000);
+    before('Get Token', function (done) {
+        getToken
+            .getToken(userCredential, function (res) {
+                expect(res.status).to.equal(200);
+                token = res.body.api_token;
+                done();
+                
+            });
+    });    
+        
+    describe('Suit of Story Task', function () {
+        this.timeout(10000);
         it('POST /projects/{project_id}/stories/{story_id}/tasks', function(done) {
         //prj sto delprj
                
@@ -32,7 +46,7 @@ var taskEdited ={
                 description: chance.string()
             };
             project
-            .createProject(prj, function(res) {
+            .createProject(prj, token, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
 
@@ -42,11 +56,11 @@ var taskEdited ={
                         storyId = res.body.id;
                         
                         task
-                            .createTask(taskName, prjId, storyId, function(res) {
+                            .createTask(taskName, prjId, storyId, token, function(res) {
                                 expect(res.status).to.equal(200);
 
                                 project
-                                    .deleteProject(prjId, function(res) {
+                                    .deleteProject(prjId, token, function(res) {
                                         expect(res.status).to.equal(204);
                                         prjId = -1;
                                         storyId = -1;
@@ -57,10 +71,10 @@ var taskEdited ={
             });
         });
         
-    });*/
+    });
 
     describe('Suit Stories Tasks ', function () {
-        this.timeout(20000);
+        this.timeout(30000);
         
         beforeEach('Creating Pre Condition.....', function (done) {
             var prj = {
@@ -77,7 +91,7 @@ var taskEdited ={
             };
 
             project
-                .createProject(prj, function(res1) {
+                .createProject(prj, token, function(res1) {
                     expect(res1.status).to.equal(200);
                     prjId = res1.body.id;
 
@@ -87,7 +101,7 @@ var taskEdited ={
                             storyId = res2.body.id;
                        
                             task
-                                .createTask(taskName, prjId, storyId, function(res3) {
+                                .createTask(taskName, prjId, storyId, token, function(res3) {
                                     expect(res3.status).to.equal(200);
                                     taskId=res3.body.id;
                                     done();
@@ -102,9 +116,8 @@ var taskEdited ={
         afterEach('Deleting project....', function (done) {
 
             project
-                .deleteProject(prjId, function(res) {
+                .deleteProject(prjId, token, function(res) {
                     expect(res.status).to.equal(204);
-                    console.log('++++++Project Deleted+++++++', res.status);
                     prjId = -1;
                     storyId = -1;
                     taskId = -1;
@@ -113,30 +126,31 @@ var taskEdited ={
                 });
         });
 
-        it('GET /projects/{project_id}/stories/{story_id}/tasks', function() {
+        it('GET /projects/{project_id}/stories/{story_id}/tasks', function(done) {
             
             task
-                .getTask(prjId, storyId, taskId, function(res) {
+                .getTask(prjId, storyId, taskId, token, function(res) {
                     expect(res.status).to.equal(200);
+                    done();
                 });
         });
 
     
 
-        it('GET /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function() {
-            //prj sto createtask delprj       
+        it('GET /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
+                   
             task
-                .getTask(prjId, storyId, taskId, function(res) {
+                .getTask(prjId, storyId, taskId, token, function(res) {
                     expect(res.status).to.equal(200);
+                    done();
                 });
         });
 
-        it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
-            //prj sto createtask delprj
+        it('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
+            
 
             task
-                .editTask(taskEdited, prjId, storyId, taskId, function(res) {
-                    console.log(res.status);
+                .editTask(taskEdited, prjId, storyId, taskId, token, function(res) {
                     expect(res.status).to.equal(200);
                     done();
                     
@@ -145,13 +159,15 @@ var taskEdited ={
                 });
         });
 
-        it('DELETE /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function() {
-            //prj sto createtask delprj       
+        it('DELETE /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
+                 
             task
-                .deleteTask(prjId, storyId, taskId, function(res) {
+                .deleteTask(prjId, storyId, taskId, token, function(res) {
                     expect(res.status).to.equal(204);
-                    console.log(res.status);
+                    done();
 
                 });
         });
     });
+
+});

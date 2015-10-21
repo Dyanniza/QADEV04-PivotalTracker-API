@@ -6,22 +6,33 @@ var Chance = require('chance');
 require('superagent-proxy')(request);
 var chance = new Chance();
 var project = require('../../lib/projectsAPI');
-
+var getToken = require('../../lib/tokenAPI');
+var config = require('..\\..\\config.json');
+var userCredential = config.userCredential;
+var token = null;
 var id = -1;
 
 
 describe('Smoke Test Pivotal Tracker', function() {
     this.timeout(100000);
+    before('Get Token', function (done) {
+        getToken
+            .getToken(userCredential, function (res) {
+                expect(res.status).to.equal(200);
+                token = res.body.api_token;
+                done();
+                
+            });
+    });
 
     describe('Service Projects', function() {
        
         beforeEach('Creating Projejct...', function (done) {
-            console.log('First--------');
             var prj1 = {
                 name: chance.string()
             };
             project
-                .createProject(prj1, function(res) {
+                .createProject(prj1, token, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
                     done();
@@ -32,9 +43,9 @@ describe('Smoke Test Pivotal Tracker', function() {
         });
 
         afterEach('Deleting Project....', function (done) {
-            console.log('Last--------');
+            
             project
-                .deleteProject(id, function(res) {
+                .deleteProject(id, token, function(res) {
                     expect(res.status).to.equal(204);
                     id = -1;
                     done();
@@ -46,7 +57,7 @@ describe('Smoke Test Pivotal Tracker', function() {
         it(' GET /projects', function(done) {
             
             project
-                .getProject(id, function(res) {
+                .getProject(id, token, function(res) {
                     expect(res.status).to.equal(200);
                     done();
                     
@@ -57,7 +68,7 @@ describe('Smoke Test Pivotal Tracker', function() {
            
                            
             project
-                .getProject(id, function(res) {
+                .getProject(id, token, function(res) {
                     expect(res.status).to.equal(200);
                     done();
 
@@ -75,7 +86,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             };
             
             project
-                .editProject(editprj, id, function(res) {
+                .editProject(editprj, id, token, function(res) {
                     expect(res.status).to.equal(200);
                     done();
                     
@@ -93,12 +104,12 @@ describe('Smoke Test Pivotal Tracker', function() {
                 name: chance.string()
             };
             project
-                .createProject(prj, function(res) {
+                .createProject(prj, token, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
 
                     project
-                        .deleteProject(id, function(res) {
+                        .deleteProject(id, token, function(res) {
                             expect(res.status).to.equal(204);
                             id = -1;
                             done();
@@ -106,18 +117,18 @@ describe('Smoke Test Pivotal Tracker', function() {
                 });
         });
 
-        it.only('POST /projects', function(done) {
+        it('POST /projects', function(done) {
            
             var prj = {
                 name: chance.string()
             };
             project
-                .createProject(prj, function(res) {
+                .createProject(prj, token, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
 
                     project
-                        .deleteProject(id, function(res) {
+                        .deleteProject(id, token, function(res) {
                             expect(res.status).to.equal(204);
                             id = -1;
                             done();
