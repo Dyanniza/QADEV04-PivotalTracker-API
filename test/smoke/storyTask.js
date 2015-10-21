@@ -15,9 +15,7 @@ var taskEdited ={
                 description : chance.sentence({words : 5})
             };
 
-describe('Service Story Task', function() {
-
-    this.timeout(20000);
+    //this.timeout(20000);
 
     /*describe('Suit of Story Task', function () {
 
@@ -62,6 +60,7 @@ describe('Service Story Task', function() {
     });*/
 
     describe('Suit Stories Tasks ', function () {
+        this.timeout(20000);
         
         beforeEach('Creating Pre Condition.....', function (done) {
             var prj = {
@@ -78,20 +77,20 @@ describe('Service Story Task', function() {
             };
 
             project
-                .createProject(prj, function(res) {
-                    expect(res.status).to.equal(200);
-                    prjId = res.body.id;
+                .createProject(prj, function(res1) {
+                    expect(res1.status).to.equal(200);
+                    prjId = res1.body.id;
 
                     postStories
-                        .createStories(story, prjId, function(res) {
-                            expect(res.status).to.equal(200);
-                            storyId = res.body.id;
+                        .createStories(story, prjId, function(res2) {
+                            expect(res2.status).to.equal(200);
+                            storyId = res2.body.id;
                        
                             task
-                                .createTask(taskName, prjId, storyId, function(res) {
-                                    expect(res.status).to.equal(200);
-                                    taskId=res.body.id;
-                                    setTimeout(done(), 500);
+                                .createTask(taskName, prjId, storyId, function(res3) {
+                                    expect(res3.status).to.equal(200);
+                                    taskId=res3.body.id;
+                                    done();
                                  
                                     
                                     
@@ -132,13 +131,14 @@ describe('Service Story Task', function() {
                 });
         });
 
-        it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function() {
+        it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
             //prj sto createtask delprj
 
             task
                 .editTask(taskEdited, prjId, storyId, taskId, function(res) {
                     console.log(res.status);
                     expect(res.status).to.equal(200);
+                    done();
                     
 
 
@@ -155,4 +155,3 @@ describe('Service Story Task', function() {
                 });
         });
     });
-});

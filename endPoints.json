@@ -1,7 +1,22 @@
 {
-	"projectsEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects",
-	"projectByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}",
-	"storiesTasksEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks",
-	"storiesTasksByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks\/{task_id}",
-	"me":"https:\/\/www.pivotaltracker.com\/services\/v5\/me"
+
+	"projects": {
+		"projectsEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects",
+		"projectByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}",
+		"storiesTasksEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks",
+		"storiesTasksByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks\/{task_id}"
+	},
+
+	"me": {
+		"meEndPoint":"https://www.pivotaltracker.com/services/v5/me"
+	},
+
+	"stories": {
+		"storiesEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories"
+	},
+
+	"story": {
+		"storyEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}",
+		"storyOwnersEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/owners"
+	}
 }

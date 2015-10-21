@@ -43,27 +43,32 @@ describe('Smoke Test Pivotal Tracker', function() {
             
         });
 
-        it(' GET /projects', function() {
+        it(' GET /projects', function(done) {
             
             project
                 .getProject(id, function(res) {
                     expect(res.status).to.equal(200);
+                    done();
                     
                 });
         });
 
-        it('GET /projects/{project_id}', function() {
+        it('GET /projects/{project_id}', function(done) {
            
                            
             project
                 .getProject(id, function(res) {
                     expect(res.status).to.equal(200);
+                    done();
 
                 });
         });
     
 
-        it.only('PUT /projects/{project_id}', function(done) {
+
+
+        it('PUT /projects/{project_id}', function(done) {
+
            
             var editprj = {
                 name: chance.string()
@@ -101,7 +106,7 @@ describe('Smoke Test Pivotal Tracker', function() {
                 });
         });
 
-        it('POST /projects', function(done) {
+        it.only('POST /projects', function(done) {
            
             var prj = {
                 name: chance.string()
