@@ -1,11 +1,14 @@
-//Smoke test for labels
-//Author: Cecilia Chalar
-
-///projects/{project_id}/labels
+/*
+@author Cecilia Chalar
+@class SMOKE Tests for Services of Labels.
+ */
 
 var expect = require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
+var label = require('../../lib/labelsAPI');
+
+var projectId = '1447838';
 
 
 
@@ -30,25 +33,16 @@ describe('Smoke test for labels',function(){
 
 		it('POST /projects/{project_id}/labels',function(done){
 			var content = {
-					name : 'labe'											
+					name : 'labooo'											
 				};
+			label
+				.postLabel(projectId,content,function(res){
+					expect(res.status).to.equal(200);
+					done();
 
-			request
-				.post('https://www.pivotaltracker.com/services/v5/projects/1447838/labels')
-				.proxy('http://172.20.240.5:8080')
-				
-				.set('X-TrackerToken','d302f357ddd835b319b50bb8c2ea4e69')
-				.type('application/json')
-				.send(content)
-
-			.end(function(err,res){
-				expect(res.status).to.equal(200);
-				done();
-				});
-
+				});			
 
 		});
-
 	});
 
 
@@ -97,7 +91,7 @@ describe('Smoke test for labels',function(){
 			.proxy('http://172.20.240.5:8080')
 			.send(content)
 			.set('X-TrackerToken','d302f357ddd835b319b50bb8c2ea4e69')
-			//.type('application/json')
+			.type('application/json')
 
 		.end(function(err,res){
 			expect(res.status).to.equal(200);
@@ -106,7 +100,7 @@ describe('Smoke test for labels',function(){
 
 	});
 
-	it('POST /projects/{project_id}/stories/{story_id}/labels',function(done){
+	it.skip('POST /projects/{project_id}/stories/{story_id}/labels',function(done){
 		var content = {
 
 				name : 'post3'
@@ -118,7 +112,7 @@ describe('Smoke test for labels',function(){
 			.proxy('http://172.20.240.5:8080')
 			.send(content)
 			.set('X-TrackerToken','d302f357ddd835b319b50bb8c2ea4e69')
-			//.type('application/json')
+			.type('application/json')
 
 		.end(function(err,res){
 			expect(res.status).to.equal(200);
@@ -154,7 +148,7 @@ describe('Smoke test for labels',function(){
 			.del('https://www.pivotaltracker.com/services/v5/projects/1447838/labels/13076852')
 			.proxy('http://172.20.240.5:8080')
 			.set('X-TrackerToken','d302f357ddd835b319b50bb8c2ea4e69')
-			//.set('Content-Type', 'application/json')
+			.set('Content-Type', 'application/json')
 			.type('application/json')
 		.end(function(err,res){
 			expect(res.status).to.equal(204);
@@ -168,7 +162,7 @@ describe('Smoke test for labels',function(){
 			.del('https://www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/labels/{label_id}')
 			.proxy('http://172.20.240.5:8080')
 			.set('X-TrackerToken','d302f357ddd835b319b50bb8c2ea4e69')
-			//.set('Content-Type', 'application/json')
+			.set('Content-Type', 'application/json')
 			.type('application/json')
 		.end(function(err,res){
 			expect(res.status).to.equal(200);
