@@ -16,12 +16,12 @@ describe('Smoke Test Pivotal Tracker', function() {
     describe('Service Projects', function() {
        
         beforeEach('Creating Projejct...', function (done) {
-
-            var prj = {
+            console.log('First--------');
+            var prj1 = {
                 name: chance.string()
             };
             project
-                .createProject(prj, function(res) {
+                .createProject(prj1, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
                     done();
@@ -32,12 +32,12 @@ describe('Smoke Test Pivotal Tracker', function() {
         });
 
         afterEach('Deleting Project....', function (done) {
-            
+            console.log('Last--------');
             project
                 .deleteProject(id, function(res) {
                     expect(res.status).to.equal(204);
                     id = -1;
-                    setTimeout(done, 200);
+                    done();
                     
                 });
             
@@ -54,10 +54,7 @@ describe('Smoke Test Pivotal Tracker', function() {
 
         it('GET /projects/{project_id}', function() {
            
-            var prj = {
-                name: chance.string()
-            };
-                
+                           
             project
                 .getProject(id, function(res) {
                     expect(res.status).to.equal(200);
@@ -66,11 +63,8 @@ describe('Smoke Test Pivotal Tracker', function() {
         });
     
 
-        it('PUT /projects/{project_id}', function() {
+        it.only('PUT /projects/{project_id}', function(done) {
            
-            var prj = {
-                name: chance.string()
-            };
             var editprj = {
                 name: chance.string()
             };
@@ -78,6 +72,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             project
                 .editProject(editprj, id, function(res) {
                     expect(res.status).to.equal(200);
+                    done();
                     
                 });
         });
