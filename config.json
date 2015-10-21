@@ -4,8 +4,10 @@
 	"userAccount":"penield",
 	"userPassword":"Control123"
 	},
+
 	"proxy":"http://172.20.240.5:8080",
 	"json":"application/json",
 	"tokenHeader":"X-TrackerToken",
-	"timeout":10000
+	"timeout": 10000
+
 }

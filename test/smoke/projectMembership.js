@@ -1,26 +1,25 @@
 /**
-Smoke testing for Iteration Services
+Smoke testing for ProjectMembership Services
 Created By Damian Villanueva 
 **/
 var request = require('superagent');
 require('superagent-proxy')(request);
-
 var expect = require('chai').expect;
 var tokenAPI = require('../../lib/tokenAPI');
-var iterationAPI = require('../../lib/iterationAPI');
+var projectMembershipAPI = require('../../lib/projectMembershipAPI');
 var projectsAPI = require('../../lib/projectsAPI');
 var config = require('../../config.json');
+var iterationAPI = require('../../lib/iterationAPI');
 
-describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
+describe('Project Membership Service, Smoke Testing', function() {
     this.timeout(10000);
-
     var userCredential = config.userCredential;
     var token = null;
     var projectId = null;
 
     before('Getting the token', function(done) {
         tokenAPI
-            .getTrackerToken(userCredential, function(res) {
+            .getToken(userCredential, function(res) {
                 token = res.body;
                 expect(token.username).to.equal(userCredential.userAccount);
                 done();
@@ -29,7 +28,7 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
 
     beforeEach('Creating a project base', function(done) {
         var prj = {
-            name: 'projectTest121'
+            name: 'projectdsfdsfsfdsfTestdsf121'
         };
         projectsAPI
             .createProject(prj, token.api_token, function(res) {
@@ -49,20 +48,20 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
             });
     });
 
-    it('GET/projects/{project_id}/iterations', function(done) {
-        iterationAPI
-            .projectIteration(projectId, token.api_token, function(iteration) {
-                expect(iteration.status).to.equal(200);
+    it('POST/projects/{project_id}/memberships', function(done) {
+        var service = 'memberships';
+        projectMembershipAPI
+            .post(projectId, service, token.api_token, function(projectMS) {
+                expect(projectMS.status).to.equal(200);
                 done();
             });
     });
 
-    it('PUT /projects/{project_id}/iteration_overrides/{iteration_number}', function(done) {
-        var service = 'iteration_overrides';
-        var iterationNumber = 1;
-        iterationAPI
-            .putIteration(projectId, iterationNumber, token.api_token, function(iteration) {
-                expect(iteration).to.equal(200);
+    it.only('GET/projects/{project_id}/memberships', function(done) {
+        var service = 'memberships';
+        projectMembershipAPI
+            .get(projectId, service, token.api_token, function(projectMS) {
+                expect(projectMS.status).to.equal(200);
                 done();
             });
     });
