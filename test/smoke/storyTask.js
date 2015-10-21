@@ -77,19 +77,19 @@ var taskEdited ={
             };
 
             project
-                .createProject(prj, function(res) {
-                    expect(res.status).to.equal(200);
-                    prjId = res.body.id;
+                .createProject(prj, function(res1) {
+                    expect(res1.status).to.equal(200);
+                    prjId = res1.body.id;
 
                     postStories
-                        .createStories(story, prjId, function(res) {
-                            expect(res.status).to.equal(200);
-                            storyId = res.body.id;
+                        .createStories(story, prjId, function(res2) {
+                            expect(res2.status).to.equal(200);
+                            storyId = res2.body.id;
                        
                             task
-                                .createTask(taskName, prjId, storyId, function(res) {
-                                    expect(res.status).to.equal(200);
-                                    taskId=res.body.id;
+                                .createTask(taskName, prjId, storyId, function(res3) {
+                                    expect(res3.status).to.equal(200);
+                                    taskId=res3.body.id;
                                     done();
                                  
                                     
