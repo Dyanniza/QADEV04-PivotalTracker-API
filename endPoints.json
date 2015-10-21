@@ -1,6 +1,16 @@
 {
-	"projectsEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects",
-	"projectByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}",
-	"storiesTasksEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks",
-	"storiesTasksByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks\/{task_id}"
+	"projects":{
+		"projectsEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects",
+		"projectByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}"
+	},
+	"tasks":{
+		"storiesTasksEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks",
+		"storiesTasksByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks\/{task_id}"
+	},
+	"iteration":{
+		"iterationtokenEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iterations",
+		"iterationtokenEndPoint2":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iteration_overrides\/{iteration_number}"
+		
+	}
+
 }
