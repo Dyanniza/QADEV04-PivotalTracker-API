@@ -2,5 +2,6 @@
 	"projectsEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects",
 	"projectByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}",
 	"storiesTasksEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks",
-	"storiesTasksByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks\/{task_id}"
+	"storiesTasksByIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/tasks\/{task_id}",
+	"me":"https:\/\/www.pivotaltracker.com\/services\/v5\/me"
 }

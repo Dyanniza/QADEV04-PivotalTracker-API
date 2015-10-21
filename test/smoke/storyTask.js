@@ -6,72 +6,34 @@ require('superagent-proxy')(request);
 var Chance = require('chance');
 var chance = new Chance();
 var project = require('../../lib/projectsAPI');
-var task = require('../../lib/deleteTaskAPI');
+var task = require('../../lib/taskAPI');
 var postStories = require('../../lib/postStoriesAPI');
-
+var prjId = -1;
+var storyId = -1;
+var taskId = -1;
+var taskEdited ={
+                description : chance.sentence({words : 5})
+            };
 
 describe('Service Story Task', function() {
 
-    this.timeout(10000);
+    this.timeout(20000);
 
-    it('GET /projects/{project_id}/stories/{story_id}/tasks', function(done) {
-        var prjId = -1;
-        var storyId = -1;
-        var taskId = -1;
-        var prj = {
-            name: chance.string()
-        };
-        var story = {
-            name: chance.string()
-        };
-        var taskName = {
-            description: chance.sentence({words: 5})
-        };
-        project
-            .createProject(prj, function(res) {
-                expect(res.status).to.equal(200);
-                prjId = res.body.id;
+    /*describe('Suit of Story Task', function () {
 
-                postStories
-                    .createStories(story, prjId, function(res) {
-                        expect(res.status).to.equal(200);
-                        storyId = res.body.id;
-                       
-                        task
-                            .createTask(taskName, prjId, storyId, function(res) {
-                                expect(res.status).to.equal(200);
-                                taskId=res.body.id;
-                                console.log(taskId);
-
-                                task
-                                    .getTask(prjId, storyId, taskId, function(res) {
-                                        expect(res.status).to.equal(200);
-
-                                        project
-                                            .deleteProject(prjId, function(res) {
-                                                expect(res.status).to.equal(204);
-                                                done();
-                                            });
-                                    });
-                            });
-                    });
-            });
-    });
-
-    it('POST /projects/{project_id}/stories/{story_id}/tasks', function(done) {
-
-        var prjId = -1;
-        var storyId = -1;
-        var prj = {
-            name: chance.string()
-        };
-        var story = {
-            name: chance.string()
-        };
-        var taskName = {
-            description: chance.string()
-        };
-        project
+        it('POST /projects/{project_id}/stories/{story_id}/tasks', function(done) {
+        //prj sto delprj
+               
+            var prj = {
+                name: chance.string()
+            };
+            var story = {
+                name: chance.string()
+            };
+            var taskName = {
+                description: chance.string()
+            };
+            project
             .createProject(prj, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
@@ -88,145 +50,109 @@ describe('Service Story Task', function() {
                                 project
                                     .deleteProject(prjId, function(res) {
                                         expect(res.status).to.equal(204);
+                                        prjId = -1;
+                                        storyId = -1;
                                         done();
                                     });
                             });
                     });
             });
-    });
+        });
+        
+    });*/
 
-    it('GET /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
-        var prjId = -1;
-        var storyId = -1;
-        var taskId = -1
-        var prj = {
+    describe('Suit Stories Tasks ', function () {
+        
+        beforeEach('Creating Pre Condition.....', function (done) {
+            var prj = {
             name: chance.string()
-        };
-        var story = {
-            name: chance.string()
-        };
-        var taskName = {
-            description: chance.string()
-        };
-        project
-            .createProject(prj, function(res) {
-                expect(res.status).to.equal(200);
-                prjId = res.body.id;
+            };
+            var story = {
+                name: chance.string()
+            };
+            var taskName = {
+                description: chance.sentence({words: 5})
+            };
+            taskEdited ={
+                description : chance.sentence({words : 5})
+            };
 
-                postStories
-                    .createStories(story, prjId, function(res) {
-                        expect(res.status).to.equal(200);
-                        storyId = res.body.id;
+            project
+                .createProject(prj, function(res) {
+                    expect(res.status).to.equal(200);
+                    prjId = res.body.id;
 
-                        task
-                            .createTask(taskName, prjId, storyId, function(res) {
-                                taskId = res.body.id;
-                                expect(res.status).to.equal(200);
+                    postStories
+                        .createStories(story, prjId, function(res) {
+                            expect(res.status).to.equal(200);
+                            storyId = res.body.id;
+                       
+                            task
+                                .createTask(taskName, prjId, storyId, function(res) {
+                                    expect(res.status).to.equal(200);
+                                    taskId=res.body.id;
+                                    setTimeout(done(), 500);
+                                 
+                                    
+                                    
+                                });
+                        });
+                });
+        });
 
-                                task
-                                    .getTask(prjId, storyId, taskId, function(res) {
-                                        expect(res.status).to.equal(200);
+        afterEach('Deleting project....', function (done) {
 
-                                        delProject
-                                            .deleteProject(prjId, function(res) {
-                                                expect(res.status).to.equal(204);
-                                                done();
-                                            });
-                                    });
-                            });
-                    });
-            });
-    });
+            project
+                .deleteProject(prjId, function(res) {
+                    expect(res.status).to.equal(204);
+                    console.log('++++++Project Deleted+++++++', res.status);
+                    prjId = -1;
+                    storyId = -1;
+                    taskId = -1;
+                    done();
+                    
+                });
+        });
 
-    it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
-        var prjId = -1;
-        var storyId = -1;
-        var taskId = -1
-        var prj = {
-            name: chance.string()
-        };
-        var story = {
-            name: chance.string()
-        };
-        var taskName = {
-            description: chance.string()
-        };
-        var taskEdited = {
-            description: chance.string()
-        };
-        project
-            .createProject(prj, function(res) {
-                expect(res.status).to.equal(200);
-                prjId = res.body.id;
+        it('GET /projects/{project_id}/stories/{story_id}/tasks', function() {
+            
+            task
+                .getTask(prjId, storyId, taskId, function(res) {
+                    expect(res.status).to.equal(200);
+                });
+        });
 
-                postStories
-                    .createStories(story, prjId, function(res) {
-                        expect(res.status).to.equal(200);
-                        storyId = res.body.id;
+    
 
-                        task
-                            .createTask(taskName, prjId, storyId, function(res) {
-                                taskId = res.body.id;
-                                expect(res.status).to.equal(200);
+        it('GET /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function() {
+            //prj sto createtask delprj       
+            task
+                .getTask(prjId, storyId, taskId, function(res) {
+                    expect(res.status).to.equal(200);
+                });
+        });
 
-                                task
-                                    .editTask(taskEdited, prjId, storyId, taskId, function(res) {
-                                        expect(res.status).to.equal(200);
+        it.only('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function() {
+            //prj sto createtask delprj
 
-                                        project
-                                            .deleteProject(prjId, function(res) {
-                                                expect(res.status).to.equal(204);
-                                                done();
+            task
+                .editTask(taskEdited, prjId, storyId, taskId, function(res) {
+                    console.log(res.status);
+                    expect(res.status).to.equal(200);
+                    
 
-                                            });
-                                    });
-                            });
-                    });
-            });
-    });
 
-    it('DELETE /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
-        var prjId = -1;
-        var storyId = -1;
-        var taskId = -1
-        var prj = {
-            name: chance.string()
-        };
-        var story = {
-            name: chance.string()
-        };
-        var taskName = {
-            description: chance.string()
-        };
+                });
+        });
 
-        project
-            .createProject(prj, function(res) {
-                expect(res.status).to.equal(200);
-                prjId = res.body.id;
+        it('DELETE /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function() {
+            //prj sto createtask delprj       
+            task
+                .deleteTask(prjId, storyId, taskId, function(res) {
+                    expect(res.status).to.equal(204);
+                    console.log(res.status);
 
-                postStories
-                    .createStories(story, prjId, function(res) {
-                        expect(res.status).to.equal(200);
-                        storyId = res.body.id;
-
-                        task
-                            .createTask(taskName, prjId, storyId, function(res) {
-                                taskId = res.body.id;
-                                expect(res.status).to.equal(200);
-
-                                task
-                                    .deleteTask(prjId, storyId, taskId, function(res) {
-                                        expect(res.status).to.equal(204);
-
-                                        project
-                                            .deleteProject(prjId, function(res) {
-                                                expect(res.status).to.equal(204);
-                                                done();
-
-                                            });
-                                    });
-                            });
-                    });
-            });
+                });
+        });
     });
 });
