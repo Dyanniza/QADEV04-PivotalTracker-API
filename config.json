@@ -1,18 +1,17 @@
 {
-
-
-	"userCredential":{
-			"userAccount":"jorgeavila3",
-			"userPassword":"Control123"
-
+	"userCredential": {
+		"userAccount":"jorgeavila3",
+		"userPassword":"Control123"
 	},
-
+	"userCredential2": {
+		"email":"jorge.avila@fundacion-jala.org",
+		"userAccount":"jorgeavila2",
+		"userPassword":"Control123"
+	},
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
 	"type":"Content-Type",
 	"json":"application/json",
 	"timeout": 10000,
-	"email":"Jhasmany.Quiroz@fundacion-jala.org",
 	"role":"member"
-
 }
