@@ -1,5 +1,9 @@
-// Service Story tasks
-/*Author Ronald Butron Salvatierra*/
+/*
+@ Author Ronald Butron
+@ Story Tasks Test
+ */
+
+
 var expect = require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
@@ -7,7 +11,7 @@ var Chance = require('chance');
 var chance = new Chance();
 var project = require('../../lib/projectsAPI');
 var task = require('../../lib/taskAPI');
-var postStories = require('../../lib/postStoriesAPI');
+var stories = require('../../lib/storiesApi');
 var getToken = require('../../lib/tokenAPI');
 var config = require('..\\..\\config.json');
 var userCredential = config.userCredential;
@@ -32,9 +36,9 @@ describe('Suit Stories Tasks', function () {
     });    
         
     describe('Suit of Story Task', function () {
-        this.timeout(10000);
+        
         it('POST /projects/{project_id}/stories/{story_id}/tasks', function(done) {
-        //prj sto delprj
+        
                
             var prj = {
                 name: chance.string()
@@ -42,19 +46,22 @@ describe('Suit Stories Tasks', function () {
             var story = {
                 name: chance.string()
             };
+
             var taskName = {
-                description: chance.string()
+
+                description : chance.sentence({words: 5})
+
             };
+            
             project
             .createProject(prj, token, function(res) {
                 expect(res.status).to.equal(200);
                 prjId = res.body.id;
 
-                postStories
-                    .createStories(story, prjId, function(res) {
-                        expect(res.status).to.equal(200);
-                        storyId = res.body.id;
-                        
+                stories
+                    .postStories(prjId, token, function(res) {
+                        storyId = res.id;
+                                                
                         task
                             .createTask(taskName, prjId, storyId, token, function(res) {
                                 expect(res.status).to.equal(200);
@@ -74,7 +81,7 @@ describe('Suit Stories Tasks', function () {
     });
 
     describe('Suit Stories Tasks ', function () {
-        this.timeout(30000);
+        
         
         beforeEach('Creating Pre Condition.....', function (done) {
             var prj = {
@@ -95,10 +102,9 @@ describe('Suit Stories Tasks', function () {
                     expect(res1.status).to.equal(200);
                     prjId = res1.body.id;
 
-                    postStories
-                        .createStories(story, prjId, function(res2) {
-                            expect(res2.status).to.equal(200);
-                            storyId = res2.body.id;
+                    stories
+                        .postStories(prjId, token, function(res2) {
+                            storyId = res2.id;
                        
                             task
                                 .createTask(taskName, prjId, storyId, token, function(res3) {

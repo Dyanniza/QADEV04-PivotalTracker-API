@@ -18,5 +18,9 @@
 	"story": {
 		"storyEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}",
 		"storyOwnersEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/owners"
+	},
+	"iteration": {
+		"iterationtokenEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iterations",
+		"iterationtokenEndPoint2" : "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iteration_overrides\/{iteration_number}"	
 	}
 }
