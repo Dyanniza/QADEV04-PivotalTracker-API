@@ -22,5 +22,10 @@
 	"iteration": {
 		"iterationtokenEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iterations",
 		"iterationtokenEndPoint2" : "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iteration_overrides\/{iteration_number}"	
+	},
+	"projectMembership": {
+		"prjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships",
+		"operationPrjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships\/{membership_id}"
+		
 	}
 }

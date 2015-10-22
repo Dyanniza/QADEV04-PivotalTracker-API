@@ -2,7 +2,7 @@
 
 
 	"userCredential":{
-			"userAccount":"ronald.butron@fundacion-jala.org",		
+			"userAccount":"jorgeavila3",
 			"userPassword":"Control123"
 
 	},
@@ -11,7 +11,8 @@
 	"tokenHeader":"X-TrackerToken",
 	"type":"Content-Type",
 	"json":"application/json",
-	"tokenHeader":"X-TrackerToken",
-	"timeout": 10000
+	"timeout": 10000,
+	"email":"Jhasmany.Quiroz@fundacion-jala.org",
+	"role":"member"
 
 }
