@@ -17,6 +17,8 @@
 
 	"story": {
 		"storyEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}",
-		"storyOwnersEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/owners"
+		"storyOwnersEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/owners",
+		"storyOwnerIdEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/owners/{person_id}",
+		"storyIdEndPoint":"https:\/\/www.pivotaltracker.com/services/v5/stories/{story_id}"
 	}
 }
