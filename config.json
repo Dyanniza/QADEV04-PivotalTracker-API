@@ -1,10 +1,12 @@
 {
 
+
 	"userCredential":{
 			"userAccount":"ronald.butron@fundacion-jala.org",		
 			"userPassword":"Control123"
 
 	},
+
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
 	"type":"Content-Type",
