@@ -1,18 +1,17 @@
-/*
-@ Author Ronald Butron
-@ Projects Tests
- */
+//Projects 1.0
+
 var expect = require('chai').expect;
-var request = require('superagent');
 var Chance = require('chance');
-require('superagent-proxy')(request);
 var chance = new Chance();
-var project = require('../../lib/projectsAPI');
+var project = require('../../lib/generalLib');
 var getToken = require('../../lib/tokenAPI');
 var config = require('..\\..\\config.json');
+var endPoints = require('..\\..\\endPoints.json');
 var userCredential = config.userCredential;
+var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
+var projectsEndPoint = endPoints.projects.projectsEndPoint;
 var token = null;
-var id = -1;
+var id = null;
 
 
 describe('Smoke Test Pivotal Tracker', function() {
@@ -30,11 +29,11 @@ describe('Smoke Test Pivotal Tracker', function() {
     describe('Service Projects', function() {
        
         beforeEach('Creating Projejct...', function (done) {
-            var prj1 = {
-                name: chance.string()
+            var argument = {
+                name: chance.string(), initial_velocity : 5
             };
             project
-                .createProject(prj1, token, function(res) {
+                .post(argument, token, projectsEndPoint, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
                     done();
@@ -45,11 +44,11 @@ describe('Smoke Test Pivotal Tracker', function() {
         });
 
         afterEach('Deleting Project....', function (done) {
-            
+        	var endPoint = projectByIdEndPoint.replace('{project_id}', id)  
             project
-                .deleteProject(id, token, function(res) {
+                .del(token, endPoint, function(res) {
                     expect(res.status).to.equal(204);
-                    id = -1;
+                    id = null;
                     done();
                     
                 });
@@ -59,7 +58,7 @@ describe('Smoke Test Pivotal Tracker', function() {
         it(' GET /projects', function(done) {
             
             project
-                .getProject(id, token, function(res) {
+                .get(token, projectsEndPoint, function(res) {
                     expect(res.status).to.equal(200);
                     done();
                     
@@ -67,79 +66,58 @@ describe('Smoke Test Pivotal Tracker', function() {
         });
 
         it('GET /projects/{project_id}', function(done) {
-           
+           var endPoint = projectByIdEndPoint.replace('{project_id}', id);
                            
             project
-                .getProject(id, token, function(res) {
+                .get(token, endPoint, function(res) {
                     expect(res.status).to.equal(200);
                     done();
 
                 });
         });
     
-
-
-
         it('PUT /projects/{project_id}', function(done) {
-
-           
-            var editprj = {
+        	var endPoint = projectByIdEndPoint.replace('{project_id}', id);
+           var argument = {
                 name: chance.string()
             };
             
             project
-                .editProject(editprj, id, token, function(res) {
+                .put(argument, token, endPoint, function(res) {
                     expect(res.status).to.equal(200);
                     done();
                     
                 });
         });
-
-        
-    });
+     
+    }); 
 
     describe('Delete and Post methods', function() {
 
-        it('DELETE /projects/{project_id}', function(done) {
-            
-            var prj = {
-                name: chance.string()
-            };
-            project
-                .createProject(prj, token, function(res) {
-                    expect(res.status).to.equal(200);
-                    id = res.body.id;
-
-                    project
-                        .deleteProject(id, token, function(res) {
-                            expect(res.status).to.equal(204);
-                            id = -1;
-                            done();
-                        });
-                });
-        });
-
         it('POST /projects', function(done) {
-           
-            var prj = {
-                name: chance.string()
+            
+            var argument = {
+                name: chance.string(), initial_velocity : 5
             };
             project
-                .createProject(prj, token, function(res) {
+                .post(argument, token, projectsEndPoint, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
-
-                    project
-                        .deleteProject(id, token, function(res) {
-                            expect(res.status).to.equal(204);
-                            id = -1;
-                            done();
-                        });
-
+                    done();
+                       
                 });
         });
 
-    });
+        it('DELETE /projects/{project_id}', function(done) {
+           
+            endPoint = projectByIdEndPoint.replace('{project_id}', id);
+            project
+            	.del(token, endPoint, function(res) {
+                	expect(res.status).to.equal(204);
+                	id = null;
+                	done();
+            	});
+	    });
 
-
+    }); 
 });
