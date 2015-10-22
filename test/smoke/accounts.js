@@ -7,11 +7,15 @@ var request = require('superagent');
 require('superagent-proxy')(request);
 
 var expect = require('chai').expect;
-var tokenAPI = require('../lib/tokenAPI');
-var accountsAPI = require('../lib/accountsAPI');
-var accountIds = require('../utils/accountIds');
-var personIds = require('../utils/personIds');
+var accountsAPI = require('../../lib/accountsAPI');
+var accountIds = require('../../utils/accountIds');
+var personIds = require('../../utils/personIds');
 
+/**
+ * [description]
+ * @param  {Object} ) {	this.timeout(10000);	var userTokenCredential [description]
+ * @return {[type]}   [description]
+ */
 describe('Smoke Testing over pivotaltracker Accounts', function() {
 	this.timeout(10000);
 	var userTokenCredential = {
@@ -25,7 +29,6 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 			
@@ -37,7 +40,6 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 			
@@ -49,7 +51,6 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 	});
@@ -60,7 +61,6 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 	});
@@ -71,14 +71,13 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 	});
 
 	it('POST /accounts/{accountId}/memberships returns 200',function(done) {
 		var ids = {
-			accountId : accountIds.account2,
+			accountId : accountIds.account1,
 			personId : personIds.person2
 		};
 		accountsAPI
@@ -86,7 +85,6 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 	});
@@ -101,14 +99,13 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 	});
 
 	it('PUT /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
 		var values = {
-			accountId : accountIds.account2,
+			accountId : accountIds.account1,
 			personId : personIds.person2,
 			project_creator : true
 		};
@@ -117,12 +114,11 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 200;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 	});
 
-	it('DELETE /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
+	it.only('DELETE /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
 		var values = {
 			accountId : accountIds.account1,
 			personId : personIds.person2
@@ -132,7 +128,6 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 				var expectedStatus = 204;
 				var actualStatus = res.status;
 				expect(expectedStatus).to.equal(actualStatus);
-				//many other assertions
 				done();
 			});
 	});
