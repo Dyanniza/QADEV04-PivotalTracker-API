@@ -29,5 +29,9 @@
 		"accountSummariesEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5/account_summaries",
 		"accountMembershipsEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/accounts\/{account_id}\/memberships",
 		"accountMembershipEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/accounts\/{account_id}\/memberships\/{person_id}"
+	},
+	"projectMembership": {
+		"prjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships",
+		"operationPrjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships\/{membership_id}"
 	}
 }
