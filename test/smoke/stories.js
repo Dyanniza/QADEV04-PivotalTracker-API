@@ -7,9 +7,9 @@ var expect =  require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
 
-var config = require('../config');
-var tokenAPI = require('../lib/tokenAPI');
-var storiesApi = require('../lib/storiesApi');
+var config = require('../../config');
+var tokenAPI = require('../../lib/tokenAPI');
+var storiesApi = require('../../lib/storiesApi');
 
 
 /**

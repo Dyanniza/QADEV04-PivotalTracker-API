@@ -8,11 +8,11 @@ var request = require('superagent');
 require('superagent-proxy')(request);
 var Chance = require('chance');
 
-var config = require('../config');
-var tokenAPI = require('../lib/tokenAPI');
-var project = require('../lib/projectsAPI');
-var postStories = require('../lib/postStoriesAPI');
-var storyApi = require('../lib/storyApi');
+var config = require('../../config');
+var tokenAPI = require('../../lib/tokenAPI');
+var project = require('../../lib/projectsAPI');
+var postStories = require('../../lib/postStoriesAPI');
+var storyApi = require('../../lib/storyApi');
 
 /**
  * @param  Test to Service's Story
