@@ -1,4 +1,7 @@
-//Projects 1.0
+/*
+@ Author Ronald Butron
+@ Story Tasks Test
+ */
 
 var expect = require('chai').expect;
 var Chance = require('chance');
