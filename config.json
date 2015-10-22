@@ -1,8 +1,13 @@
 {
-	"userCredential":
+	"userCredential1":
 	{
-	"userAccount":"penield",
-	"userPassword":"Control123"
+		"userAccount":"jorgeavila3",
+		"userPassword":"Control123"
+	},
+	"userCredential2":
+	{
+		"userAccount":"jorgeavila2",
+		"userPassword":"L0b3vu5z"
 	},
 
 	"proxy":"http://172.20.240.5:8080",
