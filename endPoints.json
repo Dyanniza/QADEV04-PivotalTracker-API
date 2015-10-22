@@ -29,12 +29,13 @@
 		"labelsOfProjectEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/1447838\/labels?date_format=millis",
 
 		"labelsProjectEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/labels",
-		"labelsByStoyIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/labels"		
+		"labelsByStoryIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/labels"		
 	},
 	"label": {
 		
 		"storiesEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories",
-		"labelByIdProjectIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\//projects\/{project_id}\/labels\/{label_id}"		
+		"labelByIdProjectIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\//projects\/{project_id}\/labels\/{label_id}",		
+		"labelIdStoryIdProjectIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\//projects\/{project_id}\/stories\/{story_id}\/labels\/{label_id}"	
 				
 	}	
 
