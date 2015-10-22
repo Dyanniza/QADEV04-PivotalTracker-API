@@ -1,20 +1,19 @@
 /**
-Smoke testing for Iteration Services
+Smoke testing for ProjectMembership Services
 Created By Damian Villanueva 
 **/
 var request = require('superagent');
 require('superagent-proxy')(request);
-
 var expect = require('chai').expect;
 var tokenAPI = require('../../lib/tokenAPI');
-var iterationAPI = require('../../lib/iterationAPI');
+var projectMembershipAPI = require('../../lib/projectMembershipAPI');
 var projectsAPI = require('../../lib/projectsAPI');
 var config = require('../../config.json');
+var iterationAPI = require('../../lib/iterationAPI');
 
-describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
+describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function(){
     this.timeout(10000);
-
-    var userCredential = config.userCredential;
+    var userCredential=config.userCredential;
     var token = null;
     var projectId = null;
 
@@ -48,21 +47,35 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
                 done();
             });
     });
-
-    it('GET/projects/{project_id}/iterations', function(done) {
-        iterationAPI
-            .projectIteration(projectId, token.api_token, function(iteration) {
-                expect(iteration.status).to.equal(200);
+    beforeEach('Add a MemberShip in the project',function(done){
+        var service='memberships';
+        projectMembershipAPI
+            .post(projectId,token.api_token,function(res){
+                expect(res.status).to.equal(200);
+                this.memberId=res.body.id;
+                //console.log('sdsdsad', memberId);
                 done();
             });
     });
-
-    it('PUT /projects/{project_id}/iteration_overrides/{iteration_number}', function(done) {
-        var service = 'iteration_overrides';
-        var iterationNumber = 1;
-        iterationAPI
-            .putIteration(projectId, iterationNumber, token.api_token, function(iteration) {
-                expect(iteration).to.equal(200);
+    
+    it('GET/projects/{project_id}/memberships/{membership_id}',function(done) {
+        projectMembershipAPI
+            .getMember(projectId,memberId,token.api_token,function(projectMS){
+                expect(projectMS.status).to.equal(200);
+                done();
+            });
+    });
+    it('PUT/projects/{project_id}/memberships/{membership_id}',function(done) {
+        projectMembershipAPI
+            .put(projectId,memberId,token.api_token,function(projectMS){
+                expect(projectMS.status).to.equal(200);
+                done();
+            });
+    });
+    it('DELETE/projects/{project_id}/memberships/{membership_id}',function(done) {
+        projectMembershipAPI
+            .del(projectId,memberId,token.api_token,function(projectMS){
+                expect(projectMS.status).to.equal(204);
                 done();
             });
     });

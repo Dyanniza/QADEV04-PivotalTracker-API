@@ -51,16 +51,17 @@ describe('Project Membership Service, Smoke Testing', function() {
     it('POST/projects/{project_id}/memberships', function(done) {
         var service = 'memberships';
         projectMembershipAPI
-            .post(projectId, service, token.api_token, function(projectMS) {
+            .post(projectId, token.api_token, function(projectMS) {
                 expect(projectMS.status).to.equal(200);
                 done();
             });
     });
 
-    it.only('GET/projects/{project_id}/memberships', function(done) {
+    it('GET/projects/{project_id}/memberships', function(done) {
         var service = 'memberships';
+        console.log(token.api_token);
         projectMembershipAPI
-            .get(projectId, service, token.api_token, function(projectMS) {
+            .get(projectId, token.api_token, function(projectMS) {
                 expect(projectMS.status).to.equal(200);
                 done();
             });
