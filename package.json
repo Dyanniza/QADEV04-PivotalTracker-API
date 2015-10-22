@@ -7,9 +7,10 @@
     "test": "test"
   },
   "dependencies": {
-    "mocha": "^2.3.3",
     "chai": "^3.3.0",
     "chance": "^0.8.0",
+    "log4js": "^0.6.27",
+    "mocha": "^2.3.3",
     "superagent": "^1.4.0",
     "superagent-proxy": "^1.0.0"
   },

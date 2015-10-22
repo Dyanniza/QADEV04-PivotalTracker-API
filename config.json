@@ -1,21 +1,16 @@
 {
-	"userCredential1":
-	{
+	"userCredential1": {
 		"userAccount":"jorgeavila3",
 		"userPassword":"Control123"
 	},
-	"userCredential2":
-	{
+	"userCredential2": {
 		"userAccount":"jorgeavila2",
 		"userPassword":"L0b3vu5z"
 	},
-
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
-	"token":"ef8aa6ea8c3c838437936fa63a2d504f",
 	"type":"Content-Type",
 	"json":"application/json",
 	"tokenHeader":"X-TrackerToken",
 	"timeout": 10000
-
 }
