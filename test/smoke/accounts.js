@@ -3,154 +3,180 @@
  * on Pivotal Tracker
  * @Author: Jorge Avila Baldiviezo
  */
+
+/**
+ * Libraries to be used for the differents tests
+ */
 var request = require('superagent');
 require('superagent-proxy')(request);
-
 var expect = require('chai').expect;
 var accountsAPI = require('../../lib/accountsAPI');
-// var accountIds = require('../../utils/accountIds');
-// var personIds = require('../../utils/personIds');
 var projectsAPI = require('../../lib/projectsAPI');
 var tokenAPI = require('../../lib/tokenAPI');
 var config = require('../../config.json');
 var Chance = require('chance');
 var chance = new Chance();
+/**
+ * Variables to be used in the differents tests
+ */
 var token = null;
 var projectIdToDelete = null;
-var accountIds = [];
+var accountIdForTests = null;
+var uniqueProjectName = null;
+var secondUserMembership = null;
 
 /**
- * [description]
- * @param  {Object} ) {	this.timeout(10000);	var userTokenCredential [description]
- * @return {[type]}   [description]
+ * Test suit with all tests for the account(s) services
  */
 describe('Smoke Testing over pivotaltracker Accounts', function() {
-	before('before method to get the token user credential', function(done){
+	this.timeout(config.timeout);
+
+	before('before method to get the token user credential and create a project to create an account', function(done){
 		tokenAPI
 			.getToken(config.userCredential1, function(res){
 				token = res.body.api_token;
-				
-				var prj1 = {
-	                name: chance.string(),
-	                new_account_name: chance.string
-	            };
-				projectsAPI
-					.createProject(prj1, token, function(res){
-						projectIdToDelete = res.body.id;
-						accountIds.push(res.body.accountId);
-						done();
-					});
-				
+				uniqueProjectName = chance.string();
+	            var existAccounts = null;
+	            accountsAPI
+	            	.getAccounts(token, function(res){
+	            		existAccounts = res.body;
+	            		console.log('######', existAccounts);
+	            		if (existAccounts.length == 0) {
+	            			var prj1 = {
+				                name: uniqueProjectName,
+				                new_account_name: chance.string()
+				            };
+							projectsAPI
+								.createProject(prj1, token, function(res){
+									projectIdToDelete = res.body.id;
+									accountIdForTests = res.body.account_id;
+									tokenAPI.getToken(config.userCredential2, function(res){
+										secondUserMembership = res.body.id;
+										done();
+									});
+								});
+						} else {
+							accountIdForTests = existAccounts.body.id;
+							done();
+						}
+	            	});
 			});
 	});
+
+	after('after method to delete the project and memberships associated to an account', function(done){
+		projectsAPI.deleteProject(projectIdToDelete, token, function(res){
+			console.log('OLAKEASE', res.body.status);
+			projectIdToDelete = null
+			done();
+		});
+	});
 	
-	describe('All methods of the account(s) service', function(){
-		it('GET /accounts returns 200',function(done){
-		accountsAPI
-			.getAccounts(token, function(res) {
-				var expectedStatus = 200;
-				var actualStatus = res.status;
-				expect(expectedStatus).to.equal(actualStatus);
-				done();
-			});
+	describe('All methods of the account(s) service', function() {
+		it('GET /accounts returns 200', function(done){
+			accountsAPI
+				.getAccounts(token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
 		});
 
-		// it('GET /accounts/{accoind_id} returns 200',function(done) {
-		// 	accountsAPI
-		// 		.getAccountById(accountIds.account1, token, function(res) {
-		// 			var expectedStatus = 200;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-				
-		// });
+		it('GET /accounts/{accoind_id} returns 200',function(done) {
+			accountsAPI
+				.getAccountById(accountIdForTests, token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});
 
-		// it('GET /account_summaries returns 200', function(done) {
-		// 	accountsAPI
-		// 		.getAccountSummaries(token, function(res) {
-		// 			var expectedStatus = 200;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-		// });
+		it('GET /account_summaries returns 200', function(done) {
+			accountsAPI
+				.getAccountSummaries(token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});
 
-		// it('GET /account_summaries?with_permission=project_creation returns 200', function(done) {
-		// 	accountsAPI
-		// 		.getAccountSummaries(token, function(res) {
-		// 			var expectedStatus = 200;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-		// });
+		it('GET /account_summaries?with_permission=project_creation returns 200', function(done) {
+			accountsAPI
+				.getAccountSummaries(token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});
 
-		// it('GET /accounts/{accountId}/memberships returns 200',function(done) {
-		// 	accountsAPI
-		// 		.getAccountMemberships(accountIds.account1, token, function(res) {
-		// 			var expectedStatus = 200;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-		// });
+		it('GET /accounts/{accountId}/memberships returns 200',function(done) {
+			accountsAPI
+				.getAccountMemberships(accountIdForTests, token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});
 
-		// it('POST /accounts/{accountId}/memberships returns 200',function(done) {
-		// 	var ids = {
-		// 		accountId : accountIds.account1,
-		// 		personId : personIds.person2
-		// 	};
-		// 	accountsAPI
-		// 		.createMemberInAccount(ids, token, function(res) {
-		// 			var expectedStatus = 200;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-		// });
+		it('POST /accounts/{accountId}/memberships returns 200',function(done) {
+			var ids = {
+				accountId : accountIdForTests,
+				personId : secondUserMembership
+			};
+			accountsAPI
+				.createMemberInAccount(ids, token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});
 
-		// it('GET /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
-		// 	var ids = {
-		// 		accountId : accountIds.account1,
-		// 		personId : personIds.person1
-		// 	};
-		// 	accountsAPI
-		// 		.getAccountMembership(ids, token, function(res) {
-		// 			var expectedStatus = 200;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-		// });
+		it('GET /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
+			var ids = {
+				accountId : accountIdForTests,
+				personId : secondUserMembership
+			};
+			accountsAPI
+				.getAccountMembership(ids, token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});
 
-		// it('PUT /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
-		// 	var values = {
-		// 		accountId : accountIds.account1,
-		// 		personId : personIds.person2,
-		// 		project_creator : true
-		// 	};
-		// 	accountsAPI
-		// 		.updateAccountMember(values, token, function(res) {
-		// 			var expectedStatus = 200;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-		// });
+		it('PUT /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
+			var values = {
+				accountId : accountIdForTests,
+				personId : secondUserMembership,
+				project_creator : true
+			};
+			accountsAPI
+				.updateAccountMember(values, token, function(res) {
+					var expectedStatus = 200;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});
 
-		// it.only('DELETE /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
-		// 	var values = {
-		// 		accountId : accountIds.account1,
-		// 		personId : personIds.person2
-		// 	};
-		// 	accountsAPI
-		// 		.deleteAccountMember(values, token, function(res) {
-		// 			var expectedStatus = 204;
-		// 			var actualStatus = res.status;
-		// 			expect(expectedStatus).to.equal(actualStatus);
-		// 			done();
-		// 		});
-		// });		
+		it('DELETE /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
+			var ids = {
+				accountId : accountIdForTests,
+				personId : secondUserMembership
+			};
+			accountsAPI
+				.deleteAccountMember(ids, token, function(res) {
+					var expectedStatus = 204;
+					var actualStatus = res.status;
+					expect(expectedStatus).to.equal(actualStatus);
+					done();
+				});
+		});		
 	});
 });
