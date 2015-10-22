@@ -43,7 +43,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             
         });
 
-        afterEach('Deleting Project....', function (done) {
+        afterEach('Deleting Project..', function (done) {
         	var endPoint = projectByIdEndPoint.replace('{project_id}', id)  
             project
                 .del(token, endPoint, function(res) {
