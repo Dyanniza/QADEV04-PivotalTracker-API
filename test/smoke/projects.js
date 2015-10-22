@@ -2,123 +2,138 @@
 /*Author Ronald Butron Salvatierra*/
 var expect = require('chai').expect;
 var request = require('superagent');
+var Chance = require('chance');
 require('superagent-proxy')(request);
-var postProject = require('../../lib/postProjectAPI');
-var delProject = require('../../lib/deleteProjectAPI');
-var putProject = require('../../lib/putProjectAPI');
-var getProject = require('../../lib/getProjectAPI');
-var postStories = require('../../lib/postStoriesAPI');
-var postTask = require('../../lib/postTaskAPI');
-var getTask = require('../../lib/getTaskAPI');
-var putTask = require('../../lib/putTaskAPI');
-var delTask = require('../../lib/deleteTaskAPI');
-
+var chance = new Chance();
+var project = require('../../lib/projectsAPI');
+var getToken = require('../../lib/tokenAPI');
+var config = require('..\\..\\config.json');
+var userCredential = config.userCredential;
+var token = null;
+var id = -1;
 
 
 describe('Smoke Test Pivotal Tracker', function() {
     this.timeout(100000);
+    before('Get Token', function (done) {
+        getToken
+            .getToken(userCredential, function (res) {
+                expect(res.status).to.equal(200);
+                token = res.body.api_token;
+                done();
+                
+            });
+    });
 
     describe('Service Projects', function() {
+       
+        beforeEach('Creating Projejct...', function (done) {
+            var prj1 = {
+                name: chance.string()
+            };
+            project
+                .createProject(prj1, token, function(res) {
+                    expect(res.status).to.equal(200);
+                    id = res.body.id;
+                    done();
+                    
 
+                });
+            
+        });
+
+        afterEach('Deleting Project....', function (done) {
+            
+            project
+                .deleteProject(id, token, function(res) {
+                    expect(res.status).to.equal(204);
+                    id = -1;
+                    done();
+                    
+                });
+            
+        });
 
         it(' GET /projects', function(done) {
+            
+            project
+                .getProject(id, token, function(res) {
+                    expect(res.status).to.equal(200);
+                    done();
+                    
+                });
+        });
 
-            var prj = -1;
-            getProject
-                .getProject(prj, function(res) {
-                    console.log(res.body);
+        it('GET /projects/{project_id}', function(done) {
+           
+                           
+            project
+                .getProject(id, token, function(res) {
                     expect(res.status).to.equal(200);
                     done();
 
                 });
         });
+    
 
-        it('POST /projects', function(done) {
-            var prj = {
-                name: 'Project8000259800000'
-            };
-            postProject
-                .createProject(prj, function(project) {
-                    expect(project.status).to.equal(200);
-                    console.log(project.body.id);
 
-                    delProject
-                        .deleteProject(project.body.id, function(res) {
-                            expect(res.status).to.equal(204);
-                            done();
-                        });
-
-                });
-        });
-    });
-
-    describe('Service Projects by ID', function() {
-
-        it('GET /projects/{project_id}', function(done) {
-            var id = -1;
-            var prj = {
-                name: 'Project80007400721000'
-            };
-            postProject
-                .createProject(prj, function(res) {
-                    expect(res.status).to.equal(200);
-                    id = res.body.id;
-
-                    getProject
-                        .getProject(id, function(res) {
-                            expect(res.status).to.equal(200);
-
-                            delProject
-                                .deleteProject(id, function(res) {
-                                    expect(res.status).to.equal(204);
-                                    done();
-                                });
-                        });
-                });
-        });
 
         it('PUT /projects/{project_id}', function(done) {
-            var id = -1;
-            var prj = {
-                name: 'Project800037520000'
-            };
+
+           
             var editprj = {
-                name: 'Change of Names Project'
+                name: chance.string()
             };
-            postProject
-                .createProject(prj, function(res) {
+            
+            project
+                .editProject(editprj, id, token, function(res) {
+                    expect(res.status).to.equal(200);
+                    done();
+                    
+                });
+        });
+
+        
+    });
+
+    describe('Delete and Post methods', function() {
+
+        it('DELETE /projects/{project_id}', function(done) {
+            
+            var prj = {
+                name: chance.string()
+            };
+            project
+                .createProject(prj, token, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
 
-                    putProject
-                        .editProject(editprj, id, function(res) {
-                            expect(res.status).to.equal(200);
-
-                            delProject
-                                .deleteProject(id, function(res) {
-                                    expect(res.status).to.equal(204);
-                                    done();
-                                });
-
+                    project
+                        .deleteProject(id, token, function(res) {
+                            expect(res.status).to.equal(204);
+                            id = -1;
+                            done();
                         });
                 });
         });
 
-        it('DELETE /projects/{project_id}', function(done) {
-            var id = -1;
+        it('POST /projects', function(done) {
+           
             var prj = {
-                name: 'Project8001240000000'
+                name: chance.string()
             };
-            postProject
-                .createProject(prj, function(res) {
+            project
+                .createProject(prj, token, function(res) {
                     expect(res.status).to.equal(200);
                     id = res.body.id;
 
-                    delProject
-                        .deleteProject(id, function(res) {
+                    project
+                        .deleteProject(id, token, function(res) {
                             expect(res.status).to.equal(204);
+                            id = -1;
                             done();
                         });
+
                 });
         });
 

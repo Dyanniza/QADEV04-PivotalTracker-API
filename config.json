@@ -6,7 +6,7 @@
 	
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
-	"token":"42b9026db7581b17ccf357858c33514e",
+	"token":"ef8aa6ea8c3c838437936fa63a2d504f",
 	"type":"Content-Type",
 	"json":"application/json",
 	"timeout":10000,
