@@ -1,5 +1,7 @@
-//PivotalSmoke.js
-/*Author Ronald Butron Salvatierra*/
+/*
+@ Author Ronald Butron
+@ Projects Tests
+ */
 var expect = require('chai').expect;
 var request = require('superagent');
 var Chance = require('chance');
@@ -14,7 +16,7 @@ var id = -1;
 
 
 describe('Smoke Test Pivotal Tracker', function() {
-    this.timeout(100000);
+    this.timeout(20000);
     before('Get Token', function (done) {
         getToken
             .getToken(userCredential, function (res) {
