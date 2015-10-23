@@ -9,7 +9,7 @@
    		"point_scale": "0,1,2,3,5,8",
    		"week_start_day":"Tuesday",
    		"public": true
-   		},
+   	},
 
    		"put" :{
 
@@ -26,7 +26,7 @@
    		"type": "project"
 
 
-   	},
+   },
 
    	"task":{
 
@@ -49,7 +49,29 @@
    		"post": {
    			"name":"as a tester verify that X function is implemented"
    		}
-   	}
+   	},
+
+   "projectMembership":{
+      "account":{
+
+         "person_id" : 1822660,
+         "username": "penield",
+         "role" : "member",
+         "email" :"Damian.Villanueva@fundacion-jala.org",
+         "name" : "Peniel Damian Villanueva Paca",
+         "initials" : "PDVP",
+         "project_color" : "ce9f00"
+      },
+      "put":{
+
+         "person_id" : 1822660,
+         "role" : "member",
+         "email": "Damian.Villanueva@fundacion-jala.org" ,
+         "name" : "Peniel Damian Villanueva Paca",
+         "initials" : "PDVP",
+         "project_color" : 908675
+      }
+   }
 
 		
 }

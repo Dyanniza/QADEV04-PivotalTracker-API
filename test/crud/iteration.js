@@ -1,5 +1,5 @@
 /**
-Smoke testing for Iteration Services
+CRUD Tests for Iteration Services
 Created By Damian Villanueva 
 **/
 var request = require('superagent');
@@ -10,8 +10,9 @@ var config = require('..\\..\\config.json');
 var servicesAPI=require('../../lib/generalLib')
 var endPoint = require('..\\..\\endPoints.json');
 var Chance = require('chance');
+var crudConfig=require('..\\..\\crudConfig.json')
 
-describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
+describe('CRUD operation over PivotalTracker, Iteration Services', function() {
     this.timeout(config.timeout);
 
     var userCredential = config.userCredential;
@@ -31,14 +32,22 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
     });
 
     beforeEach('Creating a project base', function(done) {
+        var argument =  crudConfig.project.post;
         prjByIdEndPoint = endPoint.projects.projectsEndPoint;
-        var prj = {
+        /*var prj = {
             name: chance.string()
-        };    
+        };*/
         servicesAPI
-            .post(prj, token.api_token, prjByIdEndPoint,function(res) {
+            .post(argument, token.api_token, prjByIdEndPoint,function(res) {
                 projectId = res.body.id;
                 expect(res.status).to.equal(200);
+                //expect(res.status).to.equal(200);
+                   expect(res.body.name).to.equal(argument.name);
+                   expect(res.body.enable_tasks).to.be.true;
+                   expect(res.body.initial_velocity).to.equal(argument.initial_velocity);
+                   expect(res.body.point_scale).to.equal(argument.point_scale);
+                   expect(res.body.week_start_day).to.equal(argument.week_start_day);
+                   id = res.body.id;
                 done();
             });
     });
@@ -54,9 +63,11 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
 
     it('GET/projects/{project_id}/iterations', function(done) {
         var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint.replace('{project_id}', projectId);
+
         servicesAPI
             .get(token.api_token, iterationEndPoint, function(iteration) {
                 expect(iteration.status).to.equal(200);
+
                 done();
             });
     });

@@ -37,9 +37,7 @@ describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function
         servicesAPI
             .post(prj, token.api_token, prjByIdEndPoint,function(res) {
                 projectId = res.body.id;
-                console.log('the ID the project is:   ', projectId);
                 expect(res.status).to.equal(200);
-                console.log('res status:  ', res.status);
                 done();
             });
     });
@@ -48,7 +46,6 @@ describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function
         delEndPoint= endPoint.projects.projectByIdEndPoint.replace('{project_id}', projectId);
         servicesAPI
             .del(token.api_token, delEndPoint, function(res) {
-                console.log('status delete:  ', res.status);
                 expect(res.status).to.equal(204);
                 done();
             });
