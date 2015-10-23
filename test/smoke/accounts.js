@@ -6,7 +6,6 @@
 var request = require('superagent');
 require('superagent-proxy')(request);
 var expect = require('chai').expect;
-var accountsAPI = require('../../lib/accountsAPI');
 var generalLib = require('../../lib/generalLib');
 var tokenAPI = require('../../lib/tokenAPI');
 var endPoints = require('..\\..\\endPoints.json');
@@ -43,7 +42,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 
     before('before method to get the token user credential and create a project to create an account', function(done) {
         tokenAPI
-            .getToken(config.userCredential1, function(res) {
+            .getToken(config.userCredential, function(res) {
                 token = res.body.api_token;
                 uniqueProjectName = chance.string();
                 var existAccounts = null;
@@ -180,7 +179,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
                 });
         });
 
-        it('DELETE /accounts/{accountId}/memberships/{membershipId} returns 200', function(done) {
+        it('DELETE /accounts/{accountId}/memberships/{membershipId} returns 204', function(done) {
             var accMembershipEndPoint = accountMembershipEndPoint
                 .replace('{account_id}', accountIdForTests)
                 .replace('{person_id}', secondUserMembership);

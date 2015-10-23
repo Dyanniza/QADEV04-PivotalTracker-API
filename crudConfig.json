@@ -1,7 +1,7 @@
 {
 	"project" : { 
 
-		"post" :{
+		"post" : {
    		"initial_velocity": 5,
    		"iteration_length": 2,
    		"name": "QDV04-10 Project",
@@ -9,8 +9,20 @@
    		"point_scale": "0,1,2,3,5,8",
    		"week_start_day":"Tuesday",
    		"public": true
-   		}
-   	}
+		}
+	},
 
-		
+   "accounts" : {
+      "account_name":"test account",
+      "get" : {
+         "kind": "",
+         "id": -1,
+         "name": "",
+         "plan": "",
+         "status": "",
+         "created_at": "",
+         "updated_at": ""
+
+      }
+   }		
 }
