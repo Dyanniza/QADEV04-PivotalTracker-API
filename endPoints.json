@@ -35,5 +35,11 @@
 	"projectMembership": {
 		"prjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships",
 		"operationPrjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships\/{membership_id}"
+	},
+	"activity":{
+		"myActivitysEndPoint": "https://www.pivotaltracker.com/services/v5/my/activity",
+		"myActivitysProject":"https://www.pivotaltracker.com/services/v5/projects/{project_id}/activity",
+		"myActivitysStorie":"https://www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/activity",
+		"myActivitysEpic":"https://www.pivotaltracker.com/services/v5/projects/{project_id}/epics/{epic_id}/activity"
 	}
 }

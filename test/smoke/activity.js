@@ -1,69 +1,107 @@
-// ACTIVITY TESTS
+/*
+@author Jhasmany Quiroz
+@Class STORIES for Test Cases the Services of 'Stories'.
+ */
 var expect =  require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
-var Chance = require('chance');
 
 var config = require('../../config');
-var generalLib = require('../../lib/generalLib');
-var tokenAPI = require('../../lib/tokenAPI');
 var endPoints = require('../../endPoints');
+var tokenAPI = require('../../lib/tokenAPI');
+var generalLib = require('../../lib/generalLib');
+var Chance = require('chance');
 
 /**
  * @param  Test to Service's Stories
  * @return Passing or Failing of Test Case executed.
  */
-describe('ACTIVITYS ABOUT THE PROJECT, OWNER', function(){
-  this.timeout(10000);
-  //return list of the selected activity for the authenticated person.
+describe('ACTIVITYS ABOUT THE PROJECT', function(){
+  this.timeout(config.timeout);
+  var userCredential = config.userCredential;
+  var token = null;
+  var project_id = null;
+  var chance = new Chance();
+  var story = {
+    name: chance.string(),
+    id: -1
+  };
+
+  before('GETTING THE TOKEN AND CREATED THE FILES', function(done) {
+    tokenAPI
+      .getToken(userCredential, function(res) {
+        token = res.body;
+        expect(token.username).to.equal(userCredential.userAccount);
+        var newProject = {
+          name: chance.string()
+        };
+
+        var projectsEndPoint = endPoints.projects.projectsEndPoint;
+        generalLib
+          .post(newProject, token.api_token, projectsEndPoint, function(res){
+            expect(res.status).to.equal(200);
+            project_id = res.body.id;
+            done();
+          });
+      });
+  });
+
+  after('DELETED THE FILES', function (done) {
+    var endPoint = endPoints.projects.projectByIdEndPoint.replace('{project_id}', project_id);
+      generalLib
+        .del(token.api_token, endPoint, function(res){
+          expect(res.status).to.equal(204);
+          projectId = -1;
+            storyId = -1;
+            done();
+        });
+  });
+
   it('GET /my/activity', function (done) {
-    request
-      .get('https://www.pivotaltracker.com/services/v5/my/activity')
-      //.proxy('http://172.20.240.5:8080')
-      .set('X-TrackerToken', '15e4bbf7b3228e3d00b28418d930f68a')
-    .end(function(err, res){
-      console.log(res.body);
-      expect(res.status).to.equal(200);
-      done();
-    });
-  });//it
+    var myActivitysEndPoint = endPoints.activity.myActivitysEndPoint;
+    generalLib
+      .get(token.api_token, myActivitysEndPoint, function(res){
+        expect(res.status).to.equal(200);
+        done();
+      });    
+  });
 
   //return list of the selected project activity.
   it('GET /projects/{project_id}/activity', function (done) {
-    request
-      .get('https://www.pivotaltracker.com/services/v5/projects/1448488/activity')
-      //.proxy('http://172.20.240.5:8080')
-      .set('X-TrackerToken', '15e4bbf7b3228e3d00b28418d930f68a')
-    .end(function(err, res){
-      console.log(res.body);
-      expect(res.status).to.equal(200);
-      done();
-    });
-  });//it
+    var myActivitysProject = endPoints.activity.myActivitysProject.replace('{project_id}', project_id);
+    generalLib
+      .get(token.api_token, myActivitysProject, function(res){
+        expect(res.status).to.equal(200);
+        done();
+      });      
+  });
 
   //return list of the selected story's activity.
   it('GET /projects/{project_id}/stories/{story_id}/activity', function (done) {
-    request
-      .get('https://www.pivotaltracker.com/services/v5/projects/1448488/stories/105577028/activity')
-      //.proxy('http://172.20.240.5:8080')
-      .set('X-TrackerToken', '15e4bbf7b3228e3d00b28418d930f68a')
-    .end(function(err, res){
-      console.log(res.body);
-      expect(res.status).to.equal(200);
-      done();
-    });
-  });//it
+    var storiesEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', project_id);
+    generalLib
+      .post(story, token.api_token, storiesEndPoint, function(res){
+        expect(res.status).to.equal(200);
+        story.id = res.body.id;
+        
+        var myActivitysStorie =  endPoints.activity.myActivitysStorie.replace('{project_id}', project_id);
+        myActivitysStorie = myActivitysStorie.replace('{story_id}', story.id);
+          generalLib
+            .get(token.api_token, myActivitysStorie, function(res){
+              expect(res.status).to.equal(200);
+              done();
+            });          
+      });      
+  });
 
   //return list of the selected epic's activity.
-  it.only('GET /projects/{project_id}/epics/{epic_id}/activity', function (done) {
-    request
-      .get('https://www.pivotaltracker.com/services/v5/projects/1448488/epics/555/activity')
-      //.proxy('http://172.20.240.5:8080')
-      .set('X-TrackerToken', '15e4bbf7b3228e3d00b28418d930f68a')
-    .end(function(err, res){
-      console.log(res.body);
-      expect(res.status).to.equal(404);
-      done();
-    });
-  });//it
+  it('GET /projects/{project_id}/epics/{epic_id}/activity', function (done) {    
+    var myActivitysEpic = endPoints.activity.myActivitysEpic.replace('{project_id}', project_id);
+    myActivitysEpic = myActivitysEpic.replace('{epic_id}', chance.integer());
+    generalLib
+      .get(token.api_token, myActivitysEpic, function(res){
+        expect(res.status).to.equal(404);
+        done();
+      });    
+  });
 });//describe
