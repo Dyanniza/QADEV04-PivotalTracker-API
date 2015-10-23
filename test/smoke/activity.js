@@ -39,7 +39,7 @@ describe('ACTIVITYS ABOUT THE PROJECT', function() {
                 var projectsEndPoint = endPoints.projects.projectsEndPoint;
                 generalLib
                     .post(newProject, token.api_token, projectsEndPoint, function(res) {
-                        expect(res.status).to.equal(200);
+                        expect(res.status).to.equal(config.status.ok);
                         project_id = res.body.id;
                         done();
                     });
@@ -50,7 +50,7 @@ describe('ACTIVITYS ABOUT THE PROJECT', function() {
         var endPoint = endPoints.projects.projectByIdEndPoint.replace('{project_id}', project_id);
         generalLib
             .del(token.api_token, endPoint, function(res) {
-                expect(res.status).to.equal(204);
+                expect(res.status).to.equal(config.status.noContent);
                 projectId = -1;
                 storyId = -1;
                 done();
@@ -61,7 +61,7 @@ describe('ACTIVITYS ABOUT THE PROJECT', function() {
         var myActivitysEndPoint = endPoints.activity.myActivitysEndPoint;
         generalLib
             .get(token.api_token, myActivitysEndPoint, function(res) {
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(config.status.ok);
                 done();
             });
     });
@@ -71,7 +71,7 @@ describe('ACTIVITYS ABOUT THE PROJECT', function() {
         var myActivitysProject = endPoints.activity.myActivitysProject.replace('{project_id}', project_id);
         generalLib
             .get(token.api_token, myActivitysProject, function(res) {
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(config.status.ok);
                 done();
             });
     });
@@ -81,14 +81,14 @@ describe('ACTIVITYS ABOUT THE PROJECT', function() {
         var storiesEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', project_id);
         generalLib
             .post(story, token.api_token, storiesEndPoint, function(res) {
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(config.status.ok);
                 story.id = res.body.id;
 
                 var myActivitysStorie = endPoints.activity.myActivitysStorie.replace('{project_id}', project_id);
                 myActivitysStorie = myActivitysStorie.replace('{story_id}', story.id);
                 generalLib
                     .get(token.api_token, myActivitysStorie, function(res) {
-                        expect(res.status).to.equal(200);
+                        expect(res.status).to.equal(config.status.ok);
                         done();
                     });
             });
@@ -100,8 +100,8 @@ describe('ACTIVITYS ABOUT THE PROJECT', function() {
         myActivitysEpic = myActivitysEpic.replace('{epic_id}', chance.integer());
         generalLib
             .get(token.api_token, myActivitysEpic, function(res) {
-                expect(res.status).to.equal(404);
+                expect(res.status).to.equal(config.status.notFound);
                 done();
             });
     });
-}); //describe
+});
