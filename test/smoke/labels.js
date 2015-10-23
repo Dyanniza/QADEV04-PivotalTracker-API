@@ -6,28 +6,31 @@ var expect = require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
 
-var endPoints = require('..\\..\\endPoints.json');
-var config = require ('..\\..\\config.json');
+var endPoints = require('../../resources/endPoints.json');
+var config = require ('../../resources/config.json');
 var httpMethod = require ('../../lib/generalLib.js');
 var tokenAPI = require ('../../lib/tokenAPI');
  
 
 var labelsProjectEndPoint = endPoints.labels.labelsProjectEndPoint;
-var labelsOfProjectEndPoint = endPoints.labels.labelsOfProjectEndPoint;
+//var labelsOfProjectEndPoint = endPoints.labels.labelsOfProjectEndPoint;
 var labelsByStoryIdEndPoint = endPoints.labels.labelsByStoryIdEndPoint;
 var storiesEndPoint = endPoints.label.storiesEndPoint;
 var labelByIdProjectIdEndPoint = endPoints.label.labelByIdProjectIdEndPoint;
 var labelIdStoryIdProjectIdEndPoint = endPoints.label.labelIdStoryIdProjectIdEndPoint;
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
+var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 
-
-var projectId = '1447838';
-var storyID = '106308134';
-var labelId = '13076852';
+//var projectId = '1447838';
+//var storyID = '106308134';
+//var labelId = '13076852';
 
 var userCredentials = config.userCredential;
 var token = null;
-
+var endPoint = null;
+var projectId = null;
+var storyID = null;
+var labelId = null;
 
 describe('Smoke test for labels',function(){
 	this.timeout(10000);
@@ -42,7 +45,7 @@ describe('Smoke test for labels',function(){
     });   
 
 	before('Create a Project', function (done) {
-		var endPoint = projectsEndPoint;
+		endPoint = projectsEndPoint;
 		var al = Math.random().toString(36).substring(2);
 		var prjId = al.substr(0,3);
 		var content = {
@@ -57,10 +60,20 @@ describe('Smoke test for labels',function(){
 				});
 	});
 	
+	after('Deleting Project', function (done) {
+        var endPoint = projectByIdEndPoint.replace('{project_id}', projectId)  
+        httpMethod
+                .del(token, endPoint, function(res) {
+                    expect(res.status).to.equal(204);
+                    projectId = null;
+                    done();                    
+                });            
+        });
+
 
 	describe('Suite of tests for endpoind: /projects/{project_id}/labels',function(){
 
-		var endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
+		endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
 		it('GET /projects/{project_id}/labels',function(done){
 						
 			httpMethod			
@@ -72,6 +85,7 @@ describe('Smoke test for labels',function(){
 		});
 		
 		it('POST /projects/{project_id}/labels',function(done){
+		//endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
 			var al = Math.random().toString(36).substring(2);
 			var labelName = al.substr(0,4);
 			var content = {
@@ -81,6 +95,7 @@ describe('Smoke test for labels',function(){
 				
 				.post(content,token,endPoint,function(res){
 					expect(res.status).to.equal(200);
+					label_id = res.body.id;
 					done();
 				});
 
@@ -91,11 +106,11 @@ describe('Smoke test for labels',function(){
 	
 	describe('Test suite for endPoint: /projects/{project_id}/labels/{label_id}',function(){
 
-		var endPoint = labelByIdProjectIdEndPoint.replace('{project_id}',projectId).replace('{label_id}',labelId);
+		endPoint = labelByIdProjectIdEndPoint.replace('{project_id}',projectId).replace('{label_id}',labelId);
 
-		it.skip('GET /projects/{project_id}/labels/{label_id}',function(done){
-
-			httpMethod			
+		it('GET /projects/{project_id}/labels/{label_id}',function(done){
+			console.log(endPoint);
+			httpMethod							
 				
 				.get(token,endPoint,function(res){
 					expect(res.status).to.equal(200);
@@ -110,7 +125,7 @@ describe('Smoke test for labels',function(){
 			var content = {
 					name : newLabelName											
 				};
-
+			console.log(endPoint);
 			httpMethod
 				
 				.put(content,token,endPoint,function(res){
@@ -133,7 +148,7 @@ describe('Smoke test for labels',function(){
 	describe ('test suite endPoint: /projects/{project_id}/stories/{story_id}/labels',function(){
 
 
-		beforeEach('Create stories in the project',function(done){	
+		beforeEach('Create precondition, at least story in the project',function(done){	
 			var eP = storiesEndPoint.replace('{project_id}',projectId);		
 			var content = {
 					name : 'Story to test a label'															
@@ -145,9 +160,7 @@ describe('Smoke test for labels',function(){
 					storyID = res.body.id;
 					done();
 				});
-		});
-
-		//var endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
+		});		
 
 		it('GET /projects/{project_id}/stories/{story_id}/labels',function(done){
 			var endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
@@ -177,16 +190,14 @@ describe('Smoke test for labels',function(){
 
 		});
 
-
 	});
-	
-	describe ('test suite endPoint: /projects/{project_id}/stories/{story_id}/labels/{label_id}',function(){
-		var endPoint = labelIdStoryIdProjectIdEndPoint.replace('{project_id}',projectId).replace('{story_id}',storyID).replace('{label_id}',labelId);
 
+
+	describe ('test suite endPoint: /projects/{project_id}/stories/{story_id}/labels/{label_id}',function(){
+	
 		it.skip('DELETE /projects/{project_id}/stories/{story_id}/labels/{label_id}',function(done){
-			
-			httpMethod
-				
+			var endPoint = labelIdStoryIdProjectIdEndPoint.replace('{project_id}',projectId).replace('{story_id}',storyID).replace('{label_id}',labelId);
+			httpMethod				
 				.del(token,endPoint,function(res){
 					expect(res.status).to.equal(204);
 					done();
@@ -196,13 +207,14 @@ describe('Smoke test for labels',function(){
 		
 	});
 
-
-
-	describe ('Labels services,endPoint: /projects/{project_id}/stories}',function(){
-		var endPoint = storiesEndPoint.replace('{project_id}',projectId);
+	describe ('Labels services,endPoint: /projects/{project_id}/stories}',function(){		
 
 		it('POST /projects/{project_id}/stories',function(done){
+			console.log(projectId);
+			console.log(storiesEndPoint);
 
+			var endPointP = storiesEndPoint.replace('{project_id}',projectId);
+			console.log(endPointP);
 			var al = Math.random().toString(36).substring(2);
 			var labelName = al.substr(0,4);
 			var content = {
@@ -212,7 +224,7 @@ describe('Smoke test for labels',function(){
 
 			httpMethod
 				
-				.post(content,token,endPoint,function(res){
+				.post(content,token,endPointP,function(res){
 					expect(res.status).to.equal(200);
 					done();
 				});
