@@ -7,10 +7,9 @@ var expect = require('chai').expect;
 var Chance = require('chance');
 var chance = new Chance();
 var methods = require('../../lib/generalLib');
-var config = require('..\\..\\config.json');
-var endPoints = require('..\\..\\endPoints.json');
+var config = require('../../resources/config.json');
+var endPoints = require('../../resources/endPoints.json');
 var getToken = require('../../lib/tokenAPI');
-
 
 /**
  * End point services
@@ -20,6 +19,7 @@ var storiesTasksEndPoint = endPoints.projects.storiesTasksEndPoint;
 var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
 var storiesEndPoint = endPoints.stories.storiesEndPoint;
+var status = config.status;
 
 /**
  * Variables to be used in the differents tests
@@ -36,7 +36,7 @@ describe('Suite Stories Tasks', function () {
     before('Get Token', function (done) {
         getToken
             .getToken(userCredential, function (res) {
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(status.ok);
                 token = res.body.api_token;
                 done();
                 
@@ -53,7 +53,7 @@ describe('Suite Stories Tasks', function () {
             
             methods
                 .post(prj, token, projectsEndPoint,  function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     prjId = res.body.id;
                     endPoint = storiesEndPoint.replace('{project_id}', prjId);
 
@@ -85,7 +85,7 @@ describe('Suite Stories Tasks', function () {
         	 var taskName = { description : chance.sentence({words: 5})};
             methods
                 .post(taskName, token, endPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     endPoint = projectByIdEndPoint.replace('{project_id}', prjId);
                     done();
 
@@ -104,7 +104,7 @@ describe('Suite Stories Tasks', function () {
            
            methods
            		.post(prj, token, projectsEndPoint,  function(res) {
-                	expect(res.status).to.equal(200);
+                	expect(res.status).to.equal(status.ok);
                 	prjId = res.body.id;
                 	endPoint = storiesEndPoint.replace('{project_id}', prjId);
                 	
@@ -116,7 +116,7 @@ describe('Suite Stories Tasks', function () {
                         
                         methods
                             .post(taskName, token, endPoint, function(res) {
-                                expect(res.status).to.equal(200);
+                                expect(res.status).to.equal(status.ok);
                                 taskId = res.body.id;
                                 endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
         									   					   .replace('{story_id}', storyId)
@@ -132,7 +132,7 @@ describe('Suite Stories Tasks', function () {
         	endPoint = projectByIdEndPoint.replace('{project_id}', prjId);
             methods
                 .del(token, endPoint, function(res) {
-                    expect(res.status).to.equal(204);
+                    expect(res.status).to.equal(status.noContent);
                     prjId = null;
                     storyId = null;
                     enPoint = null;
@@ -145,7 +145,7 @@ describe('Suite Stories Tasks', function () {
         								   .replace('{story_id}', storyId);    
             methods
                 .get(token, endPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     done();
                 });
         });
@@ -156,7 +156,7 @@ describe('Suite Stories Tasks', function () {
                    
             methods
                 .get(token, endPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     done();
                 });
         });
@@ -166,7 +166,7 @@ describe('Suite Stories Tasks', function () {
         	var argument = {description : chance.sentence({words: 5})};								   
             methods
                 .put(argument, token, endPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     done();
                 });
         });
@@ -175,7 +175,7 @@ describe('Suite Stories Tasks', function () {
                  
             methods
                 .del(token, endPoint, function(res) {
-                    expect(res.status).to.equal(204);
+                    expect(res.status).to.equal(status.noContent);
                     done();
 
                 });
