@@ -15,14 +15,18 @@
    "accounts" : {
       "account_name":"test account",
       "get" : {
-         "kind": "",
-         "id": -1,
-         "name": "",
-         "plan": "",
-         "status": "",
-         "created_at": "",
-         "updated_at": ""
-
+         "kind": "account",
+         "kind_summary": "account_summary",
+         "kind_memberships":"account_membership",
+         "plan": "Free",
+         "status": "active",
+         "owner": true,
+         "ownerfalse": false,
+         "admin": false,
+         "project_creator": false,
+         "timekeeper": true,
+         "timekeeperfalse": false,
+         "time_enterer": false
       }
    }		
 }
