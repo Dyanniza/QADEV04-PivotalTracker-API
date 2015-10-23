@@ -1,8 +1,18 @@
 // ACTIVITY TESTS
 var expect =  require('chai').expect;
 var request = require('superagent');
-//require('superagent-proxy')(request);
+require('superagent-proxy')(request);
+var Chance = require('chance');
 
+var config = require('../../config');
+var generalLib = require('../../lib/generalLib');
+var tokenAPI = require('../../lib/tokenAPI');
+var endPoints = require('../../endPoints');
+
+/**
+ * @param  Test to Service's Stories
+ * @return Passing or Failing of Test Case executed.
+ */
 describe('ACTIVITYS ABOUT THE PROJECT, OWNER', function(){
   this.timeout(10000);
   //return list of the selected activity for the authenticated person.

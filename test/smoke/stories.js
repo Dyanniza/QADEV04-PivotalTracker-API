@@ -8,42 +8,70 @@ var request = require('superagent');
 require('superagent-proxy')(request);
 
 var config = require('../../config');
+var endPoints = require('../../endPoints');
 var tokenAPI = require('../../lib/tokenAPI');
-var storiesApi = require('../../lib/storiesApi');
+var generalLib = require('../../lib/generalLib');
+var Chance = require('chance');
 
 
 /**
  * @param  Test to Service's Stories
  * @return Passing or Failing of Test Case executed.
  */
-describe('STORY of Project', function() {
+describe('STORIES OF PROJECT', function(){
 	this.timeout(config.timeout);
 	var userCredential = config.userCredential;
 	var token = null;
 	var projectId = null;
+	var chance = new Chance();
 
-	before('Getting the token', function(done) {
+	before('GETTING THE TOKEN AND CREATED THE FILES', function(done) {
 		tokenAPI
 			.getToken(userCredential, function(res) {
 				token = res.body;
 				expect(token.username).to.equal(userCredential.userAccount);
-				done();
+
+          		var newProject = {
+      				name: chance.string()
+  				};
+
+  				var projectsEndPoint = endPoints.projects.projectsEndPoint;
+          		generalLib
+          			.post(newProject, token.api_token, projectsEndPoint, function(res){
+          				expect(res.status).to.equal(200);
+          				projectId = res.body.id;
+          				done();
+          			});
 			});
 	});
+
+	after('DELETED THE FILES', function (done) {
+		var endPoint = endPoints.projects.projectByIdEndPoint.replace('{project_id}', projectId);
+    	generalLib
+    		.del(token.api_token, endPoint, function(res){
+    			expect(res.status).to.equal(204);
+    			projectId = -1;
+        		storyId = -1;
+        		done();
+    		});
+  	});
 
 	it('GET /projects/{project_id}/stories', function(done) {
-		projectId = -1;
-		storiesApi
-			.getStories(projectId, token.api_token, function(res) {
-				expect(res).to.equal(404);
+		var storiesEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', projectId);
+		generalLib
+			.get(token.api_token, storiesEndPoint, function(res) {
+				expect(res.status).to.equal(200);
 				done();
 			});
 	});
 
-	it.only('POST /projects/{project_id}/stories', function(done) {
-		projectId = -1;
-		storiesApi
-			.postStories(projectId, token.api_token, function(res) {
+	it('POST /projects/{project_id}/stories', function(done) {
+		var storyEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', projectId);
+		var story = {
+    		name: chance.string()
+  		};
+		generalLib
+			.post(story, token.api_token, storyEndPoint, function(res){
 				expect(res.code).to.equal(config.codeStories);
 				done();
 			});

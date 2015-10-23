@@ -3,14 +3,12 @@
 			"userAccount":"jhasmanye",
 			"userPassword":"1c7hu57&7"
 	},
-	
+
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
 	"token":"d6e85010db44e3c1457f552479fd856b",
 	"type":"Content-Type",
 	"json":"application/json",
-	"timeout":10000,
-
-	"codeStories":"unfound_resource",
-	"codeStory":"route_not_found"
+	"tokenHeader":"X-TrackerToken",
+	"timeout": 10000
 }
