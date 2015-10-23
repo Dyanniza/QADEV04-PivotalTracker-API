@@ -23,6 +23,17 @@
 	"iteration": {
 		"iterationtokenEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iterations",
 		"iterationtokenEndPoint2" : "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/iteration_overrides\/{iteration_number}"	
+	},
+	"accounts": {
+		"accountsEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/accounts",
+		"accountsByIdEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/accounts\/{account_id}",
+		"accountSummariesEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5/account_summaries",
+		"accountMembershipsEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/accounts\/{account_id}\/memberships",
+		"accountMembershipEndPoint" : "https:\/\/www.pivotaltracker.com\/services\/v5\/accounts\/{account_id}\/memberships\/{person_id}"
+	},
+	"projectMembership": {
+		"prjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships",
+		"operationPrjMembership": "https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/memberships\/{membership_id}"
 	}
 
 	,"labels": {
