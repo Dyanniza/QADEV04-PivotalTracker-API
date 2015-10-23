@@ -10,12 +10,21 @@ var getToken = require('../../lib/tokenAPI');
 var config = require('..\\..\\config.json');
 var configLog = require('..\\..\\crudConfig.json');
 var endPoints = require('..\\..\\endPoints.json');
-var userCredential = config.userCredential;
+
+ /**
+ * End point services
+ */
+
 var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
+
+/**
+ * Variables to be used in the differents tests
+ */
 var token = null;
 var id = null;
 var argument = configLog.project.post;
+var userCredential = config.userCredential;
 
 describe('CRUD Test for Projects Service Pivotal Tracker', function() {
     this.timeout(20000);
@@ -82,10 +91,7 @@ describe('CRUD Test for Projects Service Pivotal Tracker', function() {
                 .post(argument, token, projectsEndPoint, function(res) {
                     id = res.body.id;
                     done();
-                    
-
                 });
-            
         });
 
         afterEach('Deleting Project..', function (done) {
@@ -94,9 +100,7 @@ describe('CRUD Test for Projects Service Pivotal Tracker', function() {
                 .del(token, endPoint, function(res) {
                     id = null;
                     done();
-                    
                 });
-            
         });
 
         

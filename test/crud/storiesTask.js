@@ -10,11 +10,18 @@ var endPoints = require('..\\..\\endPoints.json');
 var getToken = require('../../lib/tokenAPI');
 var configLog = require('..\\..\\crudConfig.json');
 var userCredential = config.userCredential;
+/**
+ * End point services
+ */
+
 var storiesTasksByIdEndPoint = endPoints.projects.storiesTasksByIdEndPoint;
 var storiesTasksEndPoint = endPoints.projects.storiesTasksEndPoint;
 var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
 var storiesEndPoint = endPoints.stories.storiesEndPoint;
+/**
+ * Variables to be used in the differents tests
+ */
 var token = null;
 var prjId = null;
 var storyId = null;
@@ -25,7 +32,8 @@ var story = configLog.stories.post;
 var taskName = configLog.task.post;
 var kind = configLog.task.type;
 
-describe('Suit Stories Tasks', function () {
+
+describe('Suite Stories Tasks', function () {
     this.timeout(20000);
     before('Get Token', function (done) {
         getToken
@@ -37,7 +45,7 @@ describe('Suit Stories Tasks', function () {
             });
     });    
         
-    describe('Suit of Test Post a Task', function () {
+    describe('Suite of Test Post a Task', function () {
         before(function (done) {
              methods
                 .post(prj, token, projectsEndPoint,  function(res) {
@@ -128,7 +136,7 @@ describe('Suit Stories Tasks', function () {
             methods
                 .get(token, endPoint, function(res) {
                     expect(res.status).to.equal(200);
-                   expect(res.body[0].description).to.equal(taskName.description);
+                    expect(res.body[0].description).to.equal(taskName.description);
                     expect(res.body[0].complete).to.be.false;
                     expect(res.body[0].story_id).to.equal(storyId);
                     expect(res.body[0].kind).to.equal(kind);

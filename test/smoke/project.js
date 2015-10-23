@@ -10,9 +10,17 @@ var project = require('../../lib/generalLib');
 var getToken = require('../../lib/tokenAPI');
 var config = require('..\\..\\config.json');
 var endPoints = require('..\\..\\endPoints.json');
-var userCredential = config.userCredential;
+
+/**
+ * End point services
+ */
 var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
+
+/**
+ * Variables to be used in the differents tests
+ */
+var userCredential = config.userCredential;
 var token = null;
 var id = null;
 
