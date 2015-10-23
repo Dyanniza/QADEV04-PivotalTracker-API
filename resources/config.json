@@ -1,7 +1,7 @@
 {
-	"userCredential": {
-		"userAccount":"jorgeavila3",
-		"userPassword":"Control123"
+	"userCredential":{
+			"userAccount":"jhasmanye",
+			"userPassword":"1c7hu57&7"	
 	},
 	"userCredential2": {
 		"email":"jorge.avila@fundacion-jala.org",
@@ -19,10 +19,12 @@
 		"forbidden":403,
 		"notFound":404
 	},
+
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
+	"token":"d6e85010db44e3c1457f552479fd856b",
 	"type":"Content-Type",
-	"json":"application/json",
+	"json":"application/json",	
 	"timeout": 10000,
 	"role":"member"
 }
