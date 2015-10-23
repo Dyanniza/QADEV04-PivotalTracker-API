@@ -9,6 +9,17 @@
 		"userPassword":"Control123"
 	},
 
+	"status":{
+
+		"ok":200,
+		"accepted":202,
+		"noContent":204,
+		"badRequest":400,
+		"unauthorized":401,
+		"forbidden":403,
+		"notFound":404
+	},
+
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
 	"token":"d6e85010db44e3c1457f552479fd856b",

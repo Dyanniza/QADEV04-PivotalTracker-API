@@ -8,11 +8,20 @@ var Chance = require('chance');
 var chance = new Chance();
 var project = require('../../lib/generalLib');
 var getToken = require('../../lib/tokenAPI');
-var config = require('..\\..\\config.json');
-var endPoints = require('..\\..\\endPoints.json');
-var userCredential = config.userCredential;
+var config = require('../../resources/config.json');
+var endPoints = require('../../resources/endPoints.json');
+
+/**
+ * End point services
+ */
 var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
+
+/**
+ * Variables to be used in the differents tests
+ */
+var userCredential = config.userCredential;
+var status = config.status;
 var token = null;
 var id = null;
 
@@ -22,7 +31,7 @@ describe('Smoke Test Pivotal Tracker', function() {
     before('Get Token', function (done) {
         getToken
             .getToken(userCredential, function (res) {
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(status.ok);
                 token = res.body.api_token;
                 done();
                 
@@ -37,7 +46,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             };
             project
                 .post(argument, token, projectsEndPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     id = res.body.id;
                     done();
                     
@@ -50,7 +59,7 @@ describe('Smoke Test Pivotal Tracker', function() {
         	var endPoint = projectByIdEndPoint.replace('{project_id}', id)  
             project
                 .del(token, endPoint, function(res) {
-                    expect(res.status).to.equal(204);
+                    expect(res.status).to.equal(status.noContent);
                     id = null;
                     done();
                     
@@ -62,7 +71,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             
             project
                 .get(token, projectsEndPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     done();
                     
                 });
@@ -73,7 +82,7 @@ describe('Smoke Test Pivotal Tracker', function() {
                            
             project
                 .get(token, endPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     done();
 
                 });
@@ -87,7 +96,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             
             project
                 .put(argument, token, endPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     done();
                     
                 });
@@ -104,7 +113,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             };
             project
                 .post(argument, token, projectsEndPoint, function(res) {
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(status.ok);
                     id = res.body.id;
                     done();
                        
@@ -116,7 +125,7 @@ describe('Smoke Test Pivotal Tracker', function() {
             endPoint = projectByIdEndPoint.replace('{project_id}', id);
             project
             	.del(token, endPoint, function(res) {
-                	expect(res.status).to.equal(204);
+                	expect(res.status).to.equal(status.noContent);
                 	id = null;
                 	done();
             	});
