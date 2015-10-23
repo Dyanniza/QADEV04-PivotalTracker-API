@@ -1,0 +1,55 @@
+{
+	"project" : { 
+
+		"post" :{
+   		"initial_velocity": 5,
+   		"iteration_length": 2,
+   		"name": "QDV04-12 Project",
+   		"number_of_done_iterations_to_show": 5,
+   		"point_scale": "0,1,2,3,5,8",
+   		"week_start_day":"Tuesday",
+   		"public": true
+   		},
+
+   		"put" :{
+
+   		"initial_velocity": 10,
+   		"iteration_length": 3,
+   		"name": "QDV04-2015 Project",
+   		"number_of_done_iterations_to_show": 10,
+   		"point_scale": "0,1,2,3",
+   		"week_start_day":"Wednesday",
+   		"public": false	
+
+   		},
+
+   		"type": "project"
+
+
+   	},
+
+   	"task":{
+
+   		"post":{
+   			
+   			"description": "Chage the port 8080 to 4040"
+   		},
+
+   		"put":{
+   			"description": "Chage the port 8080 to 9090",
+   			"complete":true
+   		},
+
+   		"type": "task"
+
+   	},
+
+   	"stories":{
+
+   		"post": {
+   			"name":"as a tester verify that X function is implemented"
+   		}
+   	}
+
+		
+}
