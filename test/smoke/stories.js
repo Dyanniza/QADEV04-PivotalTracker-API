@@ -2,17 +2,15 @@
 @author Jhasmany Quiroz
 @Class STORIES for Test Cases the Services of 'Stories'.
  */
-
 var expect =  require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
-
-var config = require('../../config');
-var endPoints = require('../../endPoints');
-var tokenAPI = require('../../lib/tokenAPI');
-var generalLib = require('../../lib/generalLib');
 var Chance = require('chance');
 
+var config = require('../../resources/config');
+var generalLib = require('../../lib/generalLib');
+var tokenAPI = require('../../lib/tokenAPI');
+var endPoints = require('../../resources/endPoints');
 
 /**
  * @param  Test to Service's Stories
@@ -38,7 +36,7 @@ describe('STORIES OF PROJECT', function(){
   				var projectsEndPoint = endPoints.projects.projectsEndPoint;
           		generalLib
           			.post(newProject, token.api_token, projectsEndPoint, function(res){
-          				expect(res.status).to.equal(200);
+          				expect(res.status).to.equal(config.status.ok);
           				projectId = res.body.id;
           				done();
           			});
@@ -49,7 +47,7 @@ describe('STORIES OF PROJECT', function(){
 		var endPoint = endPoints.projects.projectByIdEndPoint.replace('{project_id}', projectId);
     	generalLib
     		.del(token.api_token, endPoint, function(res){
-    			expect(res.status).to.equal(204);
+    			expect(res.status).to.equal(config.status.noContent);
     			projectId = -1;
         		storyId = -1;
         		done();
@@ -60,7 +58,7 @@ describe('STORIES OF PROJECT', function(){
 		var storiesEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', projectId);
 		generalLib
 			.get(token.api_token, storiesEndPoint, function(res) {
-				expect(res.status).to.equal(200);
+				expect(res.status).to.equal(config.status.ok);
 				done();
 			});
 	});

@@ -5,12 +5,12 @@
 var expect =  require('chai').expect;
 var request = require('superagent');
 require('superagent-proxy')(request);
-
-var config = require('../../config');
-var endPoints = require('../../endPoints');
-var tokenAPI = require('../../lib/tokenAPI');
-var generalLib = require('../../lib/generalLib');
 var Chance = require('chance');
+
+var config = require('../../resources/config');
+var generalLib = require('../../lib/generalLib');
+var tokenAPI = require('../../lib/tokenAPI');
+var endPoints = require('../../resources/endPoints');
 
 /**
  * @param  Test to Service's Stories

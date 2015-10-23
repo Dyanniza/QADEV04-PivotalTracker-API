@@ -8,10 +8,10 @@ var request = require('superagent');
 require('superagent-proxy')(request);
 var Chance = require('chance');
 
-var config = require('../../config');
+var config = require('../../resources/config');
 var generalLib = require('../../lib/generalLib');
 var tokenAPI = require('../../lib/tokenAPI');
-var endPoints = require('../../endPoints');
+var endPoints = require('../../resources/endPoints');
 
 var userCredential = config.userCredential;
   var token = null;
@@ -48,13 +48,13 @@ describe('STORY of Project', function(){
         var projectsEndPoint = endPoints.projects.projectsEndPoint;
         generalLib
           .post(prj, token.api_token, projectsEndPoint, function(res){
-            expect(res.status).to.equal(200);
+            expect(res.status).to.equal(config.status.ok);
             prj.id = res.body.id;            
 
             var storiesEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', prj.id);
             generalLib
               .post(story, token.api_token, storiesEndPoint, function(res){
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(config.status.ok);
                 story.id = res.body.id;
                 done();
               });
@@ -66,7 +66,7 @@ describe('STORY of Project', function(){
     var endPoint = endPoints.projects.projectByIdEndPoint.replace('{project_id}', prj.id);
       generalLib
         .del(token.api_token, endPoint, function(res){
-          expect(res.status).to.equal(204);
+          expect(res.status).to.equal(config.status.noContent);
             done();
         });
   });
@@ -76,7 +76,7 @@ describe('STORY of Project', function(){
     storyEndPoint = storyEndPoint.replace('{story_id}', story.id);
     generalLib
       .get(token.api_token, storyEndPoint, function(res) {
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(config.status.ok);
         done();
       });
 	});
@@ -87,7 +87,7 @@ describe('STORY of Project', function(){
     story.name = chance.string();
 		generalLib      
       .put(story, token.api_token, storyEndPoint, function(res){
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(config.status.ok);
         done();
       });
 	});
@@ -97,7 +97,7 @@ describe('STORY of Project', function(){
     storyEndPoint = storyEndPoint.replace('{story_id}', story.id);
     generalLib
       .del(token.api_token, storyEndPoint, function(res){
-        expect(res.status).to.equal(204);
+        expect(res.status).to.equal(config.status.noContent);
         done();
       });
 	});
@@ -118,27 +118,27 @@ describe('STORIES OF PROJECT ABOUT OWNER', function(){
         var projectsEndPoint = endPoints.projects.projectsEndPoint;
         generalLib
           .post(prj, token.api_token, projectsEndPoint, function(res){
-            expect(res.status).to.equal(200);
+            expect(res.status).to.equal(config.status.ok);
             prj.id = res.body.id;
             prj.account_id = res.body.account_id;
 
             var storiesEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', prj.id);
             generalLib
               .post(story, token.api_token, storiesEndPoint, function(res){
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(config.status.ok);
                 story.id = res.body.id;
                 
                 var meEndPoint = endPoints.me.meEndPoint;
                 generalLib
                   .get(token.api_token, meEndPoint, function(res){
-                    expect(res.status).to.equal(200);
+                    expect(res.status).to.equal(config.status.ok);
                     ownerId.id = res.body.id;
 
                     var storyOwnersEndPoint = endPoints.story.storyOwnersEndPoint.replace('{project_id}', prj.id);
                     storyOwnersEndPoint = storyOwnersEndPoint.replace('{story_id}', story.id);
                     generalLib
                       .post(ownerId, token.api_token, storyOwnersEndPoint, function(res){
-                        expect(res.status).to.equal(200);
+                        expect(res.status).to.equal(config.status.ok);
                         done();
                       });                    
                   });
@@ -151,7 +151,7 @@ describe('STORIES OF PROJECT ABOUT OWNER', function(){
     var endPoint = endPoints.projects.projectByIdEndPoint.replace('{project_id}', prj.id);
       generalLib
         .del(token.api_token, endPoint, function(res){
-          expect(res.status).to.equal(204);
+          expect(res.status).to.equal(config.status.noContent);
             done();
         });
   });
@@ -161,7 +161,7 @@ describe('STORIES OF PROJECT ABOUT OWNER', function(){
     storyOwnersEndPoint = storyOwnersEndPoint.replace('{story_id}', story.id);
     generalLib
       .get(token.api_token, storyOwnersEndPoint, function(res){
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(config.status.ok);
         done();
       });
   });
@@ -171,7 +171,7 @@ describe('STORIES OF PROJECT ABOUT OWNER', function(){
     storyOwnersEndPoint = storyOwnersEndPoint.replace('{story_id}', story.id);
     generalLib
       .post(ownerId, token.api_token, storyOwnersEndPoint, function(res){
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(config.status.ok);
         done();
       });
   });
@@ -182,7 +182,7 @@ describe('STORIES OF PROJECT ABOUT OWNER', function(){
     storyOwnerIdEndPoint = storyOwnerIdEndPoint.replace('{person_id}', ownerId.id);    
     generalLib
       .del(token.api_token, storyOwnerIdEndPoint, function(res){
-        expect(res.status).to.equal(204);
+        expect(res.status).to.equal(config.status.noContent);
         done();
       });
   });
@@ -203,13 +203,13 @@ describe('STORY OF PROJECT', function(){
         var projectsEndPoint = endPoints.projects.projectsEndPoint;
         generalLib
           .post(prj, token.api_token, projectsEndPoint, function(res){
-            expect(res.status).to.equal(200);
+            expect(res.status).to.equal(config.status.ok);
             prj.id = res.body.id;            
 
             var storiesEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', prj.id);
             generalLib
               .post(story, token.api_token, storiesEndPoint, function(res){
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(config.status.ok);
                 story.id = res.body.id;
                 done();
               });
@@ -221,7 +221,7 @@ describe('STORY OF PROJECT', function(){
     var endPoint = endPoints.projects.projectByIdEndPoint.replace('{project_id}', prj.id);
       generalLib
         .del(token.api_token, endPoint, function(res){
-          expect(res.status).to.equal(204);
+          expect(res.status).to.equal(config.status.noContent);
             done();
         });
   });
@@ -230,7 +230,7 @@ describe('STORY OF PROJECT', function(){
     var storyIdEndPoint = endPoints.story.storyIdEndPoint.replace('{story_id}', story.id);
     generalLib
       .get(token.api_token, storyIdEndPoint, function(res){
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(config.status.ok);
         done();
       });
   });
@@ -240,7 +240,7 @@ describe('STORY OF PROJECT', function(){
     story.name = chance.string();
     generalLib
       .put(story, token.api_token, storyIdEndPoint, function(res){
-        expect(res.status).to.equal(200);
+        expect(res.status).to.equal(config.status.ok);
         done();
       });
   });
@@ -249,7 +249,7 @@ describe('STORY OF PROJECT', function(){
     var storyIdEndPoint = endPoints.story.storyIdEndPoint.replace('{story_id}', story.id);
     generalLib
       .del(token.api_token, storyIdEndPoint, function(res){
-        expect(res.status).to.equal(204);
+        expect(res.status).to.equal(config.status.noContent);
         done();
       });
   });
