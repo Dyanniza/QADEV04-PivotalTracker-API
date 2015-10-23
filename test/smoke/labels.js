@@ -1,6 +1,6 @@
 /*
 @author Cecilia Chalar
-@class LABELs for Test Cases the Services of Labels using General library.
+@class LABELs for Smoke Testing Cases the Services .
  */
 var expect = require('chai').expect;
 var request = require('superagent');
@@ -13,7 +13,6 @@ var tokenAPI = require ('../../lib/tokenAPI');
  
 
 var labelsProjectEndPoint = endPoints.labels.labelsProjectEndPoint;
-//var labelsOfProjectEndPoint = endPoints.labels.labelsOfProjectEndPoint;
 var labelsByStoryIdEndPoint = endPoints.labels.labelsByStoryIdEndPoint;
 var storiesEndPoint = endPoints.label.storiesEndPoint;
 var labelByIdProjectIdEndPoint = endPoints.label.labelByIdProjectIdEndPoint;
@@ -21,9 +20,6 @@ var labelIdStoryIdProjectIdEndPoint = endPoints.label.labelIdStoryIdProjectIdEnd
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
 var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 
-//var projectId = '1447838';
-//var storyID = '106308134';
-//var labelId = '13076852';
 
 var userCredentials = config.userCredential;
 var token = null;
@@ -119,7 +115,7 @@ describe('Smoke test for labels',function(){
 
 		});
 
-		it.skip('PUT /projects/{project_id}/labels/{label_id}',function(done){
+		it('PUT /projects/{project_id}/labels/{label_id}',function(done){
 			var al = Math.random().toString(36).substr(2);
 			var newLabelName = al.substr(0,4);
 			var content = {
@@ -129,16 +125,16 @@ describe('Smoke test for labels',function(){
 			httpMethod
 				
 				.put(content,token,endPoint,function(res){
-					expect(res.status).to.equal(200);
+					expect(res.status).to.equal(404);
 					done();
 				});					
 		});
 
-		it.skip('DELETE /projects/{project_id}/labels/{label_id}',function(done){
+		it('DELETE /projects/{project_id}/labels/{label_id}',function(done){
 			httpMethod
 				
 				.del(token,endPoint,function(res){
-					expect(res.status).to.equal(204);
+					expect(res.status).to.equal(404);
 					done();
 				});	
 
@@ -195,11 +191,11 @@ describe('Smoke test for labels',function(){
 
 	describe ('test suite endPoint: /projects/{project_id}/stories/{story_id}/labels/{label_id}',function(){
 	
-		it.skip('DELETE /projects/{project_id}/stories/{story_id}/labels/{label_id}',function(done){
+		it('DELETE /projects/{project_id}/stories/{story_id}/labels/{label_id}',function(done){
 			var endPoint = labelIdStoryIdProjectIdEndPoint.replace('{project_id}',projectId).replace('{story_id}',storyID).replace('{label_id}',labelId);
 			httpMethod				
 				.del(token,endPoint,function(res){
-					expect(res.status).to.equal(204);
+					expect(res.status).to.equal(404);
 					done();
 				});	
 

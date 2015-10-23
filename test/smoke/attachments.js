@@ -5,7 +5,8 @@
 
 var expect = require('chai').expect;
 var request = require('superagent');
-var change = require('Chance');
+var Chance = require('chance');
+var chance = new Chance();
 require('superagent-proxy')(request);
 
 var endPoints = require('../../resources/endPoints.json');
@@ -19,10 +20,12 @@ var attsProjectEndPoint = endPoints.attachments.attsProjectEndPoint;
 var projectsEndPoint = endPoints.projects.projectsEndPoint;
 var commentsStoryIdEndPoint = endPoints.comments.commentsStoryIdEndPoint;
 var attsStoryPrjIdEndPoint = endPoints.attachments.attsStoryPrjIdEndPoint;
-
-
+var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
+var storiesEndPoint = endPoints.stories.storiesEndPoint;
 
 var userCredentials = config.userCredential;
+var status = config.status;
+
 var token = null;
 var projectId = null;
 var storyId = null;
@@ -35,21 +38,23 @@ describe('Suite attachments smoke test',function (){
     before('Get Token', function (done) {
       tokenAPI
         .getToken(userCredentials, function (res) {
-            expect(res.status).to.equal(200);
+            expect(res.status).to.equal(status.ok);
             token = res.body.api_token;                
             done();                
         });
     });   
 
-    beforeEach('Creating Pre Conditions', function (done) {
+    beforeEach('Creating Pre Conditions,
+                at least a project,
+                at story and a comment', function (done) {
     var projectName = { name : chance.string()};
     var storyName = { name: chance.string()};
-    var commtContain = { description : chance.sentence({words: 5})}
+    var commtContain = { text : chance.sentence({words: 6})}
 
         httpMethod
 
             .post(projectName, token, projectsEndPoint,  function(res) {
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(status.ok);
                 projectId = res.body.id;
                 endPoint = storiesEndPoint.replace('{project_id}', projectId );
                     
@@ -61,7 +66,7 @@ describe('Suite attachments smoke test',function (){
                         
                         httpMethod
                             .post(commtContain, token, endPoint, function(res) {
-                                expect(res.status).to.equal(200);
+                                expect(res.status).to.equal(status.ok);
                                 commentId = res.body.id;
                                 endPoint = attsStoryPrjIdEndPoint.replace('{project_id}', projectId)
                                                                  .replace('{story_id}', storyId)
@@ -77,7 +82,7 @@ describe('Suite attachments smoke test',function (){
         endPoint = projectByIdEndPoint.replace('{project_id}', projectId );
         httpMethod
             .del(token, endPoint, function(res) {
-                expect(res.status).to.equal(204);
+                expect(res.status).to.equal(status.noContent);
                 var projectId = null;
                 var storyId = null;
                 enPoint = null;
@@ -86,19 +91,19 @@ describe('Suite attachments smoke test',function (){
     });
 
         
-    it.skip('DELETE /projects/{project_id}/stories/{story_id}/comments/{comment_id}/file_attachments',function(done){
+    it('DELETE /projects/{project_id}/stories/{story_id}/comments/{comment_id}/file_attachments',function(done){
     var endPoint = attsStoryPrjIdEndPoint.replace('{project_id}', projectId)
                                                                  .replace('{story_id}', storyId)
                                                                  .replace('{comment_id}', commentId);               
         httpMethod            
                 
             .del(token,endPoint,function(res){
-                expect(res.status).to.equal(204);
+                expect(res.status).to.equal(status.notFound);
                 done();
             });            
     });
 
-    it.skip('DELETE /projects/{project_id}/stories/{story_id}/comments/{comment_id}/file_attachments/file_attachments_id',function(done){
+    it('DELETE /projects/{project_id}/stories/{story_id}/comments/{comment_id}/file_attachments/file_attachments_id',function(done){
     var endPoint = attsStoryPrjIdEndPoint.replace('{project_id}', projectId)
                                                                  .replace('{story_id}', storyId)
                                                                  .replace('{comment_id}', commentId)
@@ -106,12 +111,12 @@ describe('Suite attachments smoke test',function (){
         httpMethod            
                 
             .del(token,endPoint,function(res){
-                expect(res.status).to.equal(204);
+                expect(res.status).to.equal(status.notFound);
                 done();
             });            
     });
 
-    it.skip('POST /projects/{project_id}/uploads',function(done){
+    it('POST /projects/{project_id}/uploads',function(done){
     var endPoint = attsProjectEndPoint.replace('{project_id}', projectId);
     var contain = {
       file:'@$FILE_PATH',
@@ -121,7 +126,7 @@ describe('Suite attachments smoke test',function (){
         httpMethod            
                 
             .del(token,endPoint,function(res){
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(status.notFound);
                 done();
             });            
     });
