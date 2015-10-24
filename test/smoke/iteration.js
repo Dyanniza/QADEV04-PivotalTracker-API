@@ -6,10 +6,12 @@ var request = require('superagent');
 require('superagent-proxy')(request);
 var expect = require('chai').expect;
 var tokenAPI = require('../../lib/tokenAPI');
-var config = require('..\\..\\config.json');
+var config = require('../../resources/config.json');
 var servicesAPI=require('../../lib/generalLib')
-var endPoint = require('..\\..\\endPoints.json');
+var endPoint = require('../../resources/endPoints.json');
 var Chance = require('chance');
+var crudConfig=require('../../resources/crudConfig.json');
+var status=config.status;
 
 describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
     this.timeout(config.timeout);
@@ -38,7 +40,7 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
         servicesAPI
             .post(prj, token.api_token, prjByIdEndPoint,function(res) {
                 projectId = res.body.id;
-                expect(res.status).to.equal(200);
+                expect(res.status).to.equal(status.ok);
                 done();
             });
     });
@@ -47,7 +49,7 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
         delEndPoint= endPoint.projects.projectByIdEndPoint.replace('{project_id}', projectId);
         servicesAPI
             .del(token.api_token, delEndPoint, function(res) {
-                expect(res.status).to.equal(204);
+                expect(res.status).to.equal(status.noContent);
                 done();
             });
     });
@@ -56,7 +58,7 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
         var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint.replace('{project_id}', projectId);
         servicesAPI
             .get(token.api_token, iterationEndPoint, function(iteration) {
-                expect(iteration.status).to.equal(200);
+                expect(iteration.status).to.equal(status.ok);
                 done();
             });
     });
@@ -71,7 +73,7 @@ describe('Smoke Tests for PivotalTracker, Iteration Services', function() {
         .replace('{iteration_number}', iterationNumber);
         servicesAPI
             .put(argument, token.api_token, iterationEndPoint, function(iteration) {
-                expect(iteration.status).to.equal(200);
+                expect(iteration.status).to.equal(status.ok);
                 done();
             });
     });

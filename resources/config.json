@@ -8,17 +8,17 @@
 		"userAccount":"jorgeavila2",
 		"userPassword":"Control123"
 	},
-	"userCredential3": {
-		"userAccount": "penield",
-		"userPassword": "Control123",
-		"id": 1822660,
-		"name": "Peniel Damian Villanueva Paca",
-		"initials": "PDVP",
-		"username": "penield",
-		"email": "Damian.Villanueva@fundacion-jala.org",
-		"receives_in_app_notifications": true,
-		"created_at": "2015-10-13T13:11:00Z",
-		"updated_at": "2015-10-23T11:58:32Z"
+
+
+	"status":{
+
+		"ok":200,
+		"accepted":202,
+		"noContent":204,
+		"badRequest":400,
+		"unauthorized":401,
+		"forbidden":403,
+		"notFound":404
 	},
 
 	"proxy":"http://172.20.240.5:8080",
