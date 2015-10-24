@@ -44,9 +44,7 @@ describe('Suite attachments smoke test',function (){
         });
     });   
 
-    beforeEach('Creating Pre Conditions,
-                at least a project,
-                at story and a comment', function (done) {
+    beforeEach('Creating Pre Conditions at least a project', function (done) {
     var projectName = { name : chance.string()};
     var storyName = { name: chance.string()};
     var commtContain = { text : chance.sentence({words: 6})}
