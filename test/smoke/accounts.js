@@ -21,6 +21,7 @@ var projectIdToDelete = null;
 var accountIdForTests = null;
 var uniqueProjectName = null;
 var secondUserMembership = null;
+var status = config.status;
 
 /**
  * End point services
@@ -51,8 +52,8 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
                         existAccounts = res.body;
                         if (existAccounts.length == 0) {
                             var prj1 = {
-                                name: uniqueProjectName,
-                                new_account_name: chance.string()
+                                name: config.account_name,
+                                new_account_name: config.project_name
                             };
                             generalLib
                                 .post(prj1, token, projectsEndPoint, function(res) {
@@ -95,7 +96,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
         it('GET /accounts returns 200', function(done) {
             generalLib
                 .get(token, accountsEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -106,7 +107,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
             var accByIdEndPoint = accountsByIdEndPoint.replace('{account_id}', accountIdForTests);
             generalLib
                 .get(token, accByIdEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -116,7 +117,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
         it('GET /account_summaries returns 200', function(done) {
             generalLib
                 .get(token, accountSummariesEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -126,7 +127,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
         it('GET /account_summaries?with_permission=project_creation returns 200', function(done) {
             generalLib
                 .get(token, accountSummariesEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -137,7 +138,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
             var accMembershipsEndPoint = accountMembershipsEndPoint.replace('{account_id}', accountIdForTests);
             generalLib
                 .get(token, accMembershipsEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -152,7 +153,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
             };
             generalLib
                 .post(arguments, token, accMembershipEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -165,7 +166,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
                 .replace('{person_id}', secondUserMembership);
             generalLib
                 .get(token, accMembershipEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -181,7 +182,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
             };
             generalLib
                 .put(arguments, token, accMembershipEndPoint, function(res) {
-                    var expectedStatus = 200;
+                    var expectedStatus = status.ok;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();
@@ -194,7 +195,7 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
                 .replace('{person_id}', secondUserMembership);
             generalLib
                 .del(token, accMembershipEndPoint, function(res) {
-                    var expectedStatus = 204;
+                    var expectedStatus = status.noContent;
                     var actualStatus = res.status;
                     expect(expectedStatus).to.equal(actualStatus);
                     done();

@@ -9,6 +9,8 @@
 		"userAccount":"jorgeavila2",
 		"userPassword":"Control123"
 	},
+	"account_name":"qadev-account",
+	"project_name":"qadev-project",
 	"status":{
 
 		"ok":200,

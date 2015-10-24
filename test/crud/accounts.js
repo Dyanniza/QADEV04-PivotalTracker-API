@@ -50,8 +50,8 @@ describe('CRUD', function() {
                         existAccounts = res.body;
                         if (existAccounts.length == 0) {
                             var prj1 = {
-                                name: 'jorgeproject',
-                                new_account_name: 'jorgeaccount'
+                                name: config.account_name,
+                                new_account_name: config.project_name
                             };
                             generalLib
                                 .post(prj1, token, projectsEndPoint, function(res) {
@@ -111,7 +111,6 @@ describe('CRUD', function() {
             var name = dinamicValues.name;
             generalLib
                 .get(token, accountsEndPoint, function(res) {
-                    expect(res.status).to.equal(200);
                     expect(res.body[0].kind).to.equal(kind);
                     expect(res.body[0].plan).to.equal(plan);
                     expect(res.body[0].status).to.equal(status);
@@ -134,7 +133,6 @@ describe('CRUD', function() {
             var name = dinamicValues.name;
             generalLib
                 .get(token, accByIdEndPoint, function(res) {
-                    expect(res.status).to.equal(200);
                     expect(res.body.kind).to.equal(kind);
                     expect(res.body.plan).to.equal(plan);
                     expect(res.body.status).to.equal(status);
@@ -154,7 +152,6 @@ describe('CRUD', function() {
             var name = dinamicValues.name;
             generalLib
                 .get(token, accountSummariesEndPoint, function(res) {
-                    expect(res.status).to.equal(200);
                     expect(res.body[0].kind).to.equal(kind);
                     expect(res.body[0].plan).to.equal(plan);
                     expect(res.body[0].status).to.equal(status);
@@ -177,7 +174,6 @@ describe('CRUD', function() {
             var timeEnterer = crudConfig.accounts.get.time_enterer;
             generalLib
                 .get(token, accMembershipsEndPoint, function(res) {
-                    expect(res.status).to.equal(200);
                     expect(res.body[0].kind).to.equal(kind);
                     expect(res.body[0].id).to.equal(id);
                     expect(res.body[0].owner).to.equal(owner);
@@ -207,7 +203,6 @@ describe('CRUD', function() {
             generalLib
                 .get(token, accMembershipEndPoint, function(res) {
                     var actualStatus = res.status;
-                    expect(res.status).to.equal(200);
                     expect(res.body.kind).to.equal(kind);
                     expect(res.body.id).to.equal(id);
                     expect(res.body.account_id).to.equal(accountId);
@@ -240,9 +235,6 @@ describe('CRUD', function() {
             };
             generalLib
                 .post(arguments, token, accMembershipEndPoint, function(res) {
-                    var expectedStatus = 200;
-                    var actualStatus = res.status;
-                    expect(expectedStatus).to.equal(actualStatus);
                     expect(res.body.kind).to.equal(kind);
                     expect(res.body.account_id).to.equal(accountId);
                     expect(res.body.owner).to.equal(owner);
