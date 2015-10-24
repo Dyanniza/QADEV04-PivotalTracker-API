@@ -1,40 +1,89 @@
-{  
-    "project":{  
-        "post":{  
-            "initial_velocity":5,
-            "iteration_length":2,
-            "name":"QDV04-12 Project",
-            "number_of_done_iterations_to_show":5,
-            "point_scale":"0,1,2,3,5,8",
-            "week_start_day":"Tuesday",
-            "public":true
-        },
-        "put":{  
-            "initial_velocity":10,
-            "iteration_length":3,
-            "name":"QDV04-2015 Project",
-            "number_of_done_iterations_to_show":10,
-            "point_scale":"0,1,2,3",
-            "week_start_day":"Wednesday",
-            "public":false
-        },
-        "type":"project"
-    },
-    "task":{  
-        "post":{  
-            "description":"Chage the port 8080 to 4040"
-        },
-        "put":{  
-            "description":"Chage the port 8080 to 9090",
-            "complete":true
-        },
-        "type":"task"
-    },
-    "stories":{  
-        "post":{  
-            "name":"as a tester verify that X function is implemented"
-        }
-    },
+
+{
+	"project" : { 
+
+		"post" :{
+   		"initial_velocity": 5,
+   		"iteration_length": 2,
+   		"name": "QDV04-12 Project",
+   		"number_of_done_iterations_to_show": 5,
+   		"point_scale": "0,1,2,3,5,8",
+   		"week_start_day":"Tuesday",
+   		"public": true
+   	},
+
+   		"put" :{
+
+   		"initial_velocity": 10,
+   		"iteration_length": 3,
+   		"name": "QDV04-2015 Project",
+   		"number_of_done_iterations_to_show": 10,
+   		"point_scale": "0,1,2,3",
+   		"week_start_day":"Wednesday",
+   		"public": false	
+
+   		},
+
+   		"type": "project"
+
+
+   },
+
+   	"task":{
+
+   		"post":{
+   			
+   			"description": "Chage the port 8080 to 4040"
+   		},
+
+   		"put":{
+   			"description": "Chage the port 8080 to 9090",
+   			"complete":true
+   		},
+
+   		"type": "task"
+
+   	},
+
+   	"stories":{
+
+   		"post": {
+   			"name":"as a tester verify that X function is implemented"
+   		}
+   	},
+
+   "projectMembership":{
+      "account":{
+         "person_id" : 1822660,
+         "username": "penield",
+         "role" : "member",
+         "email" :"Damian.Villanueva@fundacion-jala.org",
+         "name" : "Peniel Damian Villanueva Paca",
+         "initials" : "PDVP",
+         "project_color" : "ce9f00",
+         "wants_comment_notification_emails": true,
+         "will_receive_mention_notifications_or_emails": true
+      },
+      "postEmail":{
+         "email" :"Damian.Villanueva@fundacion-jala.org",
+         "role" : "member",
+         "project_color" : "ce9f00"
+      },
+      "postPerson_id":{
+         "person_id" : 1822660,
+         "role" : "member",
+         "project_color" : "ce9f00"
+      },
+      "put":{
+         "role" : "viewer",
+         "project_color" : "908675"
+      },
+      "putPM":{
+         "length": 5,
+         "team_strength": 0.9
+      }
+   },
+
     "accounts":{  
         "account_name":"test account",
         "get":{  
