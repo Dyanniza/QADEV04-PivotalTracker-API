@@ -1,3 +1,4 @@
+
 {
 	"project" : { 
 
@@ -71,7 +72,23 @@
          "initials" : "PDVP",
          "project_color" : 908675
       }
-   }
+   },
 
-		
+    "accounts":{  
+        "account_name":"test account",
+        "get":{  
+            "kind":"account",
+            "kind_summary":"account_summary",
+            "kind_memberships":"account_membership",
+            "plan":"Free",
+            "status":"active",
+            "owner":true,
+            "ownerfalse":false,
+            "admin":false,
+            "project_creator":false,
+            "timekeeper":true,
+            "timekeeperfalse":false,
+            "time_enterer":false
+        }
+    }
 }

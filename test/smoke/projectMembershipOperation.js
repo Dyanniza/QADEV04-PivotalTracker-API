@@ -54,12 +54,13 @@ describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function
     });
     beforeEach('Add a MemberShip in the project', function(done) {
         var prjMSEndPoint = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
-        var argument = {
-            email: "Jhasmany.Quiroz@fundacion-jala.org",
-            role: "member"
-        };
+        var argument=crudConfig.projectMembership.account;
         servicesAPI
-            .post(argument, token.api_token, prjMSEndPoint, function(res) {
+            .post({
+                    email:argument.email,
+                    role:argument.role,
+                    project_color:argument.project_color
+                }, token.api_token, prjMSEndPoint, function(res) {
                 expect(res.status).to.equal(status.ok);
                 memberId = res.body.id;
                 done();
@@ -78,11 +79,9 @@ describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function
     it('PUT/projects/{project_id}/memberships/{membership_id}', function(done) {
         var prjMSEndPoint = endPoint.projectMembership.operationPrjMembership.replace('{project_id}', projectId)
             .replace('{membership_id}', memberId);
-        var argument = {
-            "role": "viewer"
-        };
+        var argument=crudConfig.projectMembership.account;
         servicesAPI
-            .put(argument, token.api_token, prjMSEndPoint, function(projectMS) {
+            .put({role:argument.role}, token.api_token, prjMSEndPoint, function(projectMS) {
                 expect(projectMS.status).to.equal(status.ok);
                 done();
             });
