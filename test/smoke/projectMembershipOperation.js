@@ -6,14 +6,16 @@ var request = require('superagent');
 require('superagent-proxy')(request);
 var expect = require('chai').expect;
 var tokenAPI = require('../../lib/tokenAPI');
-var config = require('..\\..\\config.json');
-var servicesAPI=require('../../lib/generalLib')
-var endPoint = require('..\\..\\endPoints.json');
+var config = require('../../resources/config.json');
+var servicesAPI = require('../../lib/generalLib')
+var endPoint = require('../../resources/endPoints.json');
 var Chance = require('chance');
+var crudConfig = require('../../resources/crudConfig.json');
+var status = config.status;
 
-describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function(){
+describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function() {
     this.timeout(config.timeout);
-    var userCredential=config.userCredential;
+    var userCredential = config.userCredential;
     var token = null;
     var projectId = null;
     var memberId = null;
@@ -32,66 +34,64 @@ describe('Project Membership operations GET,PUT,DELETE, Smoke Testing', function
         prjByIdEndPoint = endPoint.projects.projectsEndPoint;
         var prj = {
             name: chance.string()
-        };    
+        };
 
         servicesAPI
-            .post(prj, token.api_token, prjByIdEndPoint,function(res) {
+            .post(prj, token.api_token, prjByIdEndPoint, function(res) {
                 projectId = res.body.id;
-                console.log('the ID the project is:   ', projectId);
-                expect(res.status).to.equal(200);
-                console.log('res status:  ', res.status);
+                expect(res.status).to.equal(status.ok);
                 done();
             });
     });
 
     afterEach('Deleting the project created', function(done) {
-        delEndPoint= endPoint.projects.projectByIdEndPoint.replace('{project_id}', projectId);
+        delEndPoint = endPoint.projects.projectByIdEndPoint.replace('{project_id}', projectId);
         servicesAPI
             .del(token.api_token, delEndPoint, function(res) {
-                console.log('status delete:  ', res.status);
-                expect(res.status).to.equal(204);
+                expect(res.status).to.equal(status.noContent);
                 done();
             });
     });
-    beforeEach('Add a MemberShip in the project',function(done){
+    beforeEach('Add a MemberShip in the project', function(done) {
         var prjMSEndPoint = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
-        var argument={
-            email: "Jhasmany.Quiroz@fundacion-jala.org",
-            role: "member"
-        };
+        var argument=crudConfig.projectMembership.account;
         servicesAPI
-            .post(argument,token.api_token, prjMSEndPoint, function(res){
-                expect(res.status).to.equal(200);
-                memberId=res.body.id;
+            .post({
+                    email:argument.email,
+                    role:argument.role,
+                    project_color:argument.project_color
+                }, token.api_token, prjMSEndPoint, function(res) {
+                expect(res.status).to.equal(status.ok);
+                memberId = res.body.id;
                 done();
             });
     });
-    
-    it('GET/projects/{project_id}/memberships/{membership_id}',function(done) {
+
+    it('GET/projects/{project_id}/memberships/{membership_id}', function(done) {
         var prjMSEndPoint = endPoint.projectMembership.operationPrjMembership.replace('{project_id}', projectId)
-                                                                 .replace('{membership_id}',memberId);
+            .replace('{membership_id}', memberId);
         servicesAPI
-            .get(token.api_token, prjMSEndPoint, function(projectMS){
-                expect(projectMS.status).to.equal(200);
+            .get(token.api_token, prjMSEndPoint, function(projectMS) {
+                expect(projectMS.status).to.equal(status.ok);
                 done();
             });
     });
-    it('PUT/projects/{project_id}/memberships/{membership_id}',function(done) {
+    it('PUT/projects/{project_id}/memberships/{membership_id}', function(done) {
         var prjMSEndPoint = endPoint.projectMembership.operationPrjMembership.replace('{project_id}', projectId)
-                                                                 .replace('{membership_id}',memberId);
-        var argument={"role":"viewer"};
+            .replace('{membership_id}', memberId);
+        var argument=crudConfig.projectMembership.account;
         servicesAPI
-            .put(argument, token.api_token, prjMSEndPoint, function(projectMS){
-                expect(projectMS.status).to.equal(200);
+            .put({role:argument.role}, token.api_token, prjMSEndPoint, function(projectMS) {
+                expect(projectMS.status).to.equal(status.ok);
                 done();
             });
     });
-    it('DELETE/projects/{project_id}/memberships/{membership_id}',function(done) {
+    it('DELETE/projects/{project_id}/memberships/{membership_id}', function(done) {
         var prjMSEndPoint = endPoint.projectMembership.operationPrjMembership.replace('{project_id}', projectId)
-                                                                 .replace('{membership_id}',memberId);
+            .replace('{membership_id}', memberId);
         servicesAPI
-            .del(token.api_token, prjMSEndPoint, function(projectMS){
-                expect(projectMS.status).to.equal(204);
+            .del(token.api_token, prjMSEndPoint, function(projectMS) {
+                expect(projectMS.status).to.equal(status.noContent);
                 done();
             });
     });

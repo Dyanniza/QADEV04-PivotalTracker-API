@@ -9,8 +9,10 @@
 		"userAccount":"jorgeavila2",
 		"userPassword":"Control123"
 	},
+
 	"account_name":"qadev-account",
 	"project_name":"qadev-project",
+
 	"status":{
 
 		"ok":200,
@@ -21,6 +23,7 @@
 		"forbidden":403,
 		"notFound":404
 	},
+
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
 	"type":"Content-Type",
