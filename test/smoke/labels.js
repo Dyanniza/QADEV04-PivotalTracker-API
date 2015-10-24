@@ -40,7 +40,7 @@ describe('Smoke test for labels',function(){
             });
     });   
 
-	before('Create a Project', function (done) {
+	beforeEach('Create a Project', function (done) {
 		endPoint = projectsEndPoint;
 		var al = Math.random().toString(36).substring(2);
 		var prjId = al.substr(0,3);
@@ -56,7 +56,7 @@ describe('Smoke test for labels',function(){
 				});
 	});
 	
-	after('Deleting Project', function (done) {
+	afterEach('Deleting Project', function (done) {
         var endPoint = projectByIdEndPoint.replace('{project_id}', projectId)  
         httpMethod
                 .del(token, endPoint, function(res) {
@@ -81,14 +81,13 @@ describe('Smoke test for labels',function(){
 		});
 		
 		it('POST /projects/{project_id}/labels',function(done){
-		//endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
+		endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
 			var al = Math.random().toString(36).substring(2);
 			var labelName = al.substr(0,4);
 			var content = {
 					name : labelName											
 				};
-			httpMethod
-				
+			httpMethod				
 				.post(content,token,endPoint,function(res){
 					expect(res.status).to.equal(200);
 					label_id = res.body.id;
