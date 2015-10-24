@@ -41,7 +41,7 @@ describe('CRUD Test for Projects Service Pivotal Tracker', function() {
             });
     });
 
-    describe('Post methods', function() {
+    describe('Create Read and Delete', function() {
 
         it('POST /projects', function(done) {
             
@@ -62,6 +62,17 @@ describe('CRUD Test for Projects Service Pivotal Tracker', function() {
                 });
         });
 
+        it(' GET /projects', function(done) {
+            var kind = configLog.project.type;
+            project
+                .get(token, projectsEndPoint, function(res) {
+                    expect(res.status).to.equal(status.ok);
+                    expect(res.body[0].kind).to.equal(kind);
+                    done();
+                    
+                });
+        });
+
         it('DELETE /projects/{project_id}', function(done) {
            
             endPoint = projectByIdEndPoint.replace('{project_id}', id);
@@ -74,16 +85,7 @@ describe('CRUD Test for Projects Service Pivotal Tracker', function() {
             	});
 	    });
 
-        it(' GET /projects', function(done) {
-            var kind = configLog.project.type;
-            project
-                .get(token, projectsEndPoint, function(res) {
-                    expect(res.status).to.equal(status.ok);
-                    expect(res.body[0].kind).to.equal(kind);
-                    done();
-                    
-                });
-        });
+        
     });
 
 	 describe('Read and Edit Projects', function() {
