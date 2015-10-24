@@ -48,7 +48,23 @@
 
    		"post": {
    			"name":"as a tester verify that X function is implemented"
-   		}
+   		},
+
+         "get": {
+             "id": 1448488,
+             "kind": "project",
+             "name": "API Testing",
+             "iteration_length": 1,
+             "week_start_day": "Monday",
+             "point_scale": "0,1,2,3",
+             "enable_tasks": true,
+             "number_of_done_iterations_to_show": 12,
+             "velocity_averaged_over": 3,
+             "project_type": "private",
+             "start_time": "2015-10-19T07:00:00Z",
+             "created_at": "2015-10-13T15:36:36Z",
+             "account_id": 823426
+         }         
    	}
 
 		
