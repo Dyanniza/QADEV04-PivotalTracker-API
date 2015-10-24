@@ -9,7 +9,7 @@ var Chance = require('chance');
 
 var config = require('../../resources/config');
 var stories = require('../../lib/generalLib');
-var tokenAPI = require('../../lib/tokenAPI');
+var getToken = require('../../lib/tokenAPI');
 var endPoints = require('../../resources/endPoints');
 var crudConfig = require('../../resources/crudConfig');
 
@@ -23,9 +23,10 @@ var storiesEndPoint = endPoints.stories.storiesEndPoint;
  */
 var token = null;
 var id = null;
-var argument = configLog.stories.get;
+var argument = crudConfig.stories.get;
 var userCredential = config.userCredential;
 var status = config.status;
+var chance = new Chance();
 
 describe('CRUD Test for Stories Service Pivotal Tracker', function(){
 	this.timeout(config.timeout);
@@ -39,9 +40,9 @@ describe('CRUD Test for Stories Service Pivotal Tracker', function(){
                     name: chance.string()
                 };
                 var projectsEndPoint = endPoints.projects.projectsEndPoint;
-                generalLib
+                stories
                     .post(newProject, token.api_token, projectsEndPoint, function(res) {
-                        expect(res.status).to.equal(config.status.ok);
+                        expect(res.status).to.equal(status.ok);
                         newProject.project_id = res.body.id;
                         done();
                     });                                
