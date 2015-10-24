@@ -1,13 +1,17 @@
 {
 	"userCredential":{
-			"userAccount":"jhasmanye",
-			"userPassword":"1c7hu57&7"	
+		"email":"jorge_top14@gmail.com",
+		"userAccount":"jorgeavila3",
+		"userPassword":"Control123"	
 	},
 	"userCredential2": {
 		"email":"jorge.avila@fundacion-jala.org",
 		"userAccount":"jorgeavila2",
 		"userPassword":"Control123"
 	},
+
+	"account_name":"qadev-account",
+	"project_name":"qadev-project",
 
 	"status":{
 
@@ -22,9 +26,8 @@
 
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
-	"token":"d6e85010db44e3c1457f552479fd856b",
 	"type":"Content-Type",
 	"json":"application/json",	
-	"timeout": 10000,
+	"timeout": 15000,
 	"role":"member"
 }
