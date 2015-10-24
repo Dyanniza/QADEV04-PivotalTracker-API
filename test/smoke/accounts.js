@@ -8,8 +8,8 @@ require('superagent-proxy')(request);
 var expect = require('chai').expect;
 var generalLib = require('../../lib/generalLib');
 var tokenAPI = require('../../lib/tokenAPI');
-var endPoints = require('..\\..\\endPoints.json');
-var config = require('..\\..\\config.json');
+var endPoints = require('../../resources/endPoints.json');
+var config = require('../../resources/config.json');
 var Chance = require('chance');
 var chance = new Chance();
 
@@ -76,10 +76,19 @@ describe('Smoke Testing over pivotaltracker Accounts', function() {
 
     after('after method to delete the project and memberships associated to an account', function(done) {
         var endPointDeleteProject = projectByIdEndPoint.replace('{project_id}', projectIdToDelete);
-        generalLib.del(token, endPointDeleteProject, function(res) {
-            projectIdToDelete = null
-            done();
-        });
+        var projects = null;
+        generalLib
+            .get(token, endPoints.projects.projectsEndPoint, function(res){
+                projects = res.body;
+                if(projects.length == 0) {
+                    done();
+                } else {
+                    generalLib.del(token, endPointDeleteProject, function(res) {
+                        projectIdToDelete = null
+                        done();
+                    });
+                }
+            });
     });
 
     describe('All methods of the account(s) service', function() {
