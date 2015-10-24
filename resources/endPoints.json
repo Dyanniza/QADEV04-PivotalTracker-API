@@ -40,10 +40,11 @@
 		"myActivitysEndPoint": "https://www.pivotaltracker.com/services/v5/my/activity",
 		"myActivitysProject":"https://www.pivotaltracker.com/services/v5/projects/{project_id}/activity",
 		"myActivitysStorie":"https://www.pivotaltracker.com/services/v5/projects/{project_id}/stories/{story_id}/activity",
-		"myActivitysEpic":"https://www.pivotaltracker.com/services/v5/projects/{project_id}/epics/{epic_id}/activity"
-	}
+		"myActivitysEpic":"https://www.pivotaltracker.com/services/v5/projects/{project_id}/epics/{epic_id}/activity",
+		"epicsEndPoint": "https://www.pivotaltracker.com/services/v5/projects/{project_id}/epics"
+	},
 
-	,"labels": {
+	"labels": {
 		"labelsOfProjectEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/1447838\/labels?date_format=millis",
 
 		"labelsProjectEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/labels",
@@ -66,7 +67,9 @@
 	"comments":{
 
 		"commentsStoryIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/comments"
-	}
-	
+	},
 
+	"epics": {
+		"epicsEndPoint": "https://www.pivotaltracker.com/services/v5/projects/{project_id}/epics"
+	}
 }

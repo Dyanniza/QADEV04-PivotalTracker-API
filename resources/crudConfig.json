@@ -49,8 +49,28 @@
 
    		"post": {
    			"name":"as a tester verify that X function is implemented"
+         },
+         "postDefault":{
+            "kind": "story",
+            "story_type": "feature",
+            "current_state": "unscheduled",
+            "owner_ids": [],
+            "labels": []
          }
    	},
+
+      "activity": {
+         "get": {
+            "kind": "story_create_activity",
+            "message": "Jorge Avila added this feature",
+            "highlight": "added",
+            "project": {
+               "kind": "project",
+               "id": -1,
+               "name": ""
+            }
+         }
+      },
 
    "projectMembership":{
       "account":{
