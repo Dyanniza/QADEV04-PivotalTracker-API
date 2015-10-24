@@ -54,23 +54,33 @@
 
    "projectMembership":{
       "account":{
-
          "person_id" : 1822660,
          "username": "penield",
          "role" : "member",
          "email" :"Damian.Villanueva@fundacion-jala.org",
          "name" : "Peniel Damian Villanueva Paca",
          "initials" : "PDVP",
+         "project_color" : "ce9f00",
+         "wants_comment_notification_emails": true,
+         "will_receive_mention_notifications_or_emails": true
+      },
+      "postEmail":{
+         "email" :"Damian.Villanueva@fundacion-jala.org",
+         "role" : "member",
+         "project_color" : "ce9f00"
+      },
+      "postPerson_id":{
+         "person_id" : 1822660,
+         "role" : "member",
          "project_color" : "ce9f00"
       },
       "put":{
-
-         "person_id" : 1822660,
-         "role" : "member",
-         "email": "Damian.Villanueva@fundacion-jala.org" ,
-         "name" : "Peniel Damian Villanueva Paca",
-         "initials" : "PDVP",
-         "project_color" : 908675
+         "role" : "viewer",
+         "project_color" : "908675"
+      },
+      "putPM":{
+         "length": 5,
+         "team_strength": 0.9
       }
    },
 
