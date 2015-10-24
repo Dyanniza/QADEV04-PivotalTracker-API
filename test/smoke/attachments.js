@@ -81,8 +81,8 @@ describe('Suite attachments smoke test',function (){
         httpMethod
             .del(token, endPoint, function(res) {
                 expect(res.status).to.equal(status.noContent);
-                var projectId = null;
-                var storyId = null;
+                projectId = null;
+                storyId = null;
                 enPoint = null;
                 done();
             });
