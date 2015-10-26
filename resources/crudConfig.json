@@ -104,5 +104,19 @@
             "timekeeperfalse":false,
             "time_enterer":false
         }
+    },
+
+    "labels":{
+         "post":{
+            "name":"port"
+         },
+         "put":{
+            "name":"latest"
+         },
+         "label":{
+            "kind": "label"
+         },
+
+         "type": "label"
     }
 }

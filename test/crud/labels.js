@@ -13,6 +13,7 @@ var endPoints = require('../../resources/endPoints.json');
 var config = require ('../../resources/config.json');
 var httpMethod = require ('../../lib/generalLib.js');
 var tokenAPI = require ('../../lib/tokenAPI');
+var configLog = require('../../resources/crudConfig.json');
 
 var labelsProjectEndPoint = endPoints.labels.labelsProjectEndPoint;
 var labelsByStoryIdEndPoint = endPoints.labels.labelsByStoryIdEndPoint;
@@ -23,28 +24,35 @@ var projectsEndPoint = endPoints.projects.projectsEndPoint;
 var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 
 var userCredentials = config.userCredential;
+var status = config.status;
 var token = null;
 var endPoint = null;
 var projectId = null;
 var storyID = null;
 var labelId = null;
 
+var prj = configLog.project.post;
+var story = configLog.stories.post;
+var labName = configLog.labels.post.name;
+var kind = configLog.labels.type;
+
 describe('Suite of CRUD test for Labels',function(){
 	this.timeout(10000);
 
     before('Get Token', function (done) {
-      tokenAPI
-        .getToken(userCredentials, function (res) {
-            expect(res.status).to.equal(status.ok);
-            token = res.body.api_token;                
-            done();                
-        });
+        tokenAPI
+            .getToken(userCredentials, function (res) {
+                expect(res.status).to.equal(status.ok);
+                token = res.body.api_token;                
+                done();                
+            });
     });   
+   
 
     beforeEach('Creating Pre Conditions at least a project', function (done) {
     var projectName = { name : chance.string()};
     var storyName = { name: chance.string()};
-    var commtContain = { text : chance.sentence({words: 6})}
+    var contentLab = { name: 'label'};
 
         httpMethod
 
@@ -56,16 +64,18 @@ describe('Suite of CRUD test for Labels',function(){
                     httpMethod
                     .post(storyName, token, endPoint, function(res) {
                         storyId = res.body.id;
-                        endPoint = commentsStoryIdEndPoint.replace('{project_id}', projectId )
+                        endPoint = labelsByStoryIdEndPoint.replace('{project_id}', projectId )
                                                           .replace('{story_id}', storyId);
+                                                          console.log(endPoint);
                         
                         httpMethod
-                            .post(commtContain, token, endPoint, function(res) {
+                            .post (contentLab, token, endPoint, function(res) {
                                 expect(res.status).to.equal(status.ok);
-                                commentId = res.body.id;
-                                endPoint = attsStoryPrjIdEndPoint.replace('{project_id}', projectId)
+                                labelId = res.body.id;
+                                endPoint = labelIdStoryIdProjectIdEndPoint.replace('{project_id}', projectId)
                                                                  .replace('{story_id}', storyId)
-                                                                 .replace('{comment_id}', commentId);
+                                                                 .replace('{label_id}', labelId);
+                                                                 console.log(endPoint);
                                 
                                 done();
                             });
@@ -82,21 +92,49 @@ describe('Suite of CRUD test for Labels',function(){
                     done();                    
                 });            
     });
-    describe('Test suite for Post methods',function(){
+    describe('Test suite for Put methods',function(){
 
     	it('POST /projects/{project_id}/labels',function(done){
-		endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);					
+        
+		endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);	
+        			
 			var content = {
-					name : chance.string()											
+					name : 'port'											
 				};
 			httpMethod				
 				.post(content,token,endPoint,function(res){
-					expect(res.status).to.equal(200);
-					label_id = res.body.id;
+					expect(res.status).to.equal(status.ok);                   
+                    expect(res.body.kind).to.equal(kind);
+                    expect(res.body.project_id).to.equal(projectId);
+                    expect(res.body.name).to.equal(labName)
+                    label_id = res.body.id 
 					done();
 				});
 
 		});
+
+    });
+
+    describe.skip('Test suite for Post methods',function(){
+
+        it('PuT /projects/{project_id}/labels',function(done){
+        
+        endPoint = labelsProjectEndPoint.replace('{project_id}',projectId); 
+                  
+            var content = {
+                    name : 'port'                                           
+                };
+            httpMethod              
+                .put(content,token,endPoint,function(res){
+                    expect(res.status).to.equal(status.ok);                   
+                    expect(res.body.kind).to.equal(kind);
+                    expect(res.body.project_id).to.equal(projectId);
+                    expect(res.body.name).to.equal(labName)
+                    label_id = res.body.id 
+                    done();
+                });
+
+        });
 
     });
 
