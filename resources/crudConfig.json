@@ -1,141 +1,188 @@
 
-{
-	"project" : { 
-
-		"post" :{
-   		"initial_velocity": 5,
-   		"iteration_length": 2,
-   		"name": "Pivotal Tracker Project--1",
-   		"number_of_done_iterations_to_show": 5,
-   		"point_scale": "0,1,2,3,5,8",
-         "created_at": "2015-10-12T14:55:05Z",
-   		"week_start_day":"Monday",
-         "start_date": "2015-10-19",
-   		"public": true
-   	},
-
-   		"put" :{
-
-   		"initial_velocity": 10,
-   		"iteration_length": 3,
-   		"name": "QDV04-2015 Project",
-   		"number_of_done_iterations_to_show": 10,
-   		"point_scale": "0,1,2,3",
-   		"week_start_day":"Wednesday",
-   		"public": false	
-
-   		},
-
-   	"type": "project"
-
-
+{  
+   "project":{  
+      "post":{  
+         "initial_velocity":5,
+         "iteration_length":2,
+         "name":"Pivotal Tracker Project--1",
+         "number_of_done_iterations_to_show":5,
+         "point_scale":"0,1,2,3,5,8",
+         "created_at":"2015-10-12T14:55:05Z",
+         "week_start_day":"Monday",
+         "start_date":"2015-10-19",
+         "public":true
+      },
+      "put":{  
+         "initial_velocity":10,
+         "iteration_length":3,
+         "name":"QDV04-2015 Project",
+         "number_of_done_iterations_to_show":10,
+         "point_scale":"0,1,2,3",
+         "week_start_day":"Wednesday",
+         "public":false
+      },
+      "type":"project"
    },
-
-   	"task":{
-
-   		"post":{
-   			
-   			"description": "Change the port 8080 to 4040"
-   		},
-
-         "post1":{"description":"Configure the firewall"},
-
-         "put":{
-   			"description": "Chage the port 8080 to 9090",
-   			"complete": true
-   		},
-
-         "completed":{"complete": true},
-
-   		"type": "task"
-
-   	},
-
-   	"stories":{
-
-   		"post": {
-   			"name":"As a tester verify the X funcionality",
-            "estimate": 3
-   		},
-
-         "post1":{
-            "name":"As a tester verify the Z funcionality",
-            "estimate": 2,
-            "current_state":"started"
-            },
-
-         "post2":{
-            "name":"As a tester verify the Y funcionality",
-            "estimate": 3,
-            "current_state":"started"
-            },
-         "put":{
-            "estimate": 1,
-            "created_at":"2015-10-26T02:40:04Z"
+   "task":{  
+      "post":{  
+         "description":"Change the port 8080 to 4040"
+      },
+      "post1":{  
+         "description":"Configure the firewall"
+      },
+      "put":{  
+         "description":"Chage the port 8080 to 9090",
+         "complete":true
+      },
+      "completed":{  
+         "complete":true
+      },
+      "type":"task"
+   },
+   "stories":{  
+      "post":{  
+         "name":"As a tester verify the X funcionality",
+         "estimate":3
+      },
+      "post1":{  
+         "name":"As a tester verify the Z funcionality",
+         "estimate":2,
+         "current_state":"started"
+      },
+      "post2":{  
+         "name":"As a tester verify the Y funcionality",
+         "estimate":3,
+         "current_state":"started"
+      },
+      "put":{  
+         "estimate":1,
+         "created_at":"2015-10-26T02:40:04Z"
+      },
+      "state":{  
+         "finished":{  
+            "current_state":"finished"
          },
-
-         "state":{
-            "finished": {"current_state":"finished"},
-            "delivered": {"current_state":"delivered"},
-            "accepted": {"current_state":"accepted"}
+         "delivered":{  
+            "current_state":"delivered"
          },
-
-         "created":{"created_at":"2015-10-14T02:40:04Z"}
-
-
-
-
-
-
-   	},
-
-   "projectMembership":{
-      "account":{
-         "person_id" : 1822660,
-         "username": "penield",
-         "role" : "member",
-         "email" :"Damian.Villanueva@fundacion-jala.org",
-         "name" : "Peniel Damian Villanueva Paca",
-         "initials" : "PDVP",
-         "project_color" : "ce9f00",
-         "wants_comment_notification_emails": true,
-         "will_receive_mention_notifications_or_emails": true
+         "accepted":{  
+            "current_state":"accepted"
+         }
       },
-      "postEmail":{
-         "email" :"Damian.Villanueva@fundacion-jala.org",
-         "role" : "member",
-         "project_color" : "ce9f00"
+      "created":{  
+         "created_at":"2015-10-14T02:40:04Z"
       },
-      "postPerson_id":{
-         "person_id" : 1822660,
-         "role" : "member",
-         "project_color" : "ce9f00"
+      "postDefault":{  
+         "kind":"story",
+         "story_type":"feature",
+         "current_state":"unscheduled",
+         "owner_ids":[  
+
+         ],
+         "labels":[  
+
+         ]
       },
-      "put":{
-         "role" : "viewer",
-         "project_color" : "908675"
-      },
-      "putPM":{
-         "length": 5,
-         "team_strength": 0.9
+      "put":{  
+         "estimate":1
       }
    },
+   "story":{  
+      "post":{  
+         "kind":"person",
+         "id":-1,
+         "name":"Jorge Avila",
+         "email":"jorge_top14@hotmail.com",
+         "initials":"JA",
+         "username":"jorgeavila3"
+      },
+      "get":{  
+         "kind":"story",
+         "story_type":"feature",
+         "current_state":"unscheduled",
+         "labels":[  
 
-    "accounts":{  
-        "account_name":"test account",
-        "get":{  
-            "kind":"account",
-            "kind_summary":"account_summary",
-            "kind_memberships":"account_membership",
-            "plan":"Free",
-            "status":"active",
-            "owner":true,
-            "ownerfalse":false,
-            "admin":false,
-            "project_creator":false,
-            "timekeeper":true,
-            "timekeeperfalse":false,
-            "time_enterer":false
-        }
-    }
+         ]
+      },
+      "put":{  
+         "name":""
+      }
+   },
+   "activity":{  
+      "get":{  
+         "kind":"story_create_activity",
+         "message":"Jorge Avila added this feature",
+         "highlight":"added",
+         "project":{  
+            "kind":"project",
+            "id":-1,
+            "name":""
+         }
+      },
+      "getEpic":{  
+         "kind":"epic_create_activity",
+         "message":"Jorge Avila added this epic",
+         "highlight":"added"
+      }
+   },
+   "projectMembership":{  
+      "account":{  
+         "person_id":1822660,
+         "username":"penield",
+         "role":"member",
+         "email":"Damian.Villanueva@fundacion-jala.org",
+         "name":"Peniel Damian Villanueva Paca",
+         "initials":"PDVP",
+         "project_color":"ce9f00",
+         "wants_comment_notification_emails":true,
+         "will_receive_mention_notifications_or_emails":true
+      },
+      "postEmail":{  
+         "email":"Damian.Villanueva@fundacion-jala.org",
+         "role":"member",
+         "project_color":"ce9f00"
+      },
+      "postPerson_id":{  
+         "person_id":1822660,
+         "role":"member",
+         "project_color":"ce9f00"
+      },
+      "put":{  
+         "role":"viewer",
+         "project_color":"908675"
+      },
+      "putPM":{  
+         "length":5,
+         "team_strength":0.9
+      }
+   },
+   "accounts":{  
+      "account_name":"test account",
+      "get":{  
+         "kind":"account",
+         "kind_summary":"account_summary",
+         "kind_memberships":"account_membership",
+         "plan":"Free",
+         "status":"active",
+         "owner":true,
+         "ownerfalse":false,
+         "admin":false,
+         "project_creator":false,
+         "timekeeper":true,
+         "timekeeperfalse":false,
+         "time_enterer":false
+      }
+   },
+   "labels":{  
+      "post":{  
+         "name":"port"
+      },
+      "put":{  
+         "name":"latest"
+      },
+      "label":{  
+         "kind":"label"
+      },
+      "type":"label"
+   }
 }
