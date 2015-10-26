@@ -1,0 +1,21 @@
+{
+  "appenders": [
+    {
+      "type": "clustered",
+      "appenders": [
+        {
+          "type": "file",
+          "filename": "log/app.log"
+        },
+        {
+          "type": "logLevelFilter",
+          "level": "ERROR",
+          "appender": {
+            "type": "file",
+            "filename": "log/errors.log"
+          }
+        }
+      ]
+    }
+  ]
+}

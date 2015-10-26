@@ -1,4 +1,8 @@
 /*
+@ Author Ronald Butron
+@ Story Tasks Test
+ */
+/*
 Story: Start user story with assigned task order by priority
 Given I have project 'Pivotal Tracker Project'
 And three user stories are already in the IceBox
@@ -46,20 +50,11 @@ var kind = configLog.task.type;
 var status = config.status;
 var userCredential = config.userCredential;
 
-var replacer = function (key, value) {
-  if (typeof value === "string") {
-    return undefined;
-  }
-  return value;
-}
 
 describe('Start user story', function () {
 	this.timeout(20000);
 	before(function (done) {
 		
-		console.log('Get Token.....');
-		console.log('Create Project...');
-
 		getToken
             .getToken(userCredential, function (res) {
                 expect(res.status).to.equal(status.ok);
@@ -91,7 +86,7 @@ describe('Start user story', function () {
 
 	context('Given I have project Pivotal Tracker Project', function () {
 
-		before(function (done) {
+		before(function () {
 
 			it('And two user stories are already in the IceBox', function (done) {
 				var storyName1 = story;
@@ -111,7 +106,7 @@ describe('Start user story', function () {
 							});
 					});
 			});
-			done();
+			
 		});
 
 		describe('When I create a new user story "As a tester verify that Z function "', function () {

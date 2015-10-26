@@ -14,6 +14,13 @@
 		"userPassword":"Control123"
 	},
 
+	"file" : "xunit.xml",
+    "consoleOutput" : {
+      "suite" : true,
+      "test" : true,
+      "fail" : false
+    },
+
 	"account_name":"qadev-account",
 	"project_name":"qadev-project",
 
@@ -27,6 +34,8 @@
 		"forbidden":403,
 		"notFound":404
 	},
+
+
 
 	"proxy":"http://172.20.240.5:8080",
 	"tokenHeader":"X-TrackerToken",
