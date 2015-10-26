@@ -24,14 +24,14 @@ var projectsEndPoint = endPoints.projects;
  * Variables to be used in the differents tests
  */
 var token = null;
-var id = null;
+var project_id = null;
 var argument = crudConfig.stories.post;
 var userCredential = config.userCredential;
 var status = config.status;
 var chance = new Chance();
 var newProject = {name: chance.string()};
 
-describe('CRUD Test for Actvity Service Pivotal Tracker', function(){	
+describe('CRUD Test for Actvity Service Pivotal Tracker', function(){
 	this.timeout(config.timeout);
 	before('Getting Token.....', function (done) {
 		getToken
@@ -43,6 +43,7 @@ describe('CRUD Test for Actvity Service Pivotal Tracker', function(){
                     .post(newProject, token, projectsEndPoint, function(res) {
                         expect(res.status).to.equal(status.ok);
                         newProject.project_id = res.body.id;
+                        project_id = res.body.id;
                         crudConfig.activity.get.project.id = newProject.project_id;
                         crudConfig.activity.get.project.name = newProject.name;
                         projectsEndPoint = endPoints.stories.storiesEndPoint.replace('{project_id}', newProject.project_id);
@@ -56,16 +57,16 @@ describe('CRUD Test for Actvity Service Pivotal Tracker', function(){
             });
 	});
 
-	/*after('DELETING THE PROJECT ...', function (done) {
-		projectsEndPoint = endPoints.projects.projectByIdEndPoint;
-		projectsEndPoint = projectsEndPoint.replace('{project_id}', newProject.project_id);		
-        activitys
-            .del(token, projectsEndPoint, function(res) {
-                expect(res.status).to.equal(status.noContent);
-                expect(res.body.status).to.be.empty;                
-                done();
-            });
-    });*/
+  after('DELETING THE PROJECT ...', function (done) {
+      projectsEndPoint = endPoints.projects.projectByIdEndPoint;
+      projectsEndPoint = projectsEndPoint.replace('{project_id}', project_id);
+          activitys
+              .del(token, projectsEndPoint, function(res) {
+                  expect(res.status).to.equal(status.noContent);
+                  expect(res.body.status).to.be.empty;                
+                  done();
+              });
+      });
 
 	it('GET /my/activity', function (done) {
 		activitysEndPoint = activitysEndPoint.myActivitysEndPoint;
@@ -115,39 +116,27 @@ describe('CRUD Test for Actvity Service Pivotal Tracker', function(){
 			});
 	});
 
-	describe('GET methods use EPICS', function (){
-		var newEpic = {
-			name: chance.string()
-		};
-		//epicsEndPoint = epics.replace('{project_id}', newProject.project_id);
-		var projectsEndPoint = endPoints.projects.projectByIdEndPoint;
-		projectsEndPoint = projectsEndPoint.replace('{project_id}', newProject.project_id);
+	it('GET /projects/{project_id}/epics/{epic_id}/activity', function (done) {
+      var newEpic = {
+        name: chance.string()
+      };
+      epicsEndPoint = epics.replace('{project_id}', project_id);
+      activitys
+        .post(newEpic, token, epicsEndPoint, function (res) {
+          expect(res.status).to.equal(status.ok);
+          newEpic.epic_id = res.body.id;
+          var crudJson = crudConfig.activity.getEpic;
+          activitysEndPoint = endPoints.activity.myActivitysEpic.replace('{project_id}', newProject.project_id);
+          activitysEndPoint = activitysEndPoint.replace('{epic_id}', newEpic.epic_id);
 
-		before('CREATING the epic ...', function (res) {
-			activitys
-				.post(newEpic, token, projectsEndPoint+'/epics', function (res) {
-					expect(res.status).to.equal(status.ok);
-					newEpic.epic_id = res.body.id;
-					console.log('********EPIC: '+res.body)
-					done();
-				});
-		});
-
-		after('DELETING THE PROJECT ...', function (done) {
-			projectsEndPoint = endPoints.projects.projectByIdEndPoint;
-			projectsEndPoint = projectsEndPoint.replace('{project_id}', newProject.project_id);
-        	activitys
-            	.del(token, projectsEndPoint, function(res) {
-                	expect(res.status).to.equal(status.noContent);
-                	expect(res.body.status).to.be.empty;                
-                	done();
-            	});
-    	});
-
-		it('GET /projects/{project_id}/epics/{epic_id}/activity', function (done) {
-			//activitysEndPoint = endPoints.activity.myActivitysEpic.replace('{project_id}', newProject.project_id);
-			//activitysEndPoint = activitysEndPoint.replace('{epic_id}', newEpic.epic_id);
-			
-		});
-	});
+          activitys
+            .get(token, activitysEndPoint, function(res) {
+                expect(res.status).to.equal(config.status.ok);
+                expect(res.body[0].kind).to.equal(crudJson.kind);
+                expect(res.body[0].message).to.equal(crudJson.message);
+                expect(res.body[0].highlight).to.equal(crudJson.highlight);
+                done();
+            });   
+        });      
+    });
 });
