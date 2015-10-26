@@ -1,0 +1,7 @@
+<testsuite name="Mocha Tests" tests="5" failures="0" errors="0" skipped="0" timestamp="Sun, 25 Oct 2015 14:44:20 GMT" time="12.698">
+<testcase classname="CRUD Test for Projects Service Pivotal Tracker Create Read and Delete" name="POST /projects" time="0.936"/>
+<testcase classname="CRUD Test for Projects Service Pivotal Tracker Create Read and Delete" name=" GET /projects" time="2.777"/>
+<testcase classname="CRUD Test for Projects Service Pivotal Tracker Create Read and Delete" name="DELETE /projects/{project_id}" time="0.874"/>
+<testcase classname="CRUD Test for Projects Service Pivotal Tracker Read and Edit Projects" name="GET /projects/{project_id}" time="0.92"/>
+<testcase classname="CRUD Test for Projects Service Pivotal Tracker Read and Edit Projects" name="PUT /projects/{project_id}" time="2.231"/>
+</testsuite>

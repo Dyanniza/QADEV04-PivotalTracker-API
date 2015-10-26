@@ -5,11 +5,12 @@
 		"post" :{
    		"initial_velocity": 5,
    		"iteration_length": 2,
-   		"name": "Pivotal Tracker Project852",
+   		"name": "Pivotal Tracker Project-9",
    		"number_of_done_iterations_to_show": 5,
    		"point_scale": "0,1,2,3,5,8",
-         "created_at": "2015-10-10T14:55:05Z",
+         "created_at": "2015-10-12T14:55:05Z",
    		"week_start_day":"Monday",
+         "start_date": "2015-10-19",
    		"public": true
    	},
 
@@ -34,13 +35,17 @@
 
    		"post":{
    			
-   			"description": "Chage the port 8080 to 4040"
+   			"description": "Change the port 8080 to 4040"
    		},
 
-   		"put":{
+         "post1":{"description":"Configure the firewall"},
+
+         "put":{
    			"description": "Chage the port 8080 to 9090",
-   			"complete":true
+   			"complete": true
    		},
+
+         "completed":{"complete": true},
 
    		"type": "task"
 
@@ -49,11 +54,39 @@
    	"stories":{
 
    		"post": {
-   			"name":"As a tester verify the X funcionality"
+   			"name":"As a tester verify the X funcionality",
+            "estimate": 3
    		},
+
+         "post1":{
+            "name":"As a tester verify the Z funcionality",
+            "estimate": 2,
+            "current_state":"started"
+            },
+
+         "post2":{
+            "name":"As a tester verify the Z funcionality",
+            "estimate": 2,
+            "current_state":"started"
+            },
          "put":{
-            "estimate": 1
-         }
+            "estimate": 1,
+            "created_at":"2015-10-26T02:40:04Z"
+         },
+
+         "state":{
+            "finished": {"current_state":"finished"},
+            "delivered": {"current_state":"delivered"},
+            "accepted": {"current_state":"accepted"}
+         },
+
+         "created":{"created_at":"2015-10-14T02:40:04Z"}
+
+
+
+
+
+
    	},
 
    "projectMembership":{
