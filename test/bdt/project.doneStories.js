@@ -77,7 +77,6 @@ describe('The user story is accepted', function () {
 
 	after('Delete the project', function (done) {
 
-		console.log('Deleted Project');
 		endPoint = projectByIdEndPoint.replace('{project_id}', prjId);
 		generalLib
 			.del(token, endPoint, function (res) {
