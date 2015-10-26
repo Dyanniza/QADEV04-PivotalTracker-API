@@ -49,12 +49,59 @@
    	"stories":{
 
    		"post": {
-   			"name":"As a tester verify the X funcionality"
+   			"name":"as a tester verify that X function is implemented"
+         },
+      
+      "postDefault":{
+          "kind": "story",
+          "story_type": "feature",
+          "current_state": "unscheduled",
+          "owner_ids": [],
+          "labels": []
    		},
-         "put":{
-            "estimate": 1
-         }
+        
+      "put":{
+          "estimate": 1
+      }
    	},
+
+    "story": {
+        "post": {
+            "kind": "person",
+            "id": -1,
+            "name":"Jorge Avila",
+            "email": "jorge_top14@hotmail.com",
+            "initials": "JA",
+            "username": "jorgeavila3"
+        },
+        "get": {
+            "kind": "story",
+            "story_type": "feature",
+            "current_state": "unscheduled",            
+            "labels": []
+        },
+        "put": {
+          "name": ""
+        }
+    },
+
+      "activity": {
+         "get": {
+            "kind": "story_create_activity",
+            "message": "Jorge Avila added this feature",
+            "highlight": "added",
+            "project": {
+               "kind": "project",
+               "id": -1,
+               "name": ""
+            }
+         },
+         "getEpic": {
+            "kind": "epic_create_activity",
+            "message": "Jorge Avila added this epic",
+            "highlight": "added"           
+         }
+      },
 
    "projectMembership":{
       "account":{
