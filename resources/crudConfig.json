@@ -5,10 +5,11 @@
 		"post" :{
    		"initial_velocity": 5,
    		"iteration_length": 2,
-   		"name": "QDV04-12 Project",
+   		"name": "Pivotal Tracker Project852",
    		"number_of_done_iterations_to_show": 5,
    		"point_scale": "0,1,2,3,5,8",
-   		"week_start_day":"Tuesday",
+         "created_at": "2015-10-10T14:55:05Z",
+   		"week_start_day":"Monday",
    		"public": true
    	},
 
@@ -24,7 +25,7 @@
 
    		},
 
-   		"type": "project"
+   	"type": "project"
 
 
    },
@@ -48,8 +49,11 @@
    	"stories":{
 
    		"post": {
-   			"name":"as a tester verify that X function is implemented"
-   		}
+   			"name":"As a tester verify the X funcionality"
+   		},
+         "put":{
+            "estimate": 1
+         }
    	},
 
    "projectMembership":{
@@ -100,5 +104,19 @@
             "timekeeperfalse":false,
             "time_enterer":false
         }
+    },
+
+    "labels":{
+         "post":{
+            "name":"port"
+         },
+         "put":{
+            "name":"latest"
+         },
+         "label":{
+            "kind": "label"
+         },
+
+         "type": "label"
     }
 }
