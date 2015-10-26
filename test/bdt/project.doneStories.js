@@ -134,9 +134,10 @@ describe('The user story is accepted', function () {
 
 			
 			
-		describe('When I complete the missing tasks  ', function () {
+		describe('When I complete the missing tasks', function () {
 
-			it('Then the user story is Finished', function (done) {
+			before(function (done) {
+				
 				endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
 												   .replace('{story_id}', storyId1)
 												   .replace('{task_id}', taskId1);
@@ -151,22 +152,31 @@ describe('The user story is accepted', function () {
 						generalLib
 							.put(taskName.completed, token, endPoint, function (res) {
 								expect(res.status).to.equal(status.ok);
-								endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-											   				  .replace('{story_id}', storyId1);
-			   				   	generalLib
-									.put(story.state.finished, token, endPoint, function (res) {
-										expect(res.status).to.equal(status.ok);
-										endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-											   				   		  .replace('{story_id}', storyId2);
-										generalLib
-											.put(story.state.finished, token, endPoint, function (res1) {
-												expect(res1.status).to.equal(status.ok);
-												done();
-											});
-									});
+								done();
+								
 							});
 					});
+			});
+			
+
+			it('Then the user story is Finished', function (done) {
+				
+		   		endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
+											   				  .replace('{story_id}', storyId1);
+
+		   		generalLib
+				.put(story.state.finished, token, endPoint, function (res) {
+					expect(res.status).to.equal(status.ok);
+					endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
+					   				   		  	.replace('{story_id}', storyId2);
+					generalLib
+						.put(story.state.finished, token, endPoint, function (res1) {
+							expect(res1.status).to.equal(status.ok);
+							done();
+						});
 				});
+							
+			});
 
 			it('And the user story is Delivered', function (done) {
 				
