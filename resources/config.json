@@ -2,7 +2,11 @@
 	"userCredential":{
 		"email":"jorge_top14@gmail.com",
 		"userAccount":"jorgeavila3",
-		"userPassword":"Control123"	
+		"userPassword":"Control123",
+		"name":"Jorge Avila",
+		"initials": "JA",
+		"role": "owner",
+		"project_color": "cccccc"
 	},
 	"userCredential2": {
 		"email":"jorge.avila@fundacion-jala.org",

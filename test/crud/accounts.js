@@ -1,5 +1,6 @@
 /**
  * This file has a set of test suits that will test the CRUD in the account(s) service(s)
+ * @Author Jorge Avila Baldiviezo
  */
 var request = require('superagent');
 require('superagent-proxy')(request);
@@ -34,10 +35,8 @@ var accountSummariesEndPoint = endPoints.accounts.accountSummariesEndPoint;
 var accountMembershipsEndPoint = endPoints.accounts.accountMembershipsEndPoint;
 var accountMembershipEndPoint = endPoints.accounts.accountMembershipEndPoint;
 
-
 describe('CRUD', function() {
     this.timeout(config.timeout);
-
     before('create an account', function(done) {
         tokenAPI
             .getToken(config.userCredential, function(res) {
@@ -87,9 +86,9 @@ describe('CRUD', function() {
         var endPointDeleteProject = projectByIdEndPoint.replace('{project_id}', projectIdToDelete);
         var projects = null;
         generalLib
-            .get(token, endPoints.projects.projectsEndPoint, function(res){
+            .get(token, endPoints.projects.projectsEndPoint, function(res) {
                 projects = res.body;
-                if(projects.length == 0) {
+                if (projects.length == 0) {
                     done();
                 } else {
                     generalLib.del(token, endPointDeleteProject, function(res) {
@@ -163,7 +162,6 @@ describe('CRUD', function() {
 
         it('GET /accounts/{accountId}/memberships', function(done) {
             var accMembershipsEndPoint = accountMembershipsEndPoint.replace('{account_id}', dinamicValues.id);
-
             var kind = crudConfig.accounts.get.kind_memberships;
             var id = dinamicValues.userId;
             var name = dinamicValues.name;
@@ -189,7 +187,6 @@ describe('CRUD', function() {
             var accMembershipEndPoint = accountMembershipEndPoint
                 .replace('{account_id}', dinamicValues.id)
                 .replace('{person_id}', dinamicValues.userId);
-
             var kind = crudConfig.accounts.get.kind_memberships;
             var id = dinamicValues.userId;
             var accountId = dinamicValues.id;
@@ -218,11 +215,10 @@ describe('CRUD', function() {
         });
     });
 
-    describe('POST methods for accounts', function() {
+    describe('POST method for membership in accounts', function() {
         it('POST /accounts/{accountId}/memberships', function(done) {
             var accMembershipEndPoint = accountMembershipsEndPoint
                 .replace('{account_id}', dinamicValues.id);
-
             var kind = crudConfig.accounts.get.kind_memberships;
             var accountId = dinamicValues.id;
             var owner = crudConfig.accounts.get.ownerfalse;
@@ -244,9 +240,70 @@ describe('CRUD', function() {
                     expect(res.body.time_enterer).to.equal(timeEnterer);
                     accMembershipEndPoint = accountMembershipEndPoint
                         .replace('{account_id}', dinamicValues.id)
-                        .replace('{person_id}', secondUserMembership),
-                        generalLib
+                        .replace('{person_id}', secondUserMembership);
+                    generalLib
                         .del(token, accMembershipEndPoint, function(res) {
+                            done();
+                        });
+                });
+        });
+    });
+
+    describe('PUT method for account memberships', function() {
+        it('PUT /accounts/{account_id}/memberships/{person_id}', function(done) {
+            var accMembershipEndPoint = accountMembershipsEndPoint
+                .replace('{account_id}', dinamicValues.id);
+            var dataToSend = {
+                person_id: secondUserMembership
+            };
+            generalLib
+                .post(dataToSend, token, accMembershipEndPoint, function(res) {
+                    delete dataToSend.person_id;
+                    dataToSend.admin = true;
+                    dataToSend.project_creator = true;
+                    dataToSend.timekeeper = true;
+                    dataToSend.time_enterer = true;
+                    accMembershipEndPoint = accountMembershipEndPoint
+                        .replace('{account_id}', dinamicValues.id)
+                        .replace('{person_id}', secondUserMembership);
+                    generalLib
+                        .put(dataToSend, token, accMembershipEndPoint, function(res) {
+                            var today = new Date();
+                            var update = new Date(res.body.updated_at);
+                            expect(res.body.account_id).to.equal(dinamicValues.id);
+                            expect(res.body.id).to.equal(secondUserMembership);
+                            expect(res.body.admin).to.equal(true);
+                            expect(res.body.project_creator).to.equal(true);
+                            expect(res.body.timekeeper).to.equal(true);
+                            expect(res.body.time_enterer).to.equal(true);
+                            expect(update.getYear()).to.equal(today.getYear());
+                            expect(update.getMonth()).to.equal(today.getMonth());
+                            expect(update.getDay()).to.equal(today.getDay());
+                            expect(update.getHours()).to.equal(today.getHours());
+                            generalLib
+                                .del(token, accMembershipEndPoint, function(res) {
+                                    done();
+                                });
+                        });
+                });
+        })
+    });
+
+    describe('DELETE Methods for account memberships', function() {
+        it('DELETE /accounts/{account_id}/memberships/{person_id}', function(done) {
+            var accMembershipEndPoint = accountMembershipsEndPoint
+                .replace('{account_id}', dinamicValues.id);
+            var arguments = {
+                person_id: secondUserMembership
+            };
+            generalLib
+                .post(arguments, token, accMembershipEndPoint, function(res) {
+                    var deleteMemberShipEnPoint = accountMembershipEndPoint
+                        .replace('{account_id}', dinamicValues.id)
+                        .replace('{person_id}', secondUserMembership);
+                    generalLib
+                        .del(token, deleteMemberShipEnPoint, function(res) {
+                            expect(res.status).to.equal(config.status.noContent);
                             done();
                         });
                 });

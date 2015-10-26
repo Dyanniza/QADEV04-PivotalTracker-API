@@ -5,10 +5,11 @@
 		"post" :{
    		"initial_velocity": 5,
    		"iteration_length": 2,
-   		"name": "QDV04-12 Project",
+   		"name": "Pivotal Tracker Project852",
    		"number_of_done_iterations_to_show": 5,
    		"point_scale": "0,1,2,3,5,8",
-   		"week_start_day":"Tuesday",
+         "created_at": "2015-10-10T14:55:05Z",
+   		"week_start_day":"Monday",
    		"public": true
    	},
 
@@ -24,7 +25,7 @@
 
    		},
 
-   		"type": "project"
+   	"type": "project"
 
 
    },
@@ -50,13 +51,18 @@
    		"post": {
    			"name":"as a tester verify that X function is implemented"
          },
-         "postDefault":{
-            "kind": "story",
-            "story_type": "feature",
-            "current_state": "unscheduled",
-            "owner_ids": [],
-            "labels": []
-         }
+      
+      "postDefault":{
+          "kind": "story",
+          "story_type": "feature",
+          "current_state": "unscheduled",
+          "owner_ids": [],
+          "labels": []
+   		},
+        
+      "put":{
+          "estimate": 1
+      }
    	},
 
     "story": {
@@ -99,23 +105,33 @@
 
    "projectMembership":{
       "account":{
-
          "person_id" : 1822660,
          "username": "penield",
          "role" : "member",
          "email" :"Damian.Villanueva@fundacion-jala.org",
          "name" : "Peniel Damian Villanueva Paca",
          "initials" : "PDVP",
+         "project_color" : "ce9f00",
+         "wants_comment_notification_emails": true,
+         "will_receive_mention_notifications_or_emails": true
+      },
+      "postEmail":{
+         "email" :"Damian.Villanueva@fundacion-jala.org",
+         "role" : "member",
+         "project_color" : "ce9f00"
+      },
+      "postPerson_id":{
+         "person_id" : 1822660,
+         "role" : "member",
          "project_color" : "ce9f00"
       },
       "put":{
-
-         "person_id" : 1822660,
-         "role" : "member",
-         "email": "Damian.Villanueva@fundacion-jala.org" ,
-         "name" : "Peniel Damian Villanueva Paca",
-         "initials" : "PDVP",
-         "project_color" : 908675
+         "role" : "viewer",
+         "project_color" : "908675"
+      },
+      "putPM":{
+         "length": 5,
+         "team_strength": 0.9
       }
    },
 
