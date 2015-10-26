@@ -18,7 +18,7 @@
          "name":"QDV04-2015 Project",
          "number_of_done_iterations_to_show":10,
          "point_scale":"0,1,2,3",
-         "week_start_day":"Wednesday",
+         "week_start_day":"Monday",
          "public":false
       },
       "type":"project"
