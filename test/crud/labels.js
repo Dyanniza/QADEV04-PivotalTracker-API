@@ -115,9 +115,9 @@ describe('Suite of CRUD test for Labels',function(){
 
     });
 
-    describe.skip('Test suite for Post methods',function(){
+    describe('Test suite for Post methods',function(){
 
-        it('PuT /projects/{project_id}/labels',function(done){
+        it('POST /projects/{project_id}/stories/story_id/labels',function(done){
         
         endPoint = labelsProjectEndPoint.replace('{project_id}',projectId); 
                   
@@ -125,7 +125,7 @@ describe('Suite of CRUD test for Labels',function(){
                     name : 'port'                                           
                 };
             httpMethod              
-                .put(content,token,endPoint,function(res){
+                .post(content,token,endPoint,function(res){
                     expect(res.status).to.equal(status.ok);                   
                     expect(res.body.kind).to.equal(kind);
                     expect(res.body.project_id).to.equal(projectId);
