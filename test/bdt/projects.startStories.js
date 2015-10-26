@@ -12,7 +12,7 @@ When I create three task inside the user story
 	Then the tasks has reference of the "Change Oil to the Car" user history 
 	And order the task for priority
 When The user story starts
-	Then
+	
  */
 
 var expect = require('chai').expect;
