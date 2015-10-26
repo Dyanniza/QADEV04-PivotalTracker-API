@@ -1,0 +1,30 @@
+{
+
+	"scenario01":{
+
+		"storyName1": "As a tester verift X funcionality",
+		"storyName2": "As a tester verift Y funcionality",
+		"task01": {
+			"description": "Change the configuration of the ports" 
+		},
+		"task02": {
+			"description": "Configure the firewall" 
+		},
+		"task03": {
+			"description": "Configure the user Accounts" 
+		},
+		"position1":{
+			"position": 1
+		},
+		"position2":{
+			"position": 2
+		},
+		"position3":{
+			"position": 3
+		},
+
+		"started":{
+			"current_state": "started"
+		}
+	}
+}

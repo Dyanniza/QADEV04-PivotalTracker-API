@@ -1,0 +1,37 @@
+{
+	"userCredential":{
+		"email":"jorge_top14@gmail.com",
+		"userAccount":"jorgeavila3",
+		"userPassword":"Control123",
+		"name":"Jorge Avila",
+		"initials": "JA",
+		"role": "owner",
+		"project_color": "cccccc"
+	},
+	"userCredential2": {
+		"email":"jorge.avila@fundacion-jala.org",
+		"userAccount":"jorgeavila2",
+		"userPassword":"Control123"
+	},
+
+	"account_name":"qadev-account",
+	"project_name":"qadev-project",
+
+	"status":{
+
+		"ok":200,
+		"accepted":202,
+		"noContent":204,
+		"badRequest":400,
+		"unauthorized":401,
+		"forbidden":403,
+		"notFound":404
+	},
+
+	"proxy":"http://172.20.240.5:8080",
+	"tokenHeader":"X-TrackerToken",
+	"type":"Content-Type",
+	"json":"application/json",	
+	"timeout": 15000,
+	"role":"member"
+}

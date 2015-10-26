@@ -1,97 +1,131 @@
 /*
 @author Cecilia Chalar
-@class Attachments for Test Cases the Services of Labels using General library.
+@class Attachments for Smoke Testing
  */
 
 var expect = require('chai').expect;
 var request = require('superagent');
+var Chance = require('chance');
+var chance = new Chance();
 require('superagent-proxy')(request);
 
-var endPoints = require('..\\..\\endPoints.json');
-var config = require ('..\\..\\config.json');
+var endPoints = require('../../resources/endPoints.json');
+var config = require ('../../resources/config.json');
 var httpMethod = require ('../../lib/generalLib.js');
 var tokenAPI = require ('../../lib/tokenAPI');
 
-var attachEndPoint = endPoints.labels.labelsProjectEndPoint;
-
+var attByIdprjIdEndPoint = endPoints.attachments.attByIdprjIdEndPoint;
+var attByIdEpicIdEndPoint = endPoints.attachments.attByIdEpicIdEndPoint;
+var attsProjectEndPoint = endPoints.attachments.attsProjectEndPoint;
+var projectsEndPoint = endPoints.projects.projectsEndPoint;
+var commentsStoryIdEndPoint = endPoints.comments.commentsStoryIdEndPoint;
+var attsStoryPrjIdEndPoint = endPoints.attachments.attsStoryPrjIdEndPoint;
+var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
+var storiesEndPoint = endPoints.stories.storiesEndPoint;
 
 var userCredentials = config.userCredential;
+var status = config.status;
+
 var token = null;
 var projectId = null;
 var storyId = null;
 var commentId = null;
+var attachmentId = null;
 
 describe('Suite attachments smoke test',function (){
-	this.timeout(10000);
+    this.timeout(10000);
 
-	 before('Get Token', function (done) {
-        tokenAPI
-            .getToken(userCredentials, function (res) {
-                expect(res.status).to.equal(200);
-                token = res.body.api_token;                
-                done();                
-            });
+    before('Get Token', function (done) {
+      tokenAPI
+        .getToken(userCredentials, function (res) {
+            expect(res.status).to.equal(status.ok);
+            token = res.body.api_token;                
+            done();                
+        });
     });   
 
-	 beforeEach('Creating Pre Conditions', function (done) {
-           var projectName = { name : chance.string()};
-           var storyName = { name: chance.string()};
-           var commtContain = { description : chance.sentence({words: 5})};
-           
-           methods
-           		.post(prj, token, projectsEndPoint,  function(res) {
-                	expect(res.status).to.equal(200);
-                	projectId  = res.body.id;
-                	endPoint = storiesEndPoint.replace('{project_id}', projectId );
-                	
-                	methods
-                    .post(story, token, endPoint, function(res) {
+    beforeEach('Creating Pre Conditions at least a project', function (done) {
+    var projectName = { name : chance.string()};
+    var storyName = { name: chance.string()};
+    var commtContain = { text : chance.sentence({words: 6})}
+
+        httpMethod
+
+            .post(projectName, token, projectsEndPoint,  function(res) {
+                expect(res.status).to.equal(status.ok);
+                projectId = res.body.id;
+                endPoint = storiesEndPoint.replace('{project_id}', projectId );
+                    
+                    httpMethod
+                    .post(storyName, token, endPoint, function(res) {
                         storyId = res.body.id;
-                       	endPoint = storiesTasksEndPoint.replace('{project_id}', projectId )
-                       								   .replace('{story_id}', storyId);
+                        endPoint = commentsStoryIdEndPoint.replace('{project_id}', projectId )
+                                                          .replace('{story_id}', storyId);
                         
-                        methods
-                            .post(taskName, token, endPoint, function(res) {
-                                expect(res.status).to.equal(200);
-                                taskId = res.body.id;
-                                endPoint = storiesTasksByIdEndPoint.replace('{project_id}', projectId)
-        									   					   .replace('{story_id}', storyId)
-        									   					   .replace('{task_id}', taskId);
+                        httpMethod
+                            .post(commtContain, token, endPoint, function(res) {
+                                expect(res.status).to.equal(status.ok);
+                                commentId = res.body.id;
+                                endPoint = attsStoryPrjIdEndPoint.replace('{project_id}', projectId)
+                                                                 .replace('{story_id}', storyId)
+                                                                 .replace('{comment_id}', commentId);
                                 
                                 done();
-	                        });
+                            });
                     });
-               	});
-        });
+            });
+    });
 
-	    afterEach('Deleting project....', function (done) {
-        	endPoint = projectByIdEndPoint.replace('{project_id}', projectId );
-            methods
-                .del(token, endPoint, function(res) {
-                    expect(res.status).to.equal(204);
-                    var projectId = null;
-					var storyId = null;
-                    enPoint = null;
-                    done();
-            	});
-        });
+    afterEach('Deleting project....', function (done) {
+        endPoint = projectByIdEndPoint.replace('{project_id}', projectId );
+        httpMethod
+            .del(token, endPoint, function(res) {
+                expect(res.status).to.equal(status.noContent);
+                projectId = null;
+                storyId = null;
+                enPoint = null;
+                done();
+            });
+    });
 
-        var endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
-		it('GET /projects/{project_id}/labels',function(done){
-						
-			httpMethod			
-				
-				.get(token,endPoint,function(res){
-					expect(res.status).to.equal(200);
-					done();
-				});			
-		});
+        
+    it('DELETE /projects/{project_id}/stories/{story_id}/comments/{comment_id}/file_attachments',function(done){
+    var endPoint = attsStoryPrjIdEndPoint.replace('{project_id}', projectId)
+                                                                 .replace('{story_id}', storyId)
+                                                                 .replace('{comment_id}', commentId);               
+        httpMethod            
+                
+            .del(token,endPoint,function(res){
+                expect(res.status).to.equal(status.notFound);
+                done();
+            });            
+    });
 
+    it('DELETE /projects/{project_id}/stories/{story_id}/comments/{comment_id}/file_attachments/file_attachments_id',function(done){
+    var endPoint = attsStoryPrjIdEndPoint.replace('{project_id}', projectId)
+                                                                 .replace('{story_id}', storyId)
+                                                                 .replace('{comment_id}', commentId)
+                                                                 .replace('{file_attachments_id}',attachmentId);              
+        httpMethod            
+                
+            .del(token,endPoint,function(res){
+                expect(res.status).to.equal(status.notFound);
+                done();
+            });            
+    });
 
-
-
-
-
-
-
+    it('POST /projects/{project_id}/uploads',function(done){
+    var endPoint = attsProjectEndPoint.replace('{project_id}', projectId);
+    var contain = {
+      file:'@$FILE_PATH',
+      file_attachment_ids_to_add:['21']
+    };
+                                                                              
+        httpMethod            
+                
+            .del(token,endPoint,function(res){
+                expect(res.status).to.equal(status.notFound);
+                done();
+            });            
+    });
 });
