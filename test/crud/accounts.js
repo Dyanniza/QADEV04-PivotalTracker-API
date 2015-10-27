@@ -10,8 +10,6 @@ var tokenAPI = require('../../lib/tokenAPI');
 var endPoints = require('../../resources/endPoints.json');
 var config = require('../../resources/config.json');
 var crudConfig = require('../../resources/crudConfig.json');
-var Chance = require('chance');
-var chance = new Chance();
 
 /**
  * Variables to be used in the differents tests
@@ -19,7 +17,6 @@ var chance = new Chance();
 var token = null;
 var projectIdToDelete = null;
 var accountIdForTests = null;
-var uniqueProjectName = null;
 var secondUserMembership = null;
 var dinamicValues = {};
 
@@ -41,7 +38,6 @@ describe('CRUD', function() {
         tokenAPI
             .getToken(config.userCredential, function(res) {
                 token = res.body.api_token;
-                uniqueProjectName = chance.string();
                 dinamicValues.userId = res.body.id;
                 var existAccounts = null;
                 generalLib
