@@ -4,7 +4,7 @@
  */
 
 /*
-Story: The user story is accepted and pass to the done dashboard when the iteration is finished  
+Story: The user story is accepted  
 Given I have a project 'Pivotal Tracker'
 And two stories are already in the Current dashboard
 And the two stories have a unfinished task
@@ -88,8 +88,7 @@ describe('The user story is accepted', function () {
 
 	context('Given I have a project "Pivotal Tracker"', function () {
 
-		
-				
+					
 			it('two stories are already in the Current dashboard', function (done) {
 				
 				
@@ -98,10 +97,16 @@ describe('The user story is accepted', function () {
 				generalLib
 					.post(story.post1, token, endPoint, function (res) {
 						expect(res.status).to.equal(status.ok);
+						expect(res.body.name).to.equal(story.post1.name);
+						expect(res.body.estimate).to.equal(story.post1.estimate);
+						expect(res.body.current_state).to.equal(story.post1.current_state);
 						storyId1 = res.body.id;
 						generalLib
 							.post(story.post2, token, endPoint, function (res) {
 								expect(res.status).to.equal(status.ok);
+								expect(res.body.name).to.equal(story.post2.name);
+								expect(res.body.estimate).to.equal(story.post2.estimate);
+								expect(res.body.current_state).to.equal(story.post2.current_state);
 								storyId2 = res.body.id;
 								done();
 							});
@@ -117,6 +122,7 @@ describe('The user story is accepted', function () {
 				generalLib
 			   		.post(taskName.post, token, endPoint, function (res) {
 			   			expect(res.status).to.equal(status.ok);
+			   			expect(res.body.complete).to.be.false;
 						taskId1 = res.body.id;
 						endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
 											   		   .replace('{story_id}', storyId2);
@@ -124,6 +130,7 @@ describe('The user story is accepted', function () {
 						generalLib
 			   				.post(taskName.post1, token, endPoint, function (res) {
 		   						expect(res.status).to.equal(status.ok);
+		   						expect(res.body.complete).to.be.false;
 								taskId2 = res.body.id;
 								done();
 							});
@@ -131,7 +138,7 @@ describe('The user story is accepted', function () {
 			   		});
 			});
 
-			
+					
 			
 		describe('When I complete the missing tasks', function () {
 
@@ -145,39 +152,46 @@ describe('The user story is accepted', function () {
 				generalLib
 					.put(taskName.completed, token, endPoint, function (res) {
 						expect(res.status).to.equal(status.ok);
+						expect(res.body.complete).to.be.true;
 						endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
 												   		   .replace('{story_id}', storyId2)
 										   		           .replace('{task_id}', taskId2);
 						generalLib
 							.put(taskName.completed, token, endPoint, function (res) {
 								expect(res.status).to.equal(status.ok);
+								expect(res.body.complete).to.be.true;
 								done();
 								
 							});
 					});
+
 			});
 			
 
-			it('Then the user story is Finished', function (done) {
+			it('Then the user stories are Finished', function (done) {
 				
 		   		endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-											   				  .replace('{story_id}', storyId1);
+											  .replace('{story_id}', storyId1);
 
 		   		generalLib
 				.put(story.state.finished, token, endPoint, function (res) {
 					expect(res.status).to.equal(status.ok);
+					expect(res.body.id).to.equal(storyId1);
+					expect(res.body.current_state).to.equal(story.state.finished.current_state);
 					endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-					   				   		  	.replace('{story_id}', storyId2);
+					   				   		  	  .replace('{story_id}', storyId2);
 					generalLib
 						.put(story.state.finished, token, endPoint, function (res1) {
 							expect(res1.status).to.equal(status.ok);
+							expect(res1.body.id).to.equal(storyId2);
+							expect(res1.body.current_state).to.equal(story.state.finished.current_state);
 							done();
 						});
 				});
 							
 			});
 
-			it('And the user story is Delivered', function (done) {
+			it('And the user stories are Delivered', function (done) {
 				
 				endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
 											  .replace('{story_id}', storyId1);
@@ -185,11 +199,15 @@ describe('The user story is accepted', function () {
 				generalLib
 				.put(story.state.delivered, token, endPoint, function (res) {
 					expect(res.status).to.equal(status.ok);
+					expect(res.body.id).to.equal(storyId1);
+					expect(res.body.current_state).to.equal(story.state.delivered.current_state);
 					endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
 											   	  .replace('{story_id}', storyId2);
 					generalLib
 						.put(story.state.delivered, token, endPoint, function (res1) {
 							expect(res1.status).to.equal(status.ok);
+							expect(res1.body.id).to.equal(storyId2);
+							expect(res1.body.current_state).to.equal(story.state.delivered.current_state);
 							done();
 						});
 				});
@@ -201,11 +219,15 @@ describe('The user story is accepted', function () {
 				generalLib
 				.put(story.state.accepted, token, endPoint, function (res) {
 					expect(res.status).to.equal(status.ok);
+					expect(res.body.id).to.equal(storyId1);
+					expect(res.body.current_state).to.equal(story.state.accepted.current_state);
 					endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
 											   	  .replace('{story_id}', storyId2);
 					generalLib
 						.put(story.state.accepted, token, endPoint, function (res1) {
 							expect(res1.status).to.equal(status.ok);
+							expect(res1.body.id).to.equal(storyId2);
+							expect(res1.body.current_state).to.equal(story.state.accepted.current_state);
 							done();
 						});
 				});

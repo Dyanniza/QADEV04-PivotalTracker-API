@@ -5,13 +5,15 @@
 /*
 Story: Start user story with assigned task order by priority
 Given I have project 'Pivotal Tracker Project'
-And three user stories are already in the IceBox
-When I create a new user story "Change Oil to the Car"
-	Then the user story allows to the 'Pivotal Tracker Project' project
+	And two user stories are already in the IceBox
+When I create a new user story "As a tester verify that Z function"
+	Then the user story belongs to the "Pivotal Tracker" project
+	And has set the effort to 1
 When I create three task inside the user story
-	Then the tasks has reference of the "Change Oil to the Car" user history 
+	Then the tasks has reference of the "As a terster verify that Z function has been implementes" user story 
 	And order the task for priority
 When The user story starts
+	Then the user stories go to the current BackLog
 	
  */
 
@@ -109,7 +111,7 @@ describe('Start user story', function () {
 			
 		});
 
-		describe('When I create a new user story "As a tester verify that Z function "', function () {
+		describe('When I create a new user story "As a tester verify that Z function"', function () {
 
 			it('Then the user story belongs to the "Pivotal Tracker" project', function (done) {
 				endPoint = storiesEndPoint.replace('{project_id}', prjId);
