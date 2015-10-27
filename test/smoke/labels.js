@@ -64,10 +64,10 @@ describe('Smoke test for labels',function(){
                     projectId = null;
                     done();                    
                 });            
-        });
+    });
 
 
-	describe('Suite of tests for endpoind: /projects/{project_id}/labels',function(){
+	describe('Test Suite for endpoind: /projects/{project_id}/labels',function(){
 
 		endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);
 		it('GET /projects/{project_id}/labels',function(done){
@@ -223,7 +223,6 @@ describe('Smoke test for labels',function(){
 					expect(res.status).to.equal(200);
 					done();
 				});
-
 		});	
 
 	});	

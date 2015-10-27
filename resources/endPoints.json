@@ -54,7 +54,7 @@
 		
 		"storiesEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories",
 		"labelByIdProjectIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\//projects\/{project_id}\/labels\/{label_id}",		
-		"labelIdStoryIdProjectIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\//projects\/{project_id}\/stories\/{story_id}\/labels\/{label_id}"					
+		"labelIdStoryIdProjectIdEndPoint":"https:\/\/www.pivotaltracker.com\/services\/v5\/projects\/{project_id}\/stories\/{story_id}\/labels\/{label_id}"					
 	},	
 	
 	"attachments":{

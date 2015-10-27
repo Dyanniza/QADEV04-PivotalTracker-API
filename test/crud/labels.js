@@ -2,18 +2,18 @@
 @author Cecilia  Chalar 
 @Class Labels for for CRUD testing .
 */
-
 var expect = require('chai').expect;
-var request = require('superagent');
 var Chance = require('chance');
 var chance = new Chance();
-require('superagent-proxy')(request);
 
 var endPoints = require('../../resources/endPoints.json');
 var config = require ('../../resources/config.json');
 var httpMethod = require ('../../lib/generalLib.js');
 var tokenAPI = require ('../../lib/tokenAPI');
 var configLog = require('../../resources/crudConfig.json');
+var log4js = require('log4js');
+log4js.configure('./resources/log4js.json');
+var log = log4js.getLogger("Labels");
 
 var labelsProjectEndPoint = endPoints.labels.labelsProjectEndPoint;
 var labelsByStoryIdEndPoint = endPoints.labels.labelsByStoryIdEndPoint;
@@ -25,19 +25,26 @@ var projectByIdEndPoint = endPoints.projects.projectByIdEndPoint;
 
 var userCredentials = config.userCredential;
 var status = config.status;
+var story = configLog.stories.post;
+var labName = configLog.labels.label.name;
+var labNamePost = configLog.labels.post.name;
+var labNamePut = configLog.labels.put.name;
+var type = configLog.labels.kind;
+
 var token = null;
 var endPoint = null;
+var endPointStory = null;
+var endPointLabel = null;
+var endPointLabels = null;
 var projectId = null;
-var storyID = null;
+var storyId = null;
 var labelId = null;
+var labelIdPrj = null;
 
-var prj = configLog.project.post;
-var story = configLog.stories.post;
-var labName = configLog.labels.post.name;
-var kind = configLog.labels.type;
+
 
 describe('Suite of CRUD test for Labels',function(){
-	this.timeout(10000);
+	this.timeout(config.timeout);
 
     before('Get Token', function (done) {
         tokenAPI
@@ -52,32 +59,37 @@ describe('Suite of CRUD test for Labels',function(){
     beforeEach('Creating Pre Conditions at least a project', function (done) {
     var projectName = { name : chance.string()};
     var storyName = { name: chance.string()};
-    var contentLab = { name: 'label'};
+    var contentLab = { name: labName};
 
         httpMethod
 
             .post(projectName, token, projectsEndPoint,  function(res) {
                 expect(res.status).to.equal(status.ok);
                 projectId = res.body.id;
-                endPoint = storiesEndPoint.replace('{project_id}', projectId );
-                    
+                endPoint = storiesEndPoint.replace('{project_id}', projectId );                                                  
+                endPointLabels = labelsProjectEndPoint.replace('{project_id}', projectId);
+
+
                     httpMethod
-                    .post(storyName, token, endPoint, function(res) {
-                        storyId = res.body.id;
-                        endPoint = labelsByStoryIdEndPoint.replace('{project_id}', projectId )
-                                                          .replace('{story_id}', storyId);
-                                                          console.log(endPoint);
-                        
-                        httpMethod
-                            .post (contentLab, token, endPoint, function(res) {
+                            .post (contentLab, token, endPointLabels, function(res) {                                
                                 expect(res.status).to.equal(status.ok);
-                                labelId = res.body.id;
-                                endPoint = labelIdStoryIdProjectIdEndPoint.replace('{project_id}', projectId)
-                                                                 .replace('{story_id}', storyId)
-                                                                 .replace('{label_id}', labelId);
-                                                                 console.log(endPoint);
+                                labelIdPrj = res.body.id;
                                 
-                                done();
+                                httpMethod
+                                    .post(storyName, token, endPoint, function(res) {
+                                        storyId = res.body.id;
+                                        endPointStory = labelsByStoryIdEndPoint.replace('{project_id}', projectId )
+                                                                          .replace('{story_id}', storyId);                                                                          
+                            
+                                        httpMethod
+                                            .post (contentLab, token, endPointStory, function(res) {
+                                                expect(res.status).to.equal(status.ok);
+                                                labelId = res.body.id;
+                                                endPointLabel = labelIdStoryIdProjectIdEndPoint.replace('{project_id}', projectId)
+                                                                                 .replace('{story_id}', storyId)
+                                                                                 .replace('{label_id}', labelId);                                                                                
+                                                done();
+                                    });
                             });
                     });
             });
@@ -92,49 +104,158 @@ describe('Suite of CRUD test for Labels',function(){
                     done();                    
                 });            
     });
-    describe('Test suite for Put methods',function(){
 
-    	it('POST /projects/{project_id}/labels',function(done){
-        
+    describe('Test suite for POST methods',function(){
+
+    	it('POST /projects/{project_id}/labels',function(done){        
 		endPoint = labelsProjectEndPoint.replace('{project_id}',projectId);	
         			
-			var content = {
-					name : 'port'											
-				};
+			var content = {name : labNamePost};
 			httpMethod				
 				.post(content,token,endPoint,function(res){
 					expect(res.status).to.equal(status.ok);                   
-                    expect(res.body.kind).to.equal(kind);
+                    expect(res.body.kind).to.equal(type);                    
                     expect(res.body.project_id).to.equal(projectId);
-                    expect(res.body.name).to.equal(labName)
-                    label_id = res.body.id 
+                    expect(res.body.name).to.equal(labNamePost)                     
 					done();
 				});
-
 		});
+        
+
+        it('POST /projects/{project_id}/stories/{story_id}/labels',function(done){
+            log.info(endPointStory);            
+            var content = { name : labNamePost };
+            httpMethod 
+                .post(content,token,endPointStory,function(res){
+                    expect(res.status).to.equal(status.ok);                       
+                    expect(res.body.kind).to.equal(type);                    
+                    expect(res.body.project_id).to.equal(projectId);
+                    expect(res.body.name).to.equal(labNamePost)                
+                    done();
+                });
+        });         
+
+        it('POST /projects/{project_id}/stories',function(done){
+            var content = {
+                    name : chance.string(),
+                    labels : [labNamePost]                                          
+                };
+
+            httpMethod
+                
+                .post(content,token,endPoint,function(res){                  
+                                        
+                    expect(res.status).to.equal(status.ok);
+                    expect(res.body.kind).to.equal('story');
+                    expect(res.body.labels[0].kind).to.equal(type);                    
+                    expect(res.body.labels[0].project_id).to.equal(projectId);
+                    expect(res.body.labels[0].name).to.equal(labNamePost) 
+                    log.info(res.body.labels[0]);
+                    done();
+                });
+        }); 
 
     });
 
-    describe('Test suite for Post methods',function(){
-
-        it('POST /projects/{project_id}/stories/story_id/labels',function(done){
+    describe('Test Suite for GET methods',function(){
         
+        it('GET /projects/{project_id}/labels',function(done){
         endPoint = labelsProjectEndPoint.replace('{project_id}',projectId); 
-                  
-            var content = {
-                    name : 'port'                                           
-                };
-            httpMethod              
-                .post(content,token,endPoint,function(res){
-                    expect(res.status).to.equal(status.ok);                   
-                    expect(res.body.kind).to.equal(kind);
-                    expect(res.body.project_id).to.equal(projectId);
-                    expect(res.body.name).to.equal(labName)
-                    label_id = res.body.id 
+
+            httpMethod
+                .get(token,endPoint,function(res){
+                    expect(res.status).to.equal(status.ok);
+                    console.log(res.body[0]);
+                    expect(res.body[0].kind).to.equal(type);                    
+                    expect(res.body[0].project_id).to.equal(projectId);
+                    expect(res.body[0].name).to.equal(labName)
                     done();
-                });
+                });         
+        });       
+
+        it('GET /projects/{project_id}/labels/{label_id}',function(done){            
+            endPoint = labelByIdProjectIdEndPoint.replace('{project_id}',projectId)
+                                                 .replace('{label_id}', labelIdPrj);           
+            httpMethod                          
+                
+                .get(token,endPoint,function(res){
+                    expect(res.status).to.equal(status.ok);
+                    expect(res.body.kind).to.equal(type);  
+                    expect(res.body.id).to.equal(labelIdPrj);                    
+                    expect(res.body.project_id).to.equal(projectId);
+                    expect(res.body.name).to.equal(labName) 
+                    done();
+                }); 
 
         });
+
+        it('GET /projects/{project_id}/stories/{story_id}/labels',function(done){
+            
+            httpMethod         
+                
+                .get(token,endPointStory,function(res){
+                    expect(res.status).to.equal(status.ok);
+                    console.log(res.body[0]);
+                    expect(res.body[0].kind).to.equal(type);                    
+                    expect(res.body[0].project_id).to.equal(projectId);
+                    expect(res.body[0].name).to.equal(labName)
+                    done();
+                }); 
+
+        });
+
+
+    });
+
+    describe('Test suite for PUT methods',function(){
+
+        it('PUT /projects/{project_id}/labels/{label_id}',function(done){
+
+            endPoint = labelByIdProjectIdEndPoint.replace('{project_id}',projectId)
+                                                 .replace('{label_id}', labelIdPrj);
+            var content = { name : labNamePut };
+           
+            httpMethod                
+                .put(content,token,endPoint,function(res){
+                    expect(res.status).to.equal(status.ok);                    
+                    expect(res.body.id).to.equal(labelIdPrj);                    
+                    expect(res.body.project_id).to.equal(projectId);
+                    expect(res.body.name).to.equal(labNamePut)
+                    done();
+                });                 
+        });      
+    });
+
+    describe('Test Suite for DELETE methods',function(){
+
+        it('Delete /projects/{project_id}/labels/{label_id}',function(done){  
+        endPoint = labelByIdProjectIdEndPoint.replace('{project_id}',projectId)
+                                                 .replace('{label_id}', labelIdPrj);                 
+            
+            httpMethod                
+                .del(token,endPointLabel,function(res){
+                    expect(res.status).to.equal(status.ok);                    
+                    expect(res.body.id).to.equal(labelIdPrj);                    
+                    expect(res.body.project_id).to.equal(projectId);
+                    expect(res.body.name).to.equal(labName)
+                    done();
+                    
+                });                 
+        });
+
+        it('DELETE /projects/{project_id}/stories/{story_id}/labels/{label_id}',function(done){                
+            
+            httpMethod                
+                .del(token,endPointLabel,function(res){
+                    expect(res.status).to.equal(status.ok);                 
+                    expect(res.body.id).to.equal(labelId);                    
+                    expect(res.body.project_id).to.equal(projectId);
+                    expect(res.body.name).to.equal(labName)
+                    done();
+                    
+                });                 
+        });    
+
 
     });
 

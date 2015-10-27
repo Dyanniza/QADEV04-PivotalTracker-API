@@ -175,14 +175,15 @@
    },
    "labels":{  
       "post":{  
-         "name":"port"
+         "name":"post"
       },
       "put":{  
-         "name":"latest"
+         "name":"putl"
       },
       "label":{  
-         "kind":"label"
+         "kind":"label",
+         "name":"labtest"
       },
-      "type":"label"
+      "kind":"label"
    }
 }
