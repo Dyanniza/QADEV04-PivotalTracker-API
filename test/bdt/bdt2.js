@@ -29,14 +29,47 @@ describe('Scenary 2',function(){
 	context('Given I have a Project empty',function(){
 
 		it('Then 2 project memberships should add under project ', function(){
+			var prjMSEndPoint = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
+		        /*var argument = {
+		            email: crudConfig.projectMembership.account.email,
+		            role: crudConfig.projectMembership.account.role
+		        };*/
+		        var argument = {
+		            email: 'Jhasmany.Quiroz@fundacion-jala.org',
+		            role: 'member'
+		        };
+		        
+		        console.log(argument);
+		        servicesAPI
+		            .post(argument, token.api_token, prjMSEndPoint, function(projectMS) {
+		                expect(projectMS.status).to.equal(status.ok);
+
+		                console.log('And 2 project’s membership are added under project');
+		                done();
+		            });
 
 		});
-		it('And the project has 6 user stories', function(){
-
+		it('And 6 user stories should be created under project', function(){
+			var storyEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+				var story = {
+				    name: chance.string()
+				};			      
+				servicesAPI
+				    .post(story, token.api_token, storyEndPoint, function(res) {
+						expect(res.code).to.equal(config.codeStories);
+						done();	
+					});
 		});
 	});
 	describe('When the project this in the fisrt iteration',function(){
 		it('then the project has 3 members', function(){
+			var endPointMember = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
+				console.log(endPointMember);
+		        servicesAPI
+		            .get(token.api_token, endPointMember, function(res) {
+		                expect(res.status).to.equal(status.ok);
+		                done();
+		            });
 
 		});
 		it('then two user stories should be assigned to every member', function(){
