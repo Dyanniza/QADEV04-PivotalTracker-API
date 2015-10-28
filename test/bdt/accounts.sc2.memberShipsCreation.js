@@ -1,8 +1,8 @@
 /**
- * BDT scenario to grant owner role to another member account
+ * BDT scenario to grant admin role to another member account
  * @Author Jorge Avila Baldiviezo
  *
- * Scenario: Grant the owner role to another person
+ * Scenario: Grant the admin role to another person
 	Given I have Pivotal Tracker account
 	When I create a new membership with an person id
 		Then a new membership should be created in the account with admin property in false
@@ -33,7 +33,7 @@ var endPoint = null;
 var dinamicValues = {};
 var status = config.status;
 
-describe('Scenario 2: Grant the owner role to another person', function() {
+describe('Scenario 2: Grant the admin role to another person', function() {
     this.timeout(config.timeout);
     before('Get Token', function(done) {
         tokenAPI
@@ -101,7 +101,7 @@ describe('Scenario 2: Grant the owner role to another person', function() {
         });
 
         describe('When the admin role is granted to the new membership', function() {
-            before('granting owner role to the new membership in the account', function(done) {
+            before('granting admin role to the new membership in the account', function(done) {
                 endPoint = accountMembershipEndPoint
 		                    .replace('{account_id}', dinamicValues.id)
 		                    .replace('{person_id}', dinamicValues.second_userId);
