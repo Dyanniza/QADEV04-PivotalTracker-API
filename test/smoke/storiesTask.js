@@ -10,6 +10,8 @@ var methods = require('../../lib/generalLib');
 var config = require('../../resources/config.json');
 var endPoints = require('../../resources/endPoints.json');
 var getToken = require('../../lib/tokenAPI');
+var configLog = require('../../resources/crudConfig.json');
+
 
 /**
  * End point services
@@ -24,6 +26,9 @@ var status = config.status;
 /**
  * Variables to be used in the differents tests
  */
+var prj = configLog.project.post;
+var story = configLog.stories.post;
+var taskName = configLog.task.post;
 var token = null;
 var prjId = null;
 var storyId = null;
@@ -32,7 +37,7 @@ var endPoint = null;
 var userCredential = config.userCredential;
 
 describe('Suite Stories Tasks', function () {
-    this.timeout(20000);
+    this.timeout(config.timeout);
     before('Get Token', function (done) {
         getToken
             .getToken(userCredential, function (res) {
@@ -47,10 +52,6 @@ describe('Suite Stories Tasks', function () {
     
         before(function (done) {
 
-            var prj = { name : chance.string()};
-            var story = { name: chance.string()};
-           
-            
             methods
                 .post(prj, token, projectsEndPoint,  function(res) {
                     expect(res.status).to.equal(status.ok);
@@ -82,7 +83,7 @@ describe('Suite Stories Tasks', function () {
         });
 
         it('POST /projects/{project_id}/stories/{story_id}/tasks', function(done) {
-        	 var taskName = { description : chance.sentence({words: 5})};
+        	
             methods
                 .post(taskName, token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
@@ -98,11 +99,8 @@ describe('Suite Stories Tasks', function () {
         
         
         beforeEach('Creating Pre Conditions.....', function (done) {
-           var prj = { name : chance.string()};
-           var story = { name: chance.string()};
-           var taskName = { description : chance.sentence({words: 5})};
            
-           methods
+            methods
            		.post(prj, token, projectsEndPoint,  function(res) {
                 	expect(res.status).to.equal(status.ok);
                 	prjId = res.body.id;
@@ -163,7 +161,7 @@ describe('Suite Stories Tasks', function () {
 
         it('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
             
-        	var argument = {description : chance.sentence({words: 5})};								   
+        	var argument = 	configLog.task.put						   
             methods
                 .put(argument, token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);

@@ -2,7 +2,6 @@
 @ Author Ronald Butron
 @ Story Tasks Test
  */
-
 var expect = require('chai').expect;
 var methods = require('../../lib/generalLib');
 var config = require('../../resources/config.json');
@@ -35,37 +34,37 @@ var status = config.status;
 var userCredential = config.userCredential;
 
 
-describe('Suite Stories Tasks', function () {
-    this.timeout(20000);
-    before('Get Token', function (done) {
+describe('Suite Stories Tasks', function() {
+    this.timeout(config.timeout);
+    before('Get Token', function(done) {
         getToken
-            .getToken(userCredential, function (res) {
-                expect(res.status).to.equal(200);
+            .getToken(userCredential, function(res) {
+                expect(res.status).to.equal(status.ok);
                 token = res.body.api_token;
                 done();
-                
+
             });
-    });    
-        
-    describe('Suite of Test Post a Task', function () {
-        before(function (done) {
-             methods
-                .post(prj, token, projectsEndPoint,  function(res) {
+    });
+
+    describe('Suite of Test Post a Task', function() {
+        before(function(done) {
+            methods
+                .post(prj, token, projectsEndPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
                     prjId = res.body.id;
                     endPoint = storiesEndPoint.replace('{project_id}', prjId);
 
                     methods
-                    .post(story, token, endPoint, function(res) {
-                        storyId = res.body.id;
-                        endPoint = storiesTasksEndPoint.replace('{project_id}', prjId )
-                                                       .replace('{story_id}', storyId);
-                        done();
-                    });
+                        .post(story, token, endPoint, function(res) {
+                            storyId = res.body.id;
+                            endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
+                                .replace('{story_id}', storyId);
+                            done();
+                        });
                 });
         });
 
-        after(function (done) {
+        after(function(done) {
             methods
                 .del(token, endPoint, function(res) {
                     expect(res.status).to.equal(status.noContent);
@@ -78,7 +77,7 @@ describe('Suite Stories Tasks', function () {
         });
 
         it('POST /projects/{project_id}/stories/{story_id}/tasks', function(done) {
-        	
+
             methods
                 .post(taskName, token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
@@ -89,37 +88,37 @@ describe('Suite Stories Tasks', function () {
                     done();
                 });
         });
-        
+
     });
 
-    describe('Suit Stories Tasks ', function () {
+    describe('Suit Stories Tasks ', function() {
 
-        beforeEach('Creating Pre Conditions.....', function (done) {
-                      
-           methods
-                .post(prj, token, projectsEndPoint,  function(res) {
+        beforeEach('Creating Pre Conditions.....', function(done) {
+
+            methods
+                .post(prj, token, projectsEndPoint, function(res) {
                     prjId = res.body.id;
                     endPoint = storiesEndPoint.replace('{project_id}', prjId);
-                    
+
                     methods
-                    .post(story, token, endPoint, function(res) {
-                        storyId = res.body.id;
-                        endPoint = storiesTasksEndPoint.replace('{project_id}', prjId )
-                                                       .replace('{story_id}', storyId);
-                        
-                        methods
-                            .post(taskName, token, endPoint, function(res) {
-                                taskId = res.body.id;
-                                endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
-                                                                   .replace('{story_id}', storyId)
-                                                                   .replace('{task_id}', taskId);
-                                done();
-                            });
-                    });
+                        .post(story, token, endPoint, function(res) {
+                            storyId = res.body.id;
+                            endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
+                                .replace('{story_id}', storyId);
+
+                            methods
+                                .post(taskName, token, endPoint, function(res) {
+                                    taskId = res.body.id;
+                                    endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
+                                        .replace('{story_id}', storyId)
+                                        .replace('{task_id}', taskId);
+                                    done();
+                                });
+                        });
                 });
         });
 
-        afterEach('Deleting project....', function (done) {
+        afterEach('Deleting project....', function(done) {
             endPoint = projectByIdEndPoint.replace('{project_id}', prjId);
             methods
                 .del(token, endPoint, function(res) {
@@ -133,8 +132,8 @@ describe('Suite Stories Tasks', function () {
 
         it('GET /projects/{project_id}/stories/{story_id}/tasks', function(done) {
             endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
-                                           .replace('{story_id}', storyId);
-                
+                .replace('{story_id}', storyId);
+
             methods
                 .get(token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
@@ -146,10 +145,10 @@ describe('Suite Stories Tasks', function () {
                 });
         });
 
-    
+
 
         it('GET /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
-                   
+
             methods
                 .get(token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
@@ -162,7 +161,7 @@ describe('Suite Stories Tasks', function () {
         });
 
         it('PUT /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
-            
+
             var arg = configLog.task.put;
 
             methods
@@ -177,7 +176,7 @@ describe('Suite Stories Tasks', function () {
         });
 
         it('DELETE /projects/{project_id}/stories/{story_id}/tasks/{task_id}', function(done) {
-                 
+
             methods
                 .del(token, endPoint, function(res) {
                     expect(res.status).to.equal(status.noContent);
@@ -186,5 +185,5 @@ describe('Suite Stories Tasks', function () {
 
                 });
         });
-    }); 
+    });
 });

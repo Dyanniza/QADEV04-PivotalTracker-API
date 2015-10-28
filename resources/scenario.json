@@ -25,6 +25,18 @@
 
 		"started":{
 			"current_state": "started"
-		}
+		},
+
+		"completedTask":{
+      		"task01":{
+      			"description":"Change the port 8080 to 4040",
+      			"complete":true
+      			},
+
+      		"task02":{
+      			"description":"Configure the firewall",
+      			"complete":true
+      		}
+   		}
 	}
 }
