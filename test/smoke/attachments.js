@@ -33,7 +33,7 @@ var commentId = null;
 var attachmentId = null;
 
 describe('Suite attachments smoke test',function (){
-    this.timeout(10000);
+    this.timeout(config.timeout);
 
     before('Get Token', function (done) {
       tokenAPI
