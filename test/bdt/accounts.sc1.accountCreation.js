@@ -35,7 +35,6 @@ var status = config.status;
 describe('Scenario 1: Create new account when a new projects is being created', function() {
     this.timeout(config.timeout);
     before('Get Token', function(done) {
-        console.log(config.userCredential2);
         tokenAPI
             .getToken(config.userCredential2, function(res) {
                 token = res.body.api_token;
@@ -73,7 +72,6 @@ describe('Scenario 1: Create new account when a new projects is being created', 
                 endPoint = accountsByIdEndPoint.replace('{account_id}', dinamicValues.account_id);
                 generalLib
                     .get(token, endPoint, function(res) {
-                        console.log("dinamic values", dinamicValues);
                         expect(res.status).to.equal(status.ok);
                         expect(res.body.id).to.equal(dinamicValues.account_id);
                         done();
