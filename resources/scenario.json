@@ -43,12 +43,30 @@
     "owner": "owner:Jhasmany Elvis Quiroz Olivera",
     "label": "label:\"task\""
   },
-  "scenario1":{
+  "scenarioIteration":{
 		  	"current":{
 		  		"current_state":"finished","estimate":1
 
-		  	}
-  	
-
+		  	},
+		  	"story": [{"name": "story1"}, {"name": "story2"}, {"name": "story3"}],
+		  	"members": [{"email": "Jhasmany.Quiroz@fundacion-jala.org", "role": "member"},
+					    {"email": "jorge.avila@fundacion-jala.org", "role": "member"}],
+			"endPointUnscheduled": "https://www.pivotaltracker.com/services/v5/projects/{project_id}/stories?with_state=unscheduled",
+			"story2": [{"name": "story4"}, {"name": "story5"}]
+  },
+  "scenarioProjectMembeship":{
+  			"story": [{"name": "story1"}, {"name": "story2"}, {"name": "story3"}, {"name": "story4"}, {"name": "story5"}, {"name": "story6"}],
+		  	"members": [{"email": "Jhasmany.Quiroz@fundacion-jala.org", "role": "member"},
+					    {"email": "jorge.avila@fundacion-jala.org", "role": "member"}],
+			"members2": [{"email": "Cecilia.Chalar@fundacion-jala.org", "role": "member"}]
+  },
+  "scenarioProjectManage":{
+  			"membersPA": [{"email": "Jhasmany.Quiroz@fundacion-jala.org", "role": "member"},
+					    {"email": "jorge.avila@fundacion-jala.org", "role": "member"}],
+			"membersPB": [{"email": "Jhasmany.Quiroz@fundacion-jala.org", "role": "member"},
+					    {"email": "jorge.avila@fundacion-jala.org", "role": "member"}],
+			"uStoryA": [{"name": "storyA1"}, {"name": "storyA2"}, {"name": "storyA3"},{"name": "storyA4"}],
+			"uStoryB": [{"name": "storyB1"}, {"name": "storyB2"}, {"name": "storyB3"}],
+			"projects": [{"name":"projectA"},{"name": "projectB"}]
   }
 }
