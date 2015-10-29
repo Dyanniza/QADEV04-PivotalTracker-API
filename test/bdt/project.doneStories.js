@@ -20,6 +20,8 @@ var getToken = require('../../lib/tokenAPI');
 var config = require('../../resources/config.json');
 var configLog = require('../../resources/crudConfig.json');
 var endPoints = require('../../resources/endPoints.json');
+require('it-each')();
+
 
 
 /**
@@ -37,10 +39,8 @@ var storiesByIdEndPoint = endPoints.story.storyEndPoint;
  */
 var token = null;
 var prjId = null;
-var storyId1 = null;
-var storyId2 = null
-var taskId1 = null;
-var taskId2 = null;
+var storyId = [];
+var taskId = [];
 var endPoint = null;
 var prj = configLog.project.post;
 var story = configLog.stories;
@@ -48,6 +48,12 @@ var taskName = configLog.task;
 var kind = configLog.task.type;
 var status = config.status;
 var userCredential = config.userCredential;
+var taskPost = [{task: taskName.post}, {task: taskName.post1}];
+var stateStory = [{state: story.state.finished}, {state: story.state.finished} ];
+var i = 0;
+var z = 0;
+var x = 0;
+var j = 0;
 
 
 
@@ -85,53 +91,35 @@ describe('The user story is accepted', function() {
 
     context('Given I have a project "Pivotal Tracker"', function() {
 
-
-        it('And two stories are already in the Current dashboard', function(done) {
-
+        var storiesPost = [{story: story.post1}, {story: story.post2}];
+        it.each(storiesPost, 'And two stories are already in the Current dashboard', function(element, done) {
 
             endPoint = storiesEndPoint.replace('{project_id}', prjId);
-
             generalLib
-                .post(story.post1, token, endPoint, function(res) {
+                .post(element.story, token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
-                    expect(res.body.name).to.equal(story.post1.name);
-                    expect(res.body.estimate).to.equal(story.post1.estimate);
-                    expect(res.body.current_state).to.equal(story.post1.current_state);
-                    storyId1 = res.body.id;
-                    generalLib
-                        .post(story.post2, token, endPoint, function(res) {
-                            expect(res.status).to.equal(status.ok);
-                            expect(res.body.name).to.equal(story.post2.name);
-                            expect(res.body.estimate).to.equal(story.post2.estimate);
-                            expect(res.body.current_state).to.equal(story.post2.current_state);
-                            storyId2 = res.body.id;
-                            done();
-                        });
-
+                    expect(res.body.name).to.equal(element.story.name);
+                    expect(res.body.estimate).to.equal(element.story.estimate);
+                    expect(res.body.current_state).to.equal(element.story.current_state);
+                    storyId.push(res.body.id);
+                    done();
                 });
 
         });
 
-        it('And the two stories have a unfinished task', function(done) {
+        
+
+        it.each(taskPost, 'And the two stories have a unfinished task', function(element, done) {
 
             endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
-                						   .replace('{story_id}', storyId1);
+                						   .replace('{story_id}', storyId[i]);
             generalLib
-                .post(taskName.post, token, endPoint, function(res) {
+                .post(element.task, token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
                     expect(res.body.complete).to.be.false;
-                    taskId1 = res.body.id;
-                    endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
-                        						   .replace('{story_id}', storyId2);
-
-                    generalLib
-                        .post(taskName.post1, token, endPoint, function(res) {
-                            expect(res.status).to.equal(status.ok);
-                            expect(res.body.complete).to.be.false;
-                            taskId2 = res.body.id;
-                            done();
-                        });
-
+                    taskId.push(res.body.id);
+                    i++;
+                    done();
                 });
         });
 
@@ -142,8 +130,8 @@ describe('The user story is accepted', function() {
             before(function(done) {
 
                 endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
-                    							   .replace('{story_id}', storyId1)
-                    							   .replace('{task_id}', taskId1);
+                    							   .replace('{story_id}', storyId[0])
+                    							   .replace('{task_id}', taskId[0]);
 
 
                 generalLib
@@ -151,8 +139,8 @@ describe('The user story is accepted', function() {
                         expect(res.status).to.equal(status.ok);
                         expect(res.body.complete).to.be.true;
                         endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
-                            .replace('{story_id}', storyId2)
-                            .replace('{task_id}', taskId2);
+                            .replace('{story_id}', storyId[1])
+                            .replace('{task_id}', taskId[1]);
                         generalLib
                             .put(taskName.completed, token, endPoint, function(res) {
                                 expect(res.status).to.equal(status.ok);
@@ -163,70 +151,53 @@ describe('The user story is accepted', function() {
                     });
 
             });
-
-
-            it('Then the user stories are Finished', function(done) {
-
-                endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                    						  .replace('{story_id}', storyId1);
-
-                generalLib
-                    .put(story.state.finished, token, endPoint, function(res) {
-                        expect(res.status).to.equal(status.ok);
-                        expect(res.body.id).to.equal(storyId1);
-                        expect(res.body.current_state).to.equal(story.state.finished.current_state);
-                        endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                            						  .replace('{story_id}', storyId2);
-                        generalLib
-                            .put(story.state.finished, token, endPoint, function(res1) {
-                                expect(res1.status).to.equal(status.ok);
-                                expect(res1.body.id).to.equal(storyId2);
-                                expect(res1.body.current_state).to.equal(story.state.finished.current_state);
-                                done();
-                            });
-                    });
-
-            });
-
-            it('And the user stories are Delivered', function(done) {
+            
+            
+            it.each(stateStory, 'Then the user stories are Finished', function(element, done) {
 
                 endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                    						  .replace('{story_id}', storyId1);
+                    						  .replace('{story_id}', storyId[j]);
 
                 generalLib
-                    .put(story.state.delivered, token, endPoint, function(res) {
+                    .put(element.state, token, endPoint, function(res) {
                         expect(res.status).to.equal(status.ok);
-                        expect(res.body.id).to.equal(storyId1);
-                        expect(res.body.current_state).to.equal(story.state.delivered.current_state);
-                        endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                            						  .replace('{story_id}', storyId2);
-                        generalLib
-                            .put(story.state.delivered, token, endPoint, function(res1) {
-                                expect(res1.status).to.equal(status.ok);
-                                expect(res1.body.id).to.equal(storyId2);
-                                expect(res1.body.current_state).to.equal(story.state.delivered.current_state);
-                                done();
-                            });
+                        expect(res.body.id).to.equal(storyId[j]);
+                        expect(res.body.current_state).to.equal(element.state.current_state);
+                        j++;
+                        done();
                     });
             });
 
-            it('And The user stories are accepted', function(done) {
+            stateStory = [{state: story.state.delivered}, {state: story.state.delivered} ];
+
+            it.each(stateStory, 'And the user stories are Delivered', function(element, done) {
+
                 endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                    						  .replace('{story_id}', storyId1);
+                    						  .replace('{story_id}', storyId[z]);
+
                 generalLib
-                    .put(story.state.accepted, token, endPoint, function(res) {
+                    .put(element.state, token, endPoint, function(res) {
                         expect(res.status).to.equal(status.ok);
-                        expect(res.body.id).to.equal(storyId1);
-                        expect(res.body.current_state).to.equal(story.state.accepted.current_state);
-                        endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                            .replace('{story_id}', storyId2);
-                        generalLib
-                            .put(story.state.accepted, token, endPoint, function(res1) {
-                                expect(res1.status).to.equal(status.ok);
-                                expect(res1.body.id).to.equal(storyId2);
-                                expect(res1.body.current_state).to.equal(story.state.accepted.current_state);
-                                done();
-                            });
+                        expect(res.body.id).to.equal(storyId[z]);
+                        expect(res.body.current_state).to.equal(element.state.current_state);
+                        z++;
+                        done();
+                        
+                    });
+            });
+
+           
+            stateStory = [{state: story.state.accepted}, {state: story.state.accepted} ];
+            it.each(stateStory, 'And The user stories are accepted', function(element, done) {
+                endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
+                    						  .replace('{story_id}', storyId[x]);
+                generalLib
+                    .put(element.state, token, endPoint, function(res) {
+                        expect(res.status).to.equal(status.ok);
+                        expect(res.body.id).to.equal(storyId[x]);
+                        expect(res.body.current_state).to.equal(element.state.current_state);
+                        x++;
+                        done();
                     });
             });
 
