@@ -202,6 +202,7 @@ describe('Scenario 1',function () {
 			servicesAPI
 			    .post(element, token.api_token, storyEndPoint, function(res) {
 					expect(res.status).to.equal(status.ok);
+//					IDstories.push(res.body.id);
 					done();	
 				});
 		});	
