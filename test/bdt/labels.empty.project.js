@@ -4,12 +4,11 @@
 */
 /*
 Given a empty Project named:"Pivotal Tracker Project--01"
-And 2 labels are added to the project
-And a story with a new labels are added  to the project 
+And 2 stories are added  with 3 new labels 'label1', 'label2' and 'label3' were added  to the project 
 
-When the story that containing the labels are deleted
-	Then Then the Labels should be keep in the project.
-	
+When the stories that containing the 3 labels are deleted
+	Then the labels should be removed from the project.
+	And the project is it empty 
 */
 
 
@@ -17,7 +16,6 @@ When the story that containing the labels are deleted
 var expect = require('chai').expect;
 var Chance = require('chance');
 var chance = new Chance();
-require('it-each')();
 
 var endPoints = require('../../resources/endPoints.json');
 var config = require('../../resources/config.json');
@@ -50,15 +48,10 @@ var endPointStory = null;
 var endPointLabel = null;
 var endPointLabels = null;
 var projectId = null;
-//var storyId = null;
-var labelId = null;
+
 var labelIdPrj = null;
-var storyId = [];
-
-
-var labelName1 = { name:'post1' };
-var labelName2 = { name:'post2' };
-
+var storyId1 = null;
+var storyId2 = null;
 var labelId1 = null;
 var labelId2 = null;
 
@@ -96,39 +89,17 @@ describe('The project without Labels ', function() {
     context('Given a empty Project named:"Pivotal Tracker Project--01"',function(){
 
 
-
-        it('And 2 labels are added to the Project', function( done) {
-
-            endPointLabels = labelsProjectEndPoint.replace('{project_id}', projectId);
-           
-            httpMethod
-                .post(labelName1, token, endPointLabels, function(res) {
-                        expect(res.status).to.equal(status.ok);
-                        expect(res.body.kind).to.equal(type);
-                        expect(res.body.project_id).to.equal(projectId);
-                        labelId1 = res.body.id;
-                        httpMethod
-                        
-                        .post(labelName2, token, endPointLabels, function(res) {
-                                expect(res.status).to.equal(status.ok);
-                                expect(res.body.kind).to.equal(type);
-                                expect(res.body.project_id).to.equal(projectId);
-                                labelId2 = res.body.id;
-
-                        done();
-
-                    });
-                });
-
-        });
-
-        it ('And add a story with a new label named newLab',function(done){
+        it ('And add a 2 story with a new label named newLab',function(done){
             var content = {
                 name: chance.string(),
                 labels: [labNamePost]
             };
+            var content2 = {
+                name: chance.string(),
+                labels: [labNamePut]
+            };
             endPoint = storiesEndPoint.replace('{project_id}', projectId);
-           
+            
             httpMethod
 
                 .post(content, token, endPoint, function(res) {
@@ -138,23 +109,37 @@ describe('The project without Labels ', function() {
                         expect(res.body.labels[0].kind).to.equal(type);
                         expect(res.body.labels[0].project_id).to.equal(projectId);
                         expect(res.body.labels[0].name).to.equal(labNamePost)
-                        storyId = res.body.id;
-                done();
-            });
-        })
+                        storyId1 = res.body.id;
+                        httpMethod
+                        .post(content2, token, endPoint, function(res) {
 
-        it ('And add the labels created before to the story',function(done){
+                                expect(res.status).to.equal(status.ok);
+                                expect(res.body.kind).to.equal('story');
+                                expect(res.body.labels[0].kind).to.equal(type);
+                                expect(res.body.labels[0].project_id).to.equal(projectId);
+                                expect(res.body.labels[0].name).to.equal(labNamePut)
+                                storyId2 = res.body.id;
+                        done();
+                        });
+            });
+        });
+
+        it ('And add the labels created before, two  stories ',function(done){
+            var labelName1 = { name:labNamePost };
+            var labelName2 = { name:labNamePut };
             
             endPointStory = labelsByStoryIdEndPoint.replace('{project_id}', projectId)
-                                .replace('{story_id}', storyId);
+                                .replace('{story_id}', storyId1);
             httpMethod
-                .post(labelName1, token, endPointStory, function(res) {
+                .post(labelName2, token, endPointStory, function(res) {
                         expect(res.status).to.equal(status.ok);
                         expect(res.body.kind).to.equal(type);
                         expect(res.body.project_id).to.equal(projectId);
-                       
+
+                        endPointStory = labelsByStoryIdEndPoint.replace('{project_id}', projectId)
+                                .replace('{story_id}', storyId2);
                         httpMethod
-                        .post(labelName2, token, endPointStory, function(res) {
+                        .post(labelName1, token, endPointStory, function(res) {
                                 expect(res.status).to.equal(status.ok);
                                 expect(res.body.kind).to.equal(type);
                                 expect(res.body.project_id).to.equal(projectId);
@@ -165,30 +150,35 @@ describe('The project without Labels ', function() {
                 });
         });
 
-        it('When delete the story ',function(done){
-            endPoint = storyIdEndPoint.replace('{story_id}', storyId);
+        it('When delete the stories',function(done){
+            endPoint = storyIdEndPoint.replace('{story_id}', storyId1);
             httpMethod
                 .del(token, endPoint, function(res) {
                       expect(res.status).to.equal(status.noContent);
                       expect(res.body.status).to.be.empty;
-                      done();
-                  }); 
+                       endPoint = storyIdEndPoint.replace('{story_id}', storyId2);
+
+                      httpMethod
+                          .del(token, endPoint, function(res) {
+                                expect(res.status).to.equal(status.noContent);
+                                expect(res.body.status).to.be.empty;
+                           done();
+                           });
+                });                 
+
         });
 
-        it('Then the Labels should be keep in the project',function(done){
+        it('Then the project should be without stories and labels',function(done){
              endPoint = labelsProjectEndPoint.replace('{project_id}', projectId);
 
             httpMethod
                 .get(token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
                     expect(res.body[0].kind).to.equal(type);
-                    expect(res.body[0].project_id).to.equal(projectId);
-                    
+                    expect(res.body[0].project_id).to.equal(projectId);                 
                     done();
                 });
         });
-
     });
+ });
 
-
-});
