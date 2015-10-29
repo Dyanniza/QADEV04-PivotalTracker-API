@@ -42,5 +42,13 @@
   "scenarioN": {
     "owner": "owner:Jhasmany Elvis Quiroz Olivera",
     "label": "label:\"task\""
+  },
+  "scenario1":{
+		  	"current":{
+		  		"current_state":"finished","estimate":1
+
+		  	}
+  	
+
   }
 }
