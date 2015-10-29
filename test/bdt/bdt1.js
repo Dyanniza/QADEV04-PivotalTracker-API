@@ -1,5 +1,5 @@
 /*
-Scenario 1:
+Scenario 1: Information correct is displayed stories when the project pass the iterations
 Given I have a Project empty
 	And 10 user stories are created under project
 	And 2 project’s membership are added under project
@@ -26,7 +26,6 @@ When the project pass to fourth iteration
 -------And all actions on the project it should be displayed in the project History
 */
 
-
 var request = require('superagent');
 require('superagent-proxy')(request);
 var expect = require('chai').expect;
@@ -37,19 +36,17 @@ var endPoint = require('../../resources/endPoints.json');
 var Chance = require('chance');
 var crudConfig = require('../../resources/crudConfig.json');
 var status = config.status;
-
+require('it-each')();
+var scenario = require('../../resources/scenario.json');
 
 describe('Scenario 1',function () {
 	this.timeout(config.timeout);
-	//this.timeout(100000);
 	var userCredential = config.userCredential;
 	var token = null;
 	var projectId = null;
 	var iterationEndPoint = null;
-    var prjByIdEndPoint = null;
     var chance = new Chance();
-	/*var accountMS = [{email: "Jhasmany.Quiroz@fundacion-jala.org", role: "member"},
-					{email: "jorge_top14@gmail.com", role: "member"}];	*/
+    var IDstories=[];
 
     before('Getting the token', function(done) {
         tokenAPI
@@ -60,7 +57,7 @@ describe('Scenario 1',function () {
             });
     });
     before('Create Project',function(done){
-	prjByIdEndPoint = endPoint.projects.projectsEndPoint;
+		var prjByIdEndPoint = endPoint.projects.projectsEndPoint;
 		    var prj = {
 		        name: chance.string()
 		    };
@@ -73,134 +70,182 @@ describe('Scenario 1',function () {
 	});
 
 	after('Delete the project', function(done){
-		delEndPoint = endPoint.projects.projectByIdEndPoint.replace('{project_id}', projectId);
+		var delEndPoint = endPoint.projects.projectByIdEndPoint.replace('{project_id}', projectId);
 	    servicesAPI
 	        .del(token.api_token, delEndPoint, function(res) {
 	            expect(res.status).to.equal(status.noContent);
 	            done();
 	        });
 	});
- 
+	context('Given I have a Project whit 5 user stories',function(){
+		var story = [{name: 'argument1'}, {name: 'argument2'}, {name: 'argument3'}];
+		var members = [{email: 'Jhasmany.Quiroz@fundacion-jala.org', role: 'member'},
+					   {email: 'jorge.avila@fundacion-jala.org', role: 'member'}];
+		it.each(story,'Then 5 user stories are created under project', ['argument'],function(element,done){
+			var storyEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+			servicesAPI
+			    .post(element, token.api_token, storyEndPoint, function(res) {
+					expect(res.status).to.equal(status.ok);
+					IDstories.push(res.body.id);
+					done();	
+				});
+		});		
 
-	context('Given I have a Project empty',function(){
-		for (var i = 0; i < 5; i++) {
-			it('And 10 user stories are created under project',function(done){
-				var storyEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
-				var story = {
-				    name: chance.string()
-				};			      
-				servicesAPI
-				    .post(story, token.api_token, storyEndPoint, function(res) {
-						expect(res.code).to.equal(config.codeStories);
-						done();	
-					});
-			});
-		};
-
-		//for (var i = 0; i < 2; i++) {
-						
-							
-		        
-		        //var argument=accountMS[i];
-			it('And 2 project’s membership are added under project', function(done) {
-		        var prjMSEndPoint = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
-		        /*var argument = {
-		            email: crudConfig.projectMembership.account.email,
-		            role: crudConfig.projectMembership.account.role
-		        };*/
-		        var argument = {
-		            email: 'Jhasmany.Quiroz@fundacion-jala.org',
-		            role: 'member'
-		        };
-		        
-		        console.log(argument);
-		        servicesAPI
-		            .post(argument, token.api_token, prjMSEndPoint, function(projectMS) {
-		                expect(projectMS.status).to.equal(status.ok);
-
-		                console.log('And 2 project’s membership are added under project');
-		                done();
-		            });
-		    });
+		it.each(members,'then 2 project’s membership is added under project', function(element, done) {
+		    var prjMSEndPoint = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
+		    servicesAPI
+		        .post(element, token.api_token, prjMSEndPoint, function(projectMS) {
+		            expect(projectMS.status).to.equal(status.ok);
+		            done();
+		        });
+		});
 			
-		//};
 	});
-	describe('When the project this in the first iteration',function(){
-		console.log(projectId);
+	describe('When the project started',function(){
+		var current=scenario.scenario1.current;
+
+		it('Then the projects iteration should be 1',function(done){
+			var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint.replace('{project_id}', projectId);
+
+	        servicesAPI
+	            .get(token.api_token, iterationEndPoint, function(res) {
+	                expect(res.status).to.equal(status.ok);
+	                expect(res.body.length).to.equal(1);
+	                done();
+	            });
+
+		});
+
 		
-			it('Then the project should have 10 user stories not started',function(done){
-				var storiesEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
-				servicesAPI
-                .get(token.api_token, storiesEndPoint, function(res) {
+		it('And the project should have 3 user stories unscheduled',function(done){
+			var storiesEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+			servicesAPI
+                .get(token.api_token, storiesEndPoint+'?with_state=unscheduled', function(res) {
                     expect(res.status).to.equal(status.ok);
-                    expect(res.body.length).to.equal(5);
-                    for (var i = 0; i <5; i++) {
-                    	
-                    };
+                    expect(res.body.length).to.equal(3);
                     done();                    
                 });
 
-			});
-			it('And the project should have 3 members',function(done){
-				var endPointMember = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
-				console.log(endPointMember);
-		        servicesAPI
-		            .get(token.api_token, endPointMember, function(res) {
-		                expect(res.status).to.equal(status.ok);
-		                done();
-		            });
-			});
-			it('And two user stories should pass the finished state',function(done){
-				var storiesEndPoint = endPoint.projects.projectsEndPoint;
-				servicesAPI
-                .get(token.api_token, storiesEndPoint, function(res) {
-                    expect(res.status).to.equal(status.ok);
-                    done();                    
-                });
-			});
 		});
-		describe('When the project pass to the second iteration',function(){
-
-			
-			it('Then the project should have eight user stories not started',function(done){
-				console.log(projectId);
-				var storiesEndPoint = endPoint.projects.projectsEndPoint;
-				servicesAPI
-                .get(token.api_token, storiesEndPoint, function(res) {
-                    expect(res.status).to.equal(status.ok);
-                    done();                    
-                });
-
-			});
-			it('And the project should have 3 members',function(done){
-				var endPointMember = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
-				console.log(endPointMember);
-		        servicesAPI
-		            .get(token.api_token, endPointMember, function(res) {
-		            	console.log(res.body);
-		                expect(res.status).to.equal(status.ok);
-		                expect(res.body.length).to.equal(2);
-		                done();
-		            });
-
-			});
-			it('And other two user stories should pass the finished state',function(done){
-				var storiesEndPoint = endPoint.projects.projectsEndPoint;
-				servicesAPI
-                .get(token.api_token, storiesEndPoint, function(res) {
-                    expect(res.status).to.equal(status.ok);
-                    done();                    
-                });
-
-			});
-			it('And all user stories finished should pass to delivered state',function(done){
-				var storiesEndPoint = endPoint.projects.projectsEndPoint;
-				servicesAPI
-                .get(token.api_token, storiesEndPoint, function(res) {
-                    expect(res.status).to.equal(status.ok);
-                    done();                    
-                });
-
-			});
+		it('And the project should have 3 members',function(done){
+			var endPointMember = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
+	        servicesAPI
+	            .get(token.api_token, endPointMember, function(res) {
+	                expect(res.status).to.equal(status.ok);
+	                expect(res.body.length).to.equal(3);
+	                done();
+	            });
 		});
+	
+		it.each(IDstories,'And 3 user stories should pass the finished state',function(IDstories,done){
+			var storyEndPoint = endPoint.story.storyEndPoint.replace('{project_id}', projectId)
+															.replace('{story_id}', IDstories);
+	        servicesAPI
+	            .put(current, token.api_token, storyEndPoint, function(res) {
+	                expect(res.status).to.equal(config.status.ok);
+	                done();
+	            });
+		});
+	});
+	describe('When the project pass to the second iteration',function(){
+		before('pass to second iteration', function(done) {
+	        var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint2.replace('{project_id}', projectId)
+	            .replace('{iteration_number}', 1);
+	        servicesAPI
+	            .put({"length":0}, token.api_token, iterationEndPoint, function(iteration) {
+	                expect(iteration.status).to.equal(status.ok);
+	                done();
+	            });
+	    });
+		it('Then the projects iteration should be 2',function(done){
+			var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint.replace('{project_id}', projectId);
+
+	        servicesAPI
+	            .get(token.api_token, iterationEndPoint, function(res) {
+	                expect(res.status).to.equal(status.ok);
+	                expect(res.body.length).to.equal(2);
+	                done();
+	            });
+
+		});
+		it('And the project should have 0 user stories unscheduled',function(done){
+			var storiesEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+			servicesAPI
+                .get(token.api_token, storiesEndPoint+'?with_state=unscheduled', function(res) {
+                    expect(res.status).to.equal(status.ok);
+                    expect(res.body.length).to.equal(0);
+                    done();                    
+                });
+			});
+		it('And the project should have 3 user stories finished',function(done){
+			var storiesEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+			servicesAPI
+                .get(token.api_token, storiesEndPoint+'?with_state=finished', function(res) {
+                    expect(res.status).to.equal(status.ok);
+                    expect(res.body.length).to.equal(3);
+                    done();                    
+                });
+			});
+		it('And the project should have 2 members',function(done){
+			var endPointMember = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
+	        servicesAPI
+	            .get(token.api_token, endPointMember, function(res) {
+	                expect(res.status).to.equal(status.ok);
+	                expect(res.body.length).to.equal(3);
+	                done();
+	            });
+	    });
+	    var story2 = [{name: 'argument4'}, {name: 'argument5'}];
+
+		it.each(story2,'And other two user stories should be add in the project', ['argument'],function(element,done){
+			var storyEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+			servicesAPI
+			    .post(element, token.api_token, storyEndPoint, function(res) {
+					expect(res.status).to.equal(status.ok);
+					done();	
+				});
+		});	
+
+		
+	});
+	describe('When the project pass to the second iteration',function(){
+		before('pass to second iteration', function(done) {
+	        var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint2.replace('{project_id}', projectId)
+	            .replace('{iteration_number}', 2);
+	        servicesAPI
+	            .put({"length":0}, token.api_token, iterationEndPoint, function(iteration) {
+	                expect(iteration.status).to.equal(status.ok);
+	                done();
+	            });
+	    });
+		it('Then the projects iteration should be 2',function(done){
+			var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint.replace('{project_id}', projectId);
+
+	        servicesAPI
+	            .get(token.api_token, iterationEndPoint, function(res) {
+	                expect(res.status).to.equal(status.ok);
+	                expect(res.body.length).to.equal(3);
+	                done();
+	            });
+
+		});
+		it('And the project should have 2 user stories unscheduled',function(done){
+			var storiesEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+			servicesAPI
+                .get(token.api_token, storiesEndPoint+'?with_state=unscheduled', function(res) {
+                    expect(res.status).to.equal(status.ok);
+                    expect(res.body.length).to.equal(2);
+                    done();                    
+                });
+			});
+		it('And the project should have 3 user stories finished',function(done){
+			var storiesEndPoint = endPoint.stories.storiesEndPoint.replace('{project_id}', projectId);
+			servicesAPI
+                .get(token.api_token, storiesEndPoint+'?with_state=finished', function(res) {
+                    expect(res.status).to.equal(status.ok);
+                    expect(res.body.length).to.equal(3);
+                    done();                    
+                });
+			});
+	});
 });
