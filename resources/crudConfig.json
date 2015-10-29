@@ -4,7 +4,7 @@
       "post":{  
          "initial_velocity":5,
          "iteration_length":2,
-         "name":"Pivotal Tracker Project--55",
+         "name":"Pivotal Tracker Project--61",
          "number_of_done_iterations_to_show":5,
          "point_scale":"0,1,2,3,5,8",
          "created_at":"2015-10-12T14:55:05Z",
@@ -178,14 +178,16 @@
    },
    "labels":{  
       "post":{  
-         "name":"port"
+         "name":"post"
       },
       "put":{  
-         "name":"latest"
+         "name":"putl"
       },
       "label":{  
-         "kind":"label"
+         "kind":"label",
+         "name":"labtest"
       },
+
       "type":"label"
    },
 
@@ -198,6 +200,9 @@
          "name":"Verify the Z funcionality",
          "estimate":2
       }
-   }
+
+   },
+
+   "kind":"label"
 
 }
