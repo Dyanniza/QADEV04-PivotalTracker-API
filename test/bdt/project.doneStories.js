@@ -41,7 +41,6 @@ var token = null;
 var prjId = null;
 var storyId = [];
 var taskId = [];
-var taskId2 = null;
 var endPoint = null;
 var prj = configLog.project.post;
 var story = configLog.stories;
@@ -49,6 +48,12 @@ var taskName = configLog.task;
 var kind = configLog.task.type;
 var status = config.status;
 var userCredential = config.userCredential;
+var taskPost = [{task: taskName.post}, {task: taskName.post1}];
+var stateStory = [{state: story.state.finished}, {state: story.state.finished} ];
+var i = 0;
+var z = 0;
+var x = 0;
+var j = 0;
 
 
 
@@ -102,8 +107,7 @@ describe('The user story is accepted', function() {
 
         });
 
-        var taskPost = [{task: taskName.post}, {task: taskName.post1}];
-        var i = 0;
+        
 
         it.each(taskPost, 'And the two stories have a unfinished task', function(element, done) {
 
@@ -148,9 +152,7 @@ describe('The user story is accepted', function() {
 
             });
             
-            var j = 0;
-            var stateStory = [{state: story.state.finished}, {state: story.state.finished} ]
-
+            
             it.each(stateStory, 'Then the user stories are Finished', function(element, done) {
 
                 endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
@@ -158,7 +160,6 @@ describe('The user story is accepted', function() {
 
                 generalLib
                     .put(element.state, token, endPoint, function(res) {
-                        console.log(res.body);
                         expect(res.status).to.equal(status.ok);
                         expect(res.body.id).to.equal(storyId[j]);
                         expect(res.body.current_state).to.equal(element.state.current_state);
@@ -167,8 +168,7 @@ describe('The user story is accepted', function() {
                     });
             });
 
-            var z = 0;
-            stateStory = [{state: story.state.delivered}, {state: story.state.delivered} ]
+            stateStory = [{state: story.state.delivered}, {state: story.state.delivered} ];
 
             it.each(stateStory, 'And the user stories are Delivered', function(element, done) {
 
@@ -186,9 +186,8 @@ describe('The user story is accepted', function() {
                     });
             });
 
-            var x = 0;
-            stateStory = [{state: story.state.accepted}, {state: story.state.accepted} ]
-
+           
+            stateStory = [{state: story.state.accepted}, {state: story.state.accepted} ];
             it.each(stateStory, 'And The user stories are accepted', function(element, done) {
                 endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
                     						  .replace('{story_id}', storyId[x]);

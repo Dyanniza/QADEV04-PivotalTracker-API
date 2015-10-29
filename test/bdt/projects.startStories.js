@@ -54,7 +54,12 @@ var kind = configLog.task.type;
 var status = config.status;
 var userCredential = config.userCredential;
 var taskId = [];
-
+var storyName1 = configLog.story.story1;
+var storyName2 = configLog.story.story1;
+var argument1 = scenario.scenario01.task01;
+var argument2 = scenario.scenario01.task02;
+var argument3 = scenario.scenario01.task03;
+var priority = [{argument: argument1}, {argument: argument2}, {argument: argument3}];
 
 
 describe('Start user story', function() {
@@ -88,10 +93,6 @@ describe('Start user story', function() {
 
     context('Given I have project Pivotal Tracker Project', function() {
 
-        
-
-        	var storyName1 = configLog.story.story1;
-        	var storyName2 = configLog.story.story1;
         	var storiesName =[{story1: storyName1}, {story1: storyName2}];
         	
             it.each(storiesName, 'And the two user stories are already in the IceBox', function(element, done) {
@@ -137,12 +138,8 @@ describe('Start user story', function() {
 
         describe('When I create three task inside the user story', function() {
         	 	
-    	 	var argument1 = scenario.scenario01.task01;
-            var argument2 = scenario.scenario01.task02;
-            var argument3 = scenario.scenario01.task03;
-			var priority = [{argument: argument1}, {argument: argument2}, {argument: argument3}];
-
-             it.each(priority, 'Then the tasks has reference of the "As a terster verify that Z function has been implementes" user story ', function(element, done){
+    	 	
+			it.each(priority, 'Then the tasks has reference of the "As a terster verify that Z function has been implementes" user story ', function(element, done){
      			var endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
                 							   	   .replace('{story_id}', storyId);	
              	generalLib
