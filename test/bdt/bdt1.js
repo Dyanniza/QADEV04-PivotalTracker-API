@@ -136,10 +136,7 @@ describe('Scenario 1',function () {
 	                done();
 	            });
 		});
-
-		//revisar desde aqui
 	
-		
 		it.each(IDstories,'And 3 user stories should pass the finished state',function(IDstories,done){
 			var storyEndPoint = endPoint.story.storyEndPoint.replace('{project_id}', projectId)
 															.replace('{story_id}', IDstories);
