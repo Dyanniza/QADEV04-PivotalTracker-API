@@ -32,11 +32,12 @@ var endPoint = null;
 var dinamicValues = {};
 var status = config.status;
 
-describe.skip('Scenario 1: Create new account when a new projects is being created', function() {
+describe('Scenario 1: Create new account when a new projects is being created', function() {
     this.timeout(config.timeout);
     before('Get Token', function(done) {
+        console.log(config.userCredential2);
         tokenAPI
-            .getToken(config.userCredential, function(res) {
+            .getToken(config.userCredential2, function(res) {
                 token = res.body.api_token;
                 done();
             });
@@ -77,10 +78,6 @@ describe.skip('Scenario 1: Create new account when a new projects is being creat
                         expect(res.body.id).to.equal(dinamicValues.account_id);
                         done();
                     });
-            });
-
-            it('And the project should be associated to this account', function(done) {
-                done();
             });
         });
     });
