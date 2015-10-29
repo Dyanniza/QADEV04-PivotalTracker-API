@@ -21,7 +21,7 @@ var config = require('../../resources/config.json');
 var crudConfig = require('../../resources/crudConfig.json');
 var endPoints = require('../../resources/endPoints.json');
 var scenario = require('../../resources/scenario.json');
-
+require('it-each')();
 
 /**
  * End point services
@@ -39,15 +39,16 @@ var storiesByIdEndPoint = endPoints.story.storyEndPoint;
 var token = null;
 var prjId = null;
 var storyId = null;
-var taskId1 = null;
-var taskId2 = null;
-var taskId3 = null;
 var endPoint = null;
 var prj = crudConfig.project.post;
 var story = crudConfig.stories;
 var taskName = crudConfig.task;
 var status = config.status;
 var userCredential = config.userCredential;
+var task1 = scenario.scenario01.completedTask.task01;
+var task2 = scenario.scenario01.completedTask.task02;
+var task3 = scenario.scenario01.task03;
+var taskS =[{task: task1 }, {task: task2 }, {task: task3 }];
 
 
 describe('The user story is restarted', function() {
@@ -112,33 +113,22 @@ describe('The user story is restarted', function() {
                 });
         });
 
-        it('And 2 tasks of 3 are completed', function(done) {
-            var task1 = scenario.scenario01.completedTask.task01;
-            var task2 = scenario.scenario01.completedTask.task02;
-            var task3 = scenario.scenario01.task03;
+        it.each(taskS, 'And 2 tasks of 3 are completed', function(element, done) {
+            
             endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
                                            .replace('{story_id}', storyId);
 
             generalLib
-                .post(task1, token, endPoint, function(res) {
+                .post(element.task, token, endPoint, function(res) {
                     expect(res.status).to.equal(status.ok);
-                    expect(res.body.description).to.equal(task1.description);
-                    expect(res.body.complete).to.be.true;
-
-                    generalLib
-                        .post(task2, token, endPoint, function(res) {
-                            expect(res.status).to.equal(status.ok);
-                            expect(res.body.description).to.equal(task2.description);
-                            expect(res.body.complete).to.be.true;
-
-                            generalLib
-                                .post(task3, token, endPoint, function(res) {
-                                    expect(res.status).to.equal(status.ok);
-                                    expect(res.body.description).to.equal(task3.description);
-                                    expect(res.body.complete).to.be.false;
-                                    done();
-                                });
-                        });
+                    expect(res.body.description).to.equal(element.task.description);
+                    if (res.body.complete) {
+                       expect(res.body.complete).to.be.true; 
+                       done();
+                    } else{
+                        expect(res.body.complete).to.be.false;
+                        done(); 
+                    }
                 });
 
         });
