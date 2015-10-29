@@ -32,7 +32,7 @@ var accountSummariesEndPoint = endPoints.accounts.accountSummariesEndPoint;
 var accountMembershipsEndPoint = endPoints.accounts.accountMembershipsEndPoint;
 var accountMembershipEndPoint = endPoints.accounts.accountMembershipEndPoint;
 
-describe('CRUD', function() {
+describe('CRUD for accounts', function() {
     this.timeout(config.timeout);
     before('create an account', function(done) {
         tokenAPI
