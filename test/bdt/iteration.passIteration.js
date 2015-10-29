@@ -1,28 +1,25 @@
 /*
-Scenario 1: Information correct is displayed stories when the project pass the iterations
-Given I have a Project empty
-	And 10 user stories are created under project
-	And 2 project’s membership are added under project
-When the project this in the first iteration
-	Then the project should have 10 user stories not started 
+Scenario 1: Correct Information about stories is displayed when the project passes the iterations
+
+Given I have a Project whit 5 user stories
+	Then 5 user stories are created under project undefined
+	Then 2 project’s membership is added under project
+When the project started
+	Then the projects iteration should be 1
+	And the project should have 3 user stories unscheduled
 	And the project should have 3 members
-	And two user stories should pass the finished state
+	And 3 user stories should pass the finished state
 When the project pass to the second iteration
-	Then the project should have eight user stories not started
-	And the project should have 3 members
-	And other two user stories should pass the finished state
-	And all user stories finished should pass to delivered state
-When the project pass to the third iteration
-	Then the project should have 6 user stories not started
-	And the project should have 3 members
-	And all user stories delivered should be accepted
-	And other two user stories should pass the finished state
-	And a new member its should add on project
-When the project pass to fourth iteration
-	Then the project should have 4 user stories not started
-	And the project should have 4 user stories with accepted state
-	And the project should have 2 user stories with accepted state
-	And the project should have 4 members
+	Then the projects iteration should be 2
+	And the project should have 0 user stories unscheduled
+	And the project should have 3 user stories finished
+	And the project should have 2 members
+	And other two user stories should be add in the project undefined
+When the project pass to the second iteration
+	Then the projects iteration should be 2
+	And the project should have 2 user stories unscheduled
+	And the project should have 3 user stories finished
+
 -------And all actions on the project it should be displayed in the project History
 */
 
@@ -39,7 +36,7 @@ var status = config.status;
 require('it-each')();
 var scenario = require('../../resources/scenario.json');
 
-describe('Scenario 1',function () {
+describe('Scenario 1: Correct Information about stories is displayed when the project passes the iterations',function () {
 	this.timeout(config.timeout);
 	var userCredential = config.userCredential;
 	var token = null;
@@ -91,7 +88,7 @@ describe('Scenario 1',function () {
 				});
 		});		
 
-		it.each(members,'then 2 project’s membership is added under project', function(element, done) {
+		it.each(members,'hen 2 project’s membership is added under project', function(element, done) {
 		    var prjMSEndPoint = endPoint.projectMembership.prjMembership.replace('{project_id}', projectId);
 		    servicesAPI
 		        .post(element, token.api_token, prjMSEndPoint, function(projectMS) {
@@ -136,7 +133,10 @@ describe('Scenario 1',function () {
 	                done();
 	            });
 		});
+
+		//revisar desde aqui
 	
+		
 		it.each(IDstories,'And 3 user stories should pass the finished state',function(IDstories,done){
 			var storyEndPoint = endPoint.story.storyEndPoint.replace('{project_id}', projectId)
 															.replace('{story_id}', IDstories);

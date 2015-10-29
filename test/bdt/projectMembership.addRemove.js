@@ -1,27 +1,22 @@
 /*
-Scenary 2:is added and removed project members in different iterations
-Given I have a Project
-Then four project memberships should add under project 
-And the project has 10 user stories
-And two user stories should be assigned to every member
-And one user story should be finished per every member
-And all user stories finished should pass to Delivered state
-And the project should pass to the second iteration
-When the project this in the second iteration
-And the project has 5 user stories not started
-And the project have 5 user Stories with delivered state
-And the project has 5 members
-Then one user story it should be finished per every member
-And all user stories with Delivered state should pass to Accepted state
-And one user story should be finished per every member
-And the project should pass to third iteration
-When the project pass to third iteration
-When the project pass to third iteration
-And the project has 5 user stories with accepted state
-And the project has 5 user stories with finished state
-And the project has 5 members
-Then any user story should be on the ice box
+Scenario 2: Add and remove project members in different iterations
 
+Given I have a Project empty
+	Then 2 project memberships should add under project
+	And 6 user stories should be created under project
+When the project this in the first iteration
+	Then the projects iteration should be 1
+	And the project should have 3 members
+	Then 1 project memberships should remove to project
+	And the project should pass to second iteration
+When the project this in the Second iteration
+	Then the projects iteration should be 1
+	And the project should have 2 members
+	And 2 project memberships should add under project
+	And the project should pass to third iteration
+When the project this in the third iteration
+	Then the projects iteration should be 3
+	And the project should have 4 members
 */
 
 var request = require('superagent');
@@ -38,7 +33,7 @@ var status = config.status;
 require('it-each')();
 
 
-describe('Scenary 2',function(){
+describe('Scenary 2: Add and remove project members in different iterations',function(){
 	this.timeout(config.timeout);
 	var userCredential = config.userCredential;
 	var token = null;
@@ -104,7 +99,7 @@ describe('Scenary 2',function(){
 		});		
 	});
 
-	describe('When the project this in the fisrt iteration',function(){
+	describe('When the project this in the first iteration',function(){
 		it('Then the projects iteration should be 1',function(done){
 			var iterationEndPoint = endPoint.iteration.iterationtokenEndPoint.replace('{project_id}', projectId);
 	        servicesAPI
