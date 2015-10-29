@@ -23,6 +23,9 @@ var config = require('../../resources/config.json');
 var configLog = require('../../resources/crudConfig.json');
 var endPoints = require('../../resources/endPoints.json');
 var scenario = require('../../resources/scenario.json');
+var Chance = require('chance');
+var chance = new Chance();
+require('it-each')();
 
 /**
  * End point services
@@ -50,6 +53,13 @@ var taskName = configLog.task.post;
 var kind = configLog.task.type;
 var status = config.status;
 var userCredential = config.userCredential;
+var taskId = [];
+var storyName1 = configLog.story.story1;
+var storyName2 = configLog.story.story1;
+var argument1 = scenario.scenario01.task01;
+var argument2 = scenario.scenario01.task02;
+var argument3 = scenario.scenario01.task03;
+var priority = [{argument: argument1}, {argument: argument2}, {argument: argument3}];
 
 
 describe('Start user story', function() {
@@ -83,28 +93,18 @@ describe('Start user story', function() {
 
     context('Given I have project Pivotal Tracker Project', function() {
 
-        before(function() {
-
-            it('And the two user stories are already in the IceBox', function(done) {
-                var storyName1 = story;
-                var storyName2 = story;
-                storyName1.name = scenario.storyName1;
-                storyName2.name = scenario.storyName2;
+        	var storiesName =[{story1: storyName1}, {story1: storyName2}];
+        	
+            it.each(storiesName, 'And the two user stories are already in the IceBox', function(element, done) {
                 endPoint = storiesEndPoint.replace('{project_id}', prjId);
-
-                generalLib
-                    .post(storyName1, token, enPoint, function(res) {
-                        expect(res.status).to.equal(status.ok);
-
-                        generalLib
-                            .post(storyName1, token, enPoint, function(res) {
-                                expect(res.status).to.equal(status.ok);
-                                done();
-                            });
+     	        generalLib
+                    .post(element.story1, token, endPoint, function(res) {
+                    	expect(res.status).to.equal(status.ok);
+                        done();
                     });
             });
 
-        });
+        
 
         describe('When I create a new user story "As a tester verify that Z function"', function() {
 
@@ -122,7 +122,7 @@ describe('Start user story', function() {
 
             it('And has set the effort to 1', function(done) {
                 endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                    .replace('{story_id}', storyId);
+                    						  .replace('{story_id}', storyId);
                 var update = configLog.stories.put;
                 generalLib
                     .put(update, token, endPoint, function(res) {
@@ -137,36 +137,25 @@ describe('Start user story', function() {
         });
 
         describe('When I create three task inside the user story', function() {
+        	 	
+    	 	
+			it.each(priority, 'Then the tasks has reference of the "As a terster verify that Z function has been implementes" user story ', function(element, done){
+     			var endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
+                							   	   .replace('{story_id}', storyId);	
+             	generalLib
+            		.post(element.argument, token, endPoint, function(res) {
+                		expect(res.body.story_id).to.equal(storyId);
+                		taskId.push(res.body.id);
+                		done();
+                	
+                });
+            });
 
-            it('Then the tasks has reference of the "As a terster verify that Z function has been implementes" user story ', function(done) {
-                var argument1 = scenario.scenario01.task01;
-                var argument2 = scenario.scenario01.task02;
-                var argument3 = scenario.scenario01.task03;
-                var endPoint = storiesTasksEndPoint.replace('{project_id}', prjId)
-                    .replace('{story_id}', storyId);
 
-
-                generalLib
-                    .post(argument1, token, endPoint, function(res) {
-                        expect(res.body.story_id).to.equal(storyId);
-                        taskId1 = res.body.id;
-                        generalLib
-                            .post(argument2, token, endPoint, function(res) {
-                                expect(res.body.story_id).to.equal(storyId);
-                                taskId2 = res.body.id;
-                                generalLib
-                                    .post(argument3, token, endPoint, function(res) {
-                                        expect(res.body.story_id).to.equal(storyId);
-                                        taskId3 = res.body.id;
-                                        done();
-                                    });
-                            });
-                    });
-			});
-
+           
             it('And order the task for priority', function(done) {
-
                 var argument3 = scenario.scenario01.position1
+                taskId3 = taskId[2];
 
                 endPoint = storiesTasksByIdEndPoint.replace('{project_id}', prjId)
                     .replace('{story_id}', storyId)
@@ -191,7 +180,7 @@ describe('Start user story', function() {
 
             it('Then the user stories go to the current BackLog ', function(done) {
                 endPoint = storiesByIdEndPoint.replace('{project_id}', prjId)
-                    .replace('{story_id}', storyId);
+                    						  .replace('{story_id}', storyId);
                 var argument = scenario.scenario01.started;
                 generalLib
                     .put(argument, token, endPoint, function(res) {
