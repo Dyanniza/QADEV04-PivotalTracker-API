@@ -13,7 +13,7 @@ var Chance = require('chance');
 var crudConfig = require('../../resources/crudConfig.json');
 var status = config.status;
 
-describe('Project Membership Service, Smoke Testing', function() {
+describe('Project Membership Service, CRUD Testing', function() {
     this.timeout(config.timeout);
     var userCredential = config.userCredential;
     var token = null;

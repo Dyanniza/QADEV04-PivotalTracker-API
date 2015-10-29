@@ -109,6 +109,14 @@
       },
       "put":{  
          "name":""
+      },
+      "story1":{
+         "name":"verify the X funcionality",
+         "estimate":2
+      },
+      "story2":{
+         "name":"Verify the Z funcionality",
+         "estimate":2
       }
    },
    "activity":{  
@@ -191,20 +199,6 @@
       "kind":"label",
 
       "type":"label"
-   },
-
-   "story":{
-      "story1":{
-         "name":"verify the X funcionality",
-         "estimate":2
-      },
-      "story2":{
-         "name":"Verify the Z funcionality",
-         "estimate":2
-      }
-
-   }
-
-   
+   }   
 
 }
